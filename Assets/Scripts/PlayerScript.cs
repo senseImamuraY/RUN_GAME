@@ -47,6 +47,13 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        // プレイ以外なら無効にする
+        if (GameManagerScript.status != GameManagerScript.GAME_STATUS.Play)
+        {
+            animator.SetBool("IsRunning", false);
+            return;
+        }
+
         // スワイプによる移動処理
         if (Input.GetMouseButtonDown(0))
         {
@@ -75,5 +82,11 @@ public class PlayerScript : MonoBehaviour
     {
         GameManagerScript.status = GameManagerScript.GAME_STATUS.Clear;
         dest = pos;
+    }
+
+    public void TakeDamage()
+    {
+        animator.SetTrigger("Damaged");
+        GameManagerScript.status = GameManagerScript.GAME_STATUS.GameOver;
     }
 }

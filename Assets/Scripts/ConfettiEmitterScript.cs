@@ -7,6 +7,16 @@ public class ConfettiEmitterScript : MonoBehaviour
     [SerializeField]
     List<GameObject> confettiList;
 
+    AudioSource audioSource;
+
+    [SerializeField]
+    AudioClip cracker, prise;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -14,8 +24,23 @@ public class ConfettiEmitterScript : MonoBehaviour
             foreach (var confetti in confettiList)
             {
                 confetti.SetActive(true);
-                Debug.Log("OK");
+
+                Invoke("PlayCracker", 0.2f);
+                Invoke("PlayPrise", 1f);
             }
         }
     }
+
+    private void PlayCracker()
+    {
+        audioSource.clip = cracker;
+        audioSource.Play();
+    }
+
+    private void PlayPrise()
+    {
+        audioSource.clip = prise;
+        audioSource.Play();
+    }
+
 }
