@@ -15,7 +15,7 @@ public class GoalScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerScript>().Clear(centerPos);
+            other.GetComponent<BonusPlayerScript>().Clear(centerPos);
         }
     }
 }

@@ -8,7 +8,7 @@ public class BombEffectScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerScript>().TakeDamage();
+            other.GetComponent<BonusPlayerScript>().TakeDamage();
         }
     }
 }

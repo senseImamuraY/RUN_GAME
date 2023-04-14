@@ -9,7 +9,7 @@ public class MovementBaseScript : MonoBehaviour
     PathCreator pathCreator;
 
     [SerializeField]
-    PlayerScript player;
+    BonusPlayerScript player;
 
     [SerializeField]
     GameObject helpUI;

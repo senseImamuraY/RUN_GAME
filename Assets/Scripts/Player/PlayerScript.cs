@@ -1,20 +1,27 @@
+using PathCreation;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+
+    [SerializeField]
+    GameObject helpUI;
     Animator animator;
-
-    public bool isRunning;
-
-    public float sensitivity = 1f;
-    const float LOAD_WIDTH = 6f;
-    const float MOVE_MAX = 2.5f;
+    Vector3 endPos;
     Vector3 previousPos, currentPos;
 
-    Vector3 dest; // 次の目的地。クリア時に使用
-    float speed = 6f;
+    public bool isRunning;
+    public float sensitivity = 1f;
+
+    const float LOAD_WIDTH = 10f;
+    const float MOVE_MAX = 4.5f;
+    float speed = 20f;
+    float moveDistance;
+    private bool isJump = false;
 
     void Start()
     {
@@ -23,34 +30,10 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        // クリア時の処理
-        if (GameManagerScript.status == GameManagerScript.GAME_STATUS.Clear)
-        {
-            // 目的地の方向を向く
-            transform.LookAt(dest);
-
-            // 目的地の方向に移動させる
-            Vector3 dir = (dest - transform.position).normalized;
-            transform.position += dir * speed * Time.deltaTime;
-
-            // 目的地に十分近づいたら、最終演出
-            if ((dest - transform.position).magnitude < 0.5f)
-            {
-                transform.position = dest;
-                transform.rotation = Quaternion.Euler(0, 180, 0);
-                animator.SetBool("IsRunning", false);
-                animator.SetTrigger("Clear");
-
-                // Updateメソッドがこれ以上実行されなくなる
-                enabled = false;
-            }
-            return;
-        }
-
-        // プレイ以外なら無効にする
+        // プレイ中以外は無効にする
         if (GameManagerScript.status != GameManagerScript.GAME_STATUS.Play)
         {
-            animator.SetBool("IsRunning", false);
+            helpUI.SetActive(false);
             return;
         }
 
@@ -59,29 +42,46 @@ public class PlayerScript : MonoBehaviour
         {
             previousPos = Input.mousePosition;
         }
+
         if (Input.GetMouseButton(0))
         {
+            animator.SetBool("IsRunning", true);
+            helpUI.SetActive(false);
             // スワイプによる移動距離を取得
             currentPos = Input.mousePosition;
             float diffDistance = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
             diffDistance *= sensitivity;
 
             // 次のローカルx座標を設定 ※道の外にでないように
-            float newX = Mathf.Clamp(transform.localPosition.x + diffDistance, -MOVE_MAX, MOVE_MAX);
-            transform.localPosition = new Vector3(newX, 0, 0);
-
+            float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
+            //transform.localPosition = new Vector3(newX, 0, 0);
+            moveDistance += speed * Time.deltaTime;
+            transform.position = new Vector3(newX, 0, moveDistance);
             // タップ位置を更新
             previousPos = currentPos;
         }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            animator.SetBool("IsRunning", false);
+            helpUI.SetActive(true);
+        }
 
-        // isRunning = true; ※削除してください
-        animator.SetBool("IsRunning", isRunning);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isJump = true;
+            
+            if (isJump && animator.GetBool("IsGround"))
+            {
+                animator.SetTrigger("IsJumping");
+            }
+
+        }
     }
 
     public void Clear(Vector3 pos)
     {
         GameManagerScript.status = GameManagerScript.GAME_STATUS.Clear;
-        dest = pos;
+        //dest = pos;
     }
 
     public void TakeDamage()
@@ -90,3 +90,4 @@ public class PlayerScript : MonoBehaviour
         GameManagerScript.status = GameManagerScript.GAME_STATUS.GameOver;
     }
 }
+

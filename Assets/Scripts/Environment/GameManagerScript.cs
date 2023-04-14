@@ -83,7 +83,8 @@ public class GameManagerScript : MonoBehaviour
     }
     private string GetLoadSceneName()
     {
-        return STAGE_NAME_PREFIX + stageNum;
+        return STAGE_NAME_PREFIX + 2;
+        //return STAGE_NAME_PREFIX + stageNum;
     }
 
     public void LoadScene()
