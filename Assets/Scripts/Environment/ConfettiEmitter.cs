@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConfettiEmitterScript : MonoBehaviour
+public class ConfettiEmitter : MonoBehaviour
 {
     [SerializeField]
     List<GameObject> confettiList;

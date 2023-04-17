@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BombScript : MonoBehaviour
+public class Bomb : MonoBehaviour
 {
     Animator anim;
 
@@ -34,7 +34,7 @@ public class BombScript : MonoBehaviour
 
     void Update()
     {
-        if (GameManagerScript.status != GameManagerScript.GAME_STATUS.Play)
+        if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
             return;
         }
@@ -70,7 +70,7 @@ public class BombScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (GameManagerScript.status != GameManagerScript.GAME_STATUS.Play)
+        if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
             return;
         }
@@ -84,7 +84,7 @@ public class BombScript : MonoBehaviour
 
             GetComponent<AudioSource>().Play();
 
-            GameManagerScript.status = GameManagerScript.GAME_STATUS.Pause;
+            GameManager.status = GameManager.GAME_STATUS.Pause;
         }
     }
 }

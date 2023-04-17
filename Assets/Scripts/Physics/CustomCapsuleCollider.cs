@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomCapsuleCollider : MonoBehaviour
+public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 {
-    //targetはリストにしなければならない。
-    [SerializeField]
-    private List<CustomBoxCollider> targetBox;
     public float Radius;
     Vector3 CapsulePosition;
     GameObject target;
@@ -21,13 +18,55 @@ public class CustomCapsuleCollider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach(CustomBoxCollider target in targetBox)
-        if(CollisionDetector.Instance.CheckCapsuleSphereCollision(this,target) == true)
-        {
-            Debug.Log("ぶつかりました");
-        }
+
+    }
+    
+    //public override bool CheckCollision(Shape target)
+    //{
+
+    //    if (target is CustomBoxCollider box)
+    //    {
+    //        return CheckCollisionWithBox(box);
+    //    }
+    //    return false;
+    //}
+
+    public bool CheckCollisionWithBox(IBox box)
+    {
+        // それぞれの中心からの距離を足した値と、ベクトルの大きさを比較する
+        //float dist = (box.transform.position - this.transform.position).magnitude;
+        //float wR = box.GetHalfWidth + this.Radius;
+
+        //if (dist < wR)
+        //{
+        //    return true;
+        //}
+        //else
+        //{
+        //    return false;
+        //}
+        Debug.Log("CapsuleコライダーのWithBox");
+        throw new System.NotImplementedException();
     }
 
-    // この判定は形ごとに分けるか、テンプレートを使って処理を行う
+    public bool CheckCollisionWithCapsule(ICapsule capsule)
+    {
+        // それぞれの中心からの距離を足した値と、ベクトルの大きさを比較する
+        //float dist = (capsule.transform.position - this.transform.position).magnitude;
+        //float wR = capsule.Radius + this.Radius;
+        //if (dist < wR)
+        //{
+        //    return true;
+        //}
+        //else
+        //{
+        //    return false;
+        //}
+        throw new System.NotImplementedException();
+    }
 
+    public bool CheckCollisionWithSphere(ISphere target)
+    {
+        throw new System.NotImplementedException();
+    }
 }

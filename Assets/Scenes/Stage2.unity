@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -481,8 +481,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb024f7bd0cee34dbe5f2720364538f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Width: 0.5
-  Height: 0.5
+  width: 1
+  height: 1
 --- !u!1001 &694265532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -656,10 +656,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44782f0f7f8915e4c8594a1dd7cb70df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetBox:
-  - {fileID: 684909086}
-  - {fileID: 1361356587}
-  - {fileID: 1541298016}
   Radius: 0
 --- !u!1 &1152105922 stripped
 GameObject:
@@ -673,7 +669,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1570876164}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1251087804
+--- !u!114 &1251087807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -685,6 +681,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1428d4b9cc31fbe47afefe510173efad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1251087808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251087801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e225e1c06b2ac3549bec61d6129c84e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinNumText: {fileID: 1969205948}
+  resultCoinText: {fileID: 1668895576}
+  levelNumText: {fileID: 335946670}
+  clearUI: {fileID: 1278903770}
+  gameOverUI: {fileID: 320272885}
+  targetList:
+  - {fileID: 1361356587}
 --- !u!1 &1278903770 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3252721490665177360, guid: d8a0af34463586b448ead9aa0e1b52a2,
@@ -723,8 +738,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb024f7bd0cee34dbe5f2720364538f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Width: 0.5
-  Height: 0.5
+  width: 5
+  height: 1
 --- !u!65 &1361356588
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -797,7 +812,7 @@ Transform:
   m_GameObject: {fileID: 1361356586}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.13, y: 0.5, z: 69.88}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -835,8 +850,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb024f7bd0cee34dbe5f2720364538f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Width: 0.5
-  Height: 0.5
+  width: 2
+  height: 2
 --- !u!65 &1541298017
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -908,8 +923,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1541298015}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.13, y: 0.5, z: 57.97}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.13, y: 0.5, z: 115.6}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -932,6 +947,11 @@ PrefabInstance:
       propertyPath: clearUI
       value: 
       objectReference: {fileID: 1278903770}
+    - target: {fileID: 5640466745390024791, guid: a31a1a09c3ce11b4e9c24bcbce3321c3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5640466745390024791, guid: a31a1a09c3ce11b4e9c24bcbce3321c3,
         type: 3}
       propertyPath: gameOverUI

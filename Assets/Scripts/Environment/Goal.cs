@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoalScript : MonoBehaviour
+public class Goal : MonoBehaviour
 {
     Vector3 centerPos;
 
@@ -15,7 +15,7 @@ public class GoalScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<BonusPlayerScript>().Clear(centerPos);
+            other.GetComponent<BonusPlayer>().Clear(centerPos);
         }
     }
 }

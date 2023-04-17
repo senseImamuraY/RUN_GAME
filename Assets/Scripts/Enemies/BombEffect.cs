@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BombEffectScript : MonoBehaviour
+public class BombEffect : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<BonusPlayerScript>().TakeDamage();
+            other.GetComponent<BonusPlayer>().TakeDamage();
         }
     }
 }

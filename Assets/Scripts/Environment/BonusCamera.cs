@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BonusCameraScript : MonoBehaviour
+public class BonusCamera : MonoBehaviour
 {
     [SerializeField]
     GameObject player;

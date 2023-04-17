@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameManagerScript : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+
     public enum GAME_STATUS { Play, Clear, Pause, GameOver };
     public static GAME_STATUS status;
 
@@ -18,6 +20,18 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField]
     GameObject clearUI, gameOverUI;
 
+    [SerializeField]
+    private List<GameObject> targetList;
+
+
+    private List<ISphere> sphereList;
+    private List<IBox> boxList = new List<IBox>();
+    private List<ICapsule> capsuleList;
+
+    public List<ISphere> GetSphereList { get { return sphereList; } }
+    public List<IBox> GetBoxList { get { return boxList; } }
+    public List<ICapsule> GetCapsuleList { get { return capsuleList; } }
+
     int stageCoinNum;
 
     const string STAGE_NAME_PREFIX = "Stage";
@@ -25,6 +39,21 @@ public class GameManagerScript : MonoBehaviour
 
     int levelNum; // 現在の進行数
     int stageNum; // 読み込むステージ番号
+
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     void Start()
     {
@@ -50,6 +79,31 @@ public class GameManagerScript : MonoBehaviour
 
         // ステータスをPlayに
         status = GAME_STATUS.Play;
+
+        // ターゲットリストの中からどのインターフェイスを所持しているのかを分類
+        foreach (GameObject target in targetList)
+        {
+            if (target.GetComponent<ISphere>() != null)
+            {
+                Debug.Log("Sphereに追加されました。");
+                sphereList.Add(target.GetComponent<ISphere>());
+            }
+            else if (target.GetComponent<IBox>() != null)
+            {
+                Debug.Log("Boxに追加されました。");
+                boxList.Add(target.GetComponent<IBox>());
+                Debug.Log(boxList);
+            }
+            else if (target.GetComponent<ICapsule>() != null)
+            {
+                Debug.Log("Capsuleに追加されました。");
+                capsuleList.Add(target.GetComponent<ICapsule>());
+            }
+            else
+            {
+                Debug.Log("どれにも追加されませんでした");
+            }
+        }
     }
 
     void Update()

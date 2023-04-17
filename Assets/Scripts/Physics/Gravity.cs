@@ -15,7 +15,10 @@ public class Gravity : MonoBehaviour
     {
         // 接地判定
         isGrounded = transform.position.y <= groundHeight + groundCheckThreshold;
+    }
 
+    void FixedUpdate()
+    {
         if (isGrounded && velocity.y < 0)
         {
             // 接地している場合、y方向の速度をリセット
@@ -25,10 +28,11 @@ public class Gravity : MonoBehaviour
         else
         {
             // 重力を適用
-            velocity.y += gravity * Time.deltaTime;
+            velocity.y += gravity * Time.fixedDeltaTime;
         }
 
         // 速度を使ってオブジェクトを移動
-        transform.position += velocity * Time.deltaTime;
+        transform.position += velocity * Time.fixedDeltaTime;
     }
+
 }

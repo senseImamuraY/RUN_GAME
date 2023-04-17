@@ -1,22 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CustomBoxCollider : MonoBehaviour
+[System.Serializable]
+public class CustomBoxCollider : MonoBehaviour, ICollider, IBox
 {
-    // Start is called before the first frame update
-    public float Width, Height;
-    Vector3 BoxPosition;
-    void Start()
+    [SerializeField]
+    private float width, height;
+    public float GetWidth { get { return width; } }
+    public float GetHeight { get { return height; } }
+    public float GetHalfWidth { get { return width * 0.5f; } }
+    public float GetHalfHeight { get { return height * 0.5f; } }
+    public bool CheckCollisionWithBox(IBox t)
     {
-        BoxPosition = transform.position;
-        Width = 0.5f;
-        Height = 0.5f;
+        throw new System.NotImplementedException();
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool CheckCollisionWithSphere(ISphere t)
     {
-        
+        throw new System.NotImplementedException();
+    }
+
+    public bool CheckCollisionWithCapsule(ICapsule t)
+    {
+        throw new System.NotImplementedException();
     }
 }
+

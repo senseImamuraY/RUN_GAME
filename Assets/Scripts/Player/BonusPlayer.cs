@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BonusPlayerScript : MonoBehaviour
+public class BonusPlayer : MonoBehaviour
 {
     Animator animator;
 
@@ -24,7 +24,7 @@ public class BonusPlayerScript : MonoBehaviour
     void Update()
     {
         // クリア時の処理
-        if (GameManagerScript.status == GameManagerScript.GAME_STATUS.Clear)
+        if (GameManager.status == GameManager.GAME_STATUS.Clear)
         {
             // 目的地の方向を向く
             transform.LookAt(dest);
@@ -48,7 +48,7 @@ public class BonusPlayerScript : MonoBehaviour
         }
 
         // プレイ以外なら無効にする
-        if (GameManagerScript.status != GameManagerScript.GAME_STATUS.Play)
+        if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
             animator.SetBool("IsRunning", false);
             return;
@@ -80,13 +80,13 @@ public class BonusPlayerScript : MonoBehaviour
 
     public void Clear(Vector3 pos)
     {
-        GameManagerScript.status = GameManagerScript.GAME_STATUS.Clear;
+        GameManager.status = GameManager.GAME_STATUS.Clear;
         dest = pos;
     }
 
     public void TakeDamage()
     {
         animator.SetTrigger("Damaged");
-        GameManagerScript.status = GameManagerScript.GAME_STATUS.GameOver;
+        GameManager.status = GameManager.GAME_STATUS.GameOver;
     }
 }

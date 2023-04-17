@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovementBaseScript : MonoBehaviour
+public class MovementBase : MonoBehaviour
 {
     [SerializeField]
     PathCreator pathCreator;
 
     [SerializeField]
-    BonusPlayerScript player;
+    BonusPlayer player;
 
     [SerializeField]
     GameObject helpUI;
@@ -27,7 +27,7 @@ public class MovementBaseScript : MonoBehaviour
     void Update()
     {
         // ƒvƒŒƒC’†ˆÈŠO‚Í–³Œø‚É‚·‚é
-        if (GameManagerScript.status != GameManagerScript.GAME_STATUS.Play)
+        if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
             helpUI.SetActive(false);
             return;

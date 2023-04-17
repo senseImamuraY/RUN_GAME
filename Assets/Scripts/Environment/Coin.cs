@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoinScript : MonoBehaviour
+public class Coin : MonoBehaviour
 {
     float speed = 100f;
 
@@ -48,8 +48,8 @@ public class CoinScript : MonoBehaviour
 
             GetComponent<AudioSource>().Play();
 
-            GameManagerScript.tempCoinNum++;
-            Debug.Log("コインの枚数：" + GameManagerScript.tempCoinNum);
+            GameManager.tempCoinNum++;
+            Debug.Log("コインの枚数：" + GameManager.tempCoinNum);
 
             // コインを上にポップさせる
             transform.position += Vector3.up * 1.5f;

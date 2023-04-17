@@ -5,12 +5,15 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour
+public class Player : MonoBehaviour
 {
 
     [SerializeField]
     GameObject helpUI;
     Animator animator;
+    List<IBox> boxTargetsList;
+    CustomCapsuleCollider capsuleCollider;
+
     Vector3 endPos;
     Vector3 previousPos, currentPos;
 
@@ -26,12 +29,51 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        boxTargetsList = GameManager.Instance.GetBoxList;
+        capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
+    }
+
+    private void FixedUpdate()
+    {
+        Debug.Log(boxTargetsList);
+        foreach (IBox target in boxTargetsList)
+        {
+            //switch (target)
+            //{
+            //    case CustomBoxCollider box:
+            //        if (capsuleCollider.CheckCollisionWithBox(box) == true)
+            //        {
+            //            Debug.Log("Boxにぶつかりました");
+            //        }
+            //        break;
+            //    case CustomCapsuleCollider capsule:
+            //        if (capsuleCollider.CheckCollisionWithCapsule(capsule) == true)
+            //        {
+            //            Debug.Log("Capsuleにぶつかりました");
+            //        }
+            //        break;
+            //    case CustomSphereCollider sphere:
+            //        if (capsuleCollider.CheckCollisionWithSphere(sphere) == true)
+            //        {
+            //            Debug.Log("Sphereにぶつかりました");
+            //        }
+            //        break;
+            //    default:
+            //        Debug.Log("予想外の形が入っています。");
+            //        break;
+            //}
+            if (capsuleCollider.CheckCollisionWithBox(target))
+            {
+                Debug.Log("Playerから呼び出しました");
+            }
+        }
+
     }
 
     void Update()
     {
         // プレイ中以外は無効にする
-        if (GameManagerScript.status != GameManagerScript.GAME_STATUS.Play)
+        if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
             helpUI.SetActive(false);
             return;
@@ -80,14 +122,14 @@ public class PlayerScript : MonoBehaviour
 
     public void Clear(Vector3 pos)
     {
-        GameManagerScript.status = GameManagerScript.GAME_STATUS.Clear;
+        GameManager.status = GameManager.GAME_STATUS.Clear;
         //dest = pos;
     }
 
     public void TakeDamage()
     {
         animator.SetTrigger("Damaged");
-        GameManagerScript.status = GameManagerScript.GAME_STATUS.GameOver;
+        GameManager.status = GameManager.GAME_STATUS.GameOver;
     }
 }
 
