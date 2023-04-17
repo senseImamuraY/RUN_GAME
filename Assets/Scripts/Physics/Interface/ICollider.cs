@@ -4,8 +4,10 @@ using UnityEngine;
 
 public interface ICollider
 {
-    bool CheckCollisionWithBox(IBox target);
-
+    bool CheckCollisionWithCube(ICube target);
+    /// <summary>
+    /// ‹…‚Æ‚ÌÕ“Ë”»’è
+    /// </summary>
     bool CheckCollisionWithSphere(ISphere target);
 
     bool CheckCollisionWithCapsule(ICapsule target);

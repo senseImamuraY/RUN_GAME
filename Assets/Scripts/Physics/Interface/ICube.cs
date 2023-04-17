@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IBox
+public interface ICube
 {
-
+    Vector3 GetCenter { get ;}
+    Vector2 GetSize { get ;}
 }

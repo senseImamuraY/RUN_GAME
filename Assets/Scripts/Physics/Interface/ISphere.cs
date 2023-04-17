@@ -4,16 +4,16 @@ using UnityEngine;
 
 public interface ISphere
 {
-    ///// <summary>
-    ///// 中心のローカル座標
-    ///// </summary>
-    //Vector3 Center { get; }
-    ///// <summary>
-    ///// 半径
-    ///// </summary>
-    //float Radius { get; }
-    ///// <summary>
-    ///// 中心のワールド座標
-    ///// </summary>
-    //Vector3 WorldCenter { get; }
+    /// <summary>
+    /// 中心のローカル座標
+    /// </summary>
+    Vector3 GetCenter { get; }
+    /// <summary>
+    /// 半径
+    /// </summary>
+    float GetRadius { get; }
+    /// <summary>
+    /// 中心のワールド座標
+    /// </summary>
+    Vector3 GetWorldCenter { get; }
 }

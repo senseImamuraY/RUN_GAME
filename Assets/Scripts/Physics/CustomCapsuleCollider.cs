@@ -31,7 +31,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     //    return false;
     //}
 
-    public bool CheckCollisionWithBox(IBox box)
+    public bool CheckCollisionWithCube(ICube box)
     {
         // それぞれの中心からの距離を足した値と、ベクトルの大きさを比較する
         //float dist = (box.transform.position - this.transform.position).magnitude;

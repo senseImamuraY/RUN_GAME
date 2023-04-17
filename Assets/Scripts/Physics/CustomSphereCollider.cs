@@ -4,9 +4,20 @@ using UnityEngine;
 
 public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
 {
-    public bool CheckCollisionWithSphere(ISphere target)
+    [SerializeField]
+    private Vector3 center = Vector3.zero;
+    public Vector3 GetCenter { get { return center; } }
+    [SerializeField]
+    private float radius = 0.5f;
+    public float GetRadius { get { return radius; } }
+
+    public Vector3 GetWorldCenter { get { return sphereTransform.position + center; } }
+
+    private Transform sphereTransform;
+    public bool CheckCollisionWithSphere(ISphere sphere)
     {
-        throw new System.NotImplementedException();
+        var collideDistance = GetRadius + sphere.GetRadius;
+        return (GetWorldCenter - sphere.GetWorldCenter).sqrMagnitude <= collideDistance * collideDistance;
     }
 
     public bool CheckCollisionWithCapsule(ICapsule capsule)
@@ -14,7 +25,7 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
         throw new System.NotImplementedException();
     }
 
-    public bool CheckCollisionWithBox(IBox box)
+    public bool CheckCollisionWithCube(ICube box)
     {
         throw new System.NotImplementedException();
     }

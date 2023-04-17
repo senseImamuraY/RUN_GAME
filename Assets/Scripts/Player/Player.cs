@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject helpUI;
     Animator animator;
-    List<IBox> boxTargetsList;
+    List<ICube> cubeTargetsList;
     CustomCapsuleCollider capsuleCollider;
 
     Vector3 endPos;
@@ -29,40 +29,16 @@ public class Player : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        boxTargetsList = GameManager.Instance.GetBoxList;
+        cubeTargetsList = GameManager.Instance.GetCubeList;
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
     }
 
     private void FixedUpdate()
     {
-        Debug.Log(boxTargetsList);
-        foreach (IBox target in boxTargetsList)
+        Debug.Log(cubeTargetsList);
+        foreach (ICube target in cubeTargetsList)
         {
-            //switch (target)
-            //{
-            //    case CustomBoxCollider box:
-            //        if (capsuleCollider.CheckCollisionWithBox(box) == true)
-            //        {
-            //            Debug.Log("Boxにぶつかりました");
-            //        }
-            //        break;
-            //    case CustomCapsuleCollider capsule:
-            //        if (capsuleCollider.CheckCollisionWithCapsule(capsule) == true)
-            //        {
-            //            Debug.Log("Capsuleにぶつかりました");
-            //        }
-            //        break;
-            //    case CustomSphereCollider sphere:
-            //        if (capsuleCollider.CheckCollisionWithSphere(sphere) == true)
-            //        {
-            //            Debug.Log("Sphereにぶつかりました");
-            //        }
-            //        break;
-            //    default:
-            //        Debug.Log("予想外の形が入っています。");
-            //        break;
-            //}
-            if (capsuleCollider.CheckCollisionWithBox(target))
+            if (capsuleCollider.CheckCollisionWithCube(target))
             {
                 Debug.Log("Playerから呼び出しました");
             }
