@@ -11,9 +11,19 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
     private float radius = 0.5f;
     public float GetRadius { get { return radius; } }
 
-    public Vector3 GetWorldCenter { get { return sphereTransform.position + center; } }
+    public Vector3 GetWorldCenter { get { return sphereTransform + center; } }
 
-    private Transform sphereTransform;
+    private Vector3 sphereTransform;
+    // sphere‚ÌˆÊ’u‚ð“ü‚ê‚é
+
+    void Start()
+    {
+        SetPosition();
+    }
+    public void SetPosition()
+    {
+        sphereTransform = this.transform.position;
+    }
     public bool CheckCollisionWithSphere(ISphere sphere)
     {
         var collideDistance = GetRadius + sphere.GetRadius;
