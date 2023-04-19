@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
@@ -23,17 +24,30 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
 
     [SerializeField]
     private Vector3 size = Vector3.one;
-    public Vector2 GetSize { get { return size; } }
+    public Vector3 GetSize { get { return size; } }
 
     private Transform cubeTransform;
 
     private void Awake()
     {
         cubeTransform = transform;
+        SetCenter(this.transform.position);
     }
-    public bool CheckCollisionWithCube(ICube t)
+    public bool CheckCollisionWithCube(ICube cube)
     {
-        throw new System.NotImplementedException();
+        Vector3 v3SubAbs = this.GetCenter - cube.GetCenter;
+        v3SubAbs = new Vector3(Mathf.Abs(v3SubAbs.x), Mathf.Abs(v3SubAbs.y), Mathf.Abs(v3SubAbs.z));
+        Vector3 v3AddScale = (this.GetSize + cube.GetSize) / 2.0f;
+        if ((v3SubAbs.x < v3AddScale.x) &&
+            (v3SubAbs.y < v3AddScale.y) &&
+            (v3SubAbs.z < v3AddScale.z))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool CheckCollisionWithSphere(ISphere sphere)
@@ -74,5 +88,6 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     {
         throw new System.NotImplementedException();
     }
+
 }
 

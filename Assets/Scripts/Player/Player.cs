@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     List<ICube> cubeTargetsList;
     List<ISphere> sphereTargetsList;
     CustomCapsuleCollider capsuleCollider;
-    //CustomCubeCollider cubeCollider;
+    CustomCubeCollider cubeCollider;
 
     Vector3 endPos;
     Vector3 previousPos, currentPos;
@@ -34,19 +34,20 @@ public class Player : MonoBehaviour
         cubeTargetsList = GameManager.Instance.GetCubeList;
         sphereTargetsList = GameManager.Instance.GetSphereList;
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
-        //cubeCollider = gameObject.GetComponent<CustomCubeCollider>();
+        cubeCollider = gameObject.GetComponent<CustomCubeCollider>();
     }
 
     private void FixedUpdate()
     {
         //Debug.Log(cubeTargetsList);
-        //foreach (ICube target in cubeTargetsList)
-        //{
-        //    if (capsuleCollider.CheckCollisionWithCube(target))
-        //    {
-        //        Debug.Log("Playerから呼び出しました");
-        //    }
-        //}
+        foreach (ICube target in cubeTargetsList)
+        {
+            if (cubeCollider.CheckCollisionWithCube(target))
+            {
+                Debug.Log("cube と　cubeが接触しました");
+                ClimbOnCube(target);
+            }
+        }
         foreach (ISphere target in sphereTargetsList)
         {
             if (capsuleCollider.CheckCollisionWithSphere(target))
@@ -61,6 +62,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         SetCapsulePosition();
+        SetCubePosition();
         // プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
@@ -124,6 +126,17 @@ public class Player : MonoBehaviour
     public void SetCapsulePosition()
     {
         capsuleCollider.SetCenter(this.transform.position);
+    }
+
+    public void SetCubePosition()
+    {
+        cubeCollider.SetCenter(this.transform.position);
+    }
+
+    private void ClimbOnCube(ICube cube)
+    {
+        //this.transform.position += new Vector3(0,5f,0);
+        this.transform.position = cube.GetCenter + new Vector3(0, 0.5f, 0);
     }
 }
 

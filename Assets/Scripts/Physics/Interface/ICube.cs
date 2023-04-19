@@ -7,5 +7,5 @@ public interface ICube
     //Vector3 GetAndSetCenter { get; set; }
     Vector3 GetCenter { get; }
     void SetCenter(Vector3 center);
-    Vector2 GetSize { get ;}
+    Vector3 GetSize { get ;}
 }

@@ -6,7 +6,7 @@ public class Gravity : MonoBehaviour
 {
     public float gravity = -9.81f; // 重力の大きさ
     public float groundHeight = 0f; // 地面の高さ
-    public float groundCheckThreshold = 0.1f; // 接地判定の閾値
+    public float groundCheckThreshold = 0.01f; // 接地判定の閾値
 
     private Vector3 velocity; // 速度
     private bool isGrounded; // 接地しているかどうか
@@ -14,7 +14,8 @@ public class Gravity : MonoBehaviour
     void Update()
     {
         // 接地判定
-        isGrounded = transform.position.y <= groundHeight + groundCheckThreshold;
+        isGrounded = transform.position.y <= groundHeight + groundCheckThreshold && velocity.y <= 0;
+        Debug.Log(isGrounded);
     }
 
     void FixedUpdate()
