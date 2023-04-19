@@ -20,7 +20,8 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
     [SerializeField]
     private Vector3 center;
-    public Vector3 GetCenter { get { return center; } }
+    public Vector3 GetCenter() { return center; }
+    public void SetCenter(Vector3 value) { center = value; }
 
     [SerializeField]
     private Direction direction = Direction.YAxis;

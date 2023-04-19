@@ -16,8 +16,10 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
 
     [SerializeField]
     private Vector3 center = Vector3.zero;
-    public Vector3 GetAndSetCenter { get { return center; } set { center = value; } }  
-    //public void SetCenter(Vector3 value) { center = value; }
+    //public Vector3 GetAndSetCenter { get { return center; } set { center = value; } }  
+    public Vector3 GetCenter { get { return center; } }
+
+    public void SetCenter(Vector3 value) { center = value; }
 
     [SerializeField]
     private Vector3 size = Vector3.one;

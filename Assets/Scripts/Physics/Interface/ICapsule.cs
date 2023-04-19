@@ -23,7 +23,8 @@ public interface ICapsule
     /// <summary>
     /// 中心のローカル座標
     /// </summary>
-    public Vector3 GetCenter { get; }
+    public Vector3 GetCenter();
+    public void SetCenter(Vector3 center);
 
     //public void SetCenter(Vector3 value);
     /// <summary>

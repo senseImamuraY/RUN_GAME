@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     List<ICube> cubeTargetsList;
     List<ISphere> sphereTargetsList;
     CustomCapsuleCollider capsuleCollider;
-    CustomCubeCollider cubeCollider;
+    //CustomCubeCollider cubeCollider;
 
     Vector3 endPos;
     Vector3 previousPos, currentPos;
@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(cubeTargetsList);
+        //Debug.Log(cubeTargetsList);
         //foreach (ICube target in cubeTargetsList)
         //{
         //    if (capsuleCollider.CheckCollisionWithCube(target))
@@ -47,20 +47,20 @@ public class Player : MonoBehaviour
         //        Debug.Log("Playerから呼び出しました");
         //    }
         //}
-        //foreach (ISphere target in sphereTargetsList)
-        //{
-        //    if (cubeCollider.CheckCollisionWithSphere(target))
-        //    {
-        //        Debug.Log("Sphereと衝突しました。");
-        //    }
-        //}
+        foreach (ISphere target in sphereTargetsList)
+        {
+            if (capsuleCollider.CheckCollisionWithSphere(target))
+            {
+                Debug.Log("Sphereと衝突しました。");
+            }
+        }
 
     }
     // setterを使ってプレイヤーの位置をコライダーに伝える
 
     void Update()
     {
-        SetCubePosition();
+        SetCapsulePosition();
         // プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
@@ -121,9 +121,9 @@ public class Player : MonoBehaviour
         GameManager.status = GameManager.GAME_STATUS.GameOver;
     }
 
-    public void SetCubePosition()
+    public void SetCapsulePosition()
     {
-        cubeCollider.GetAndSetCenter = this.transform.position;
+        capsuleCollider.SetCenter(this.transform.position);
     }
 }
 
