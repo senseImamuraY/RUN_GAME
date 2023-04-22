@@ -27,11 +27,13 @@ public class GameManager : MonoBehaviour
     private List<ISphere> sphereList = new List<ISphere>();
     private List<ICube> cubeList = new List<ICube>();
     private List<ICapsule> capsuleList = new List<ICapsule>();
+    private List<IPlane> planeList = new List<IPlane>();
 
     public List<ISphere> GetSphereList { get { return sphereList; } }
     public List<ICube> GetCubeList { get { return cubeList; } }
     public List<ICapsule> GetCapsuleList { get { return capsuleList; } }
 
+    public List<IPlane> GetLaneList { get { return planeList; } }
     int stageCoinNum;
 
     const string STAGE_NAME_PREFIX = "Stage";
@@ -98,6 +100,11 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("CapsuleÇ…í«â¡Ç≥ÇÍÇ‹ÇµÇΩÅB");
                 capsuleList.Add(target.GetComponent<ICapsule>());
+            }
+            else if (target.GetComponent<IPlane>() != null)
+            {
+                Debug.Log("PlaneÇ…í«â¡Ç≥ÇÍÇ‹ÇµÇΩÅB");
+                planeList.Add(target.GetComponent<IPlane>());
             }
             else
             {

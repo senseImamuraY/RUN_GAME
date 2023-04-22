@@ -39,4 +39,9 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
     {
         throw new System.NotImplementedException();
     }
+
+    public bool CheckCollisionWithPlane(IPlane plane)
+    {
+        throw new System.NotImplementedException();
+    }
 }

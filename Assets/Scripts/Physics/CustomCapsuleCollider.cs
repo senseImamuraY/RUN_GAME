@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -30,12 +31,15 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     private float height = 2.0f;
     public float GetHeight { get { return height; } }
 
-    private Vector3 capsulePosition;
+    //private Vector3 capsulePosition;
+    private Vector3 capsuleBottom;
+
+    float X, Y, Z;
     // Start is called before the first frame update
     void Start()
     {
         radius = 0.5f;
-        capsulePosition = transform.position;
+        //capsulePosition= transform.position;
     }
 
     // Update is called once per frame
@@ -121,5 +125,93 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         }
 
         return sqrDistance - (sphere.GetRadius + radius) * (sphere.GetRadius + radius) <= 0;
+    }
+
+    public bool CheckCollisionWithPlane(IPlane plane)
+    {
+        // 平面上の点からカプセルの最低点までの距離は
+        // 平面の法線ベクトルと平面からカプセルの最低点へのベクトルの内積
+        // をとることで求められるという性質を利用
+        //capsuleBottom = center - new Vector3(0.0f, -(height / 2.0f), 0.0f);
+        Vector3 normal = plane.GetNormal();
+        // 法線ベクトルの成分が0の場合、0で割ることになるので、
+        // それを回避するために値を代入
+        if (normal.x < 0.01f)
+        {
+            X = 0.01f;
+        }
+        else
+        {
+            X = normal.x;
+        }
+        if (normal.y < 0.01f)
+        {
+            Y = 0.01f;
+        }
+        else
+        {
+            Y = normal.y;
+        }
+        if (normal.z < 0.01f)
+        {
+            Z = 0.01f;
+        }
+        else
+        {
+            Z = normal.z;
+        }
+        // 平面の方程式のdを求める
+        float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
+        //Debug.Log("normal = " + normal);
+        // 平面上の点は候補が無数に存在するが、
+        // (-d/3a, -d/3b, -d/3c)が確実に平面上に存在するため
+        // これを平面上の点とする
+        Vector3 planePoint = new Vector3(-d / (3 * X), -d / (3 * Y), -d / (3 * Z));
+
+        Vector3 VectorPlaneToCapsuleBottom = (capsuleBottom) - planePoint;
+        float minimumDistance = Vector3.Dot(normal, VectorPlaneToCapsuleBottom);
+        Debug.Log("miniDistance = " + minimumDistance);
+        if (IsInRange(plane) == false) return false;
+        //Debug.Log("capsuleBottom = " + capsuleBottom);
+
+        if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
+        {
+            Debug.Log("平面上に立っています");
+            return true;
+        }
+        else 
+        {
+            Debug.Log("空中かオブジェクト上にいます");
+            return false;
+        }
+        //float dist = Vector3.Dot(plane.GetNormal, capsuleBottom - plane.GetPoint);
+    }
+
+    bool IsInRange(IPlane plane)
+    {
+        Vector3 planeCenter = plane.GetCenter();
+        float planeXSize = plane.GetXSize;
+        float planeZSize = plane.GetZSize;
+
+        if ((this.center.x >= (planeCenter.x + planeXSize)) || (this.center.x <= (planeCenter.x - planeXSize)))
+        {
+            return false;
+        }
+        if ((this.center.z >= (planeCenter.z + planeZSize)) || (this.center.z <= (planeCenter.z - planeZSize)))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    //public static bool operator <=(Vector3 v, float f)
+    //{
+    //    return v.x <= f;
+    //}
+    public void SetCapsuleBottom()
+    {
+        capsuleBottom = center - new Vector3(0.0f, (height / 2.0f), 0.0f);
     }
 }

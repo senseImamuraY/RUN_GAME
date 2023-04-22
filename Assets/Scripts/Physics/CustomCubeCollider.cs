@@ -14,6 +14,14 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     //public float GetHeight { get { return height; } }
     //public float GetHalfWidth { get { return width * 0.5f; } }
     //public float GetHalfHeight { get { return height * 0.5f; } }
+    [SerializeField]
+    private bool isGround = false;
+    public bool IsGround { get { return isGround; } }
+
+    private bool isColliding = false;
+    public bool GetIsColliding { get { return isColliding; } }
+
+    public void SetColliding(bool value) { isColliding = value; }
 
     [SerializeField]
     private Vector3 center = Vector3.zero;
@@ -35,6 +43,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     }
     public bool CheckCollisionWithCube(ICube cube)
     {
+        //Debug.Log("isColliding = " + isColliding);
         Vector3 v3SubAbs = this.GetCenter - cube.GetCenter;
         v3SubAbs = new Vector3(Mathf.Abs(v3SubAbs.x), Mathf.Abs(v3SubAbs.y), Mathf.Abs(v3SubAbs.z));
         Vector3 v3AddScale = (this.GetSize + cube.GetSize) / 2.0f;
@@ -42,10 +51,12 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
             (v3SubAbs.y < v3AddScale.y) &&
             (v3SubAbs.z < v3AddScale.z))
         {
+            cube.SetColliding(true);
             return true;
         }
         else
         {
+            cube.SetColliding(false);
             return false;
         }
     }
@@ -89,5 +100,9 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         throw new System.NotImplementedException();
     }
 
+    public bool CheckCollisionWithPlane(IPlane plane)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

@@ -13,8 +13,10 @@ public class Player : MonoBehaviour
     Animator animator;
     List<ICube> cubeTargetsList;
     List<ISphere> sphereTargetsList;
+    List<IPlane> planeTargetsList;
+
     CustomCapsuleCollider capsuleCollider;
-    CustomCubeCollider cubeCollider;
+    //CustomCubeCollider cubeCollider;
 
     Vector3 endPos;
     Vector3 previousPos, currentPos;
@@ -33,19 +35,22 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         cubeTargetsList = GameManager.Instance.GetCubeList;
         sphereTargetsList = GameManager.Instance.GetSphereList;
+        planeTargetsList = GameManager.Instance.GetLaneList;
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
-        cubeCollider = gameObject.GetComponent<CustomCubeCollider>();
+        //cubeCollider = gameObject.GetComponent<CustomCubeCollider>();
     }
 
     private void FixedUpdate()
     {
         //Debug.Log(cubeTargetsList);
-        foreach (ICube target in cubeTargetsList)
+        foreach (IPlane target in planeTargetsList)
         {
-            if (cubeCollider.CheckCollisionWithCube(target))
+            if (capsuleCollider.CheckCollisionWithPlane(target))
             {
-                Debug.Log("cube と　cubeが接触しました");
-                ClimbOnCube(target);
+                //target.SetColliding(true);
+                //Debug.Log("isColliding = " + target.GetIsColliding);
+
+                Debug.Log("Planeと衝突しました");
             }
         }
         foreach (ISphere target in sphereTargetsList)
@@ -62,7 +67,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         SetCapsulePosition();
-        SetCubePosition();
+        //SetCubePosition();
         // プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
@@ -125,18 +130,28 @@ public class Player : MonoBehaviour
 
     public void SetCapsulePosition()
     {
-        capsuleCollider.SetCenter(this.transform.position);
+        capsuleCollider.SetCenter(this.transform.position + new Vector3(0 , 1f, 0));
+        capsuleCollider.SetCapsuleBottom();
     }
 
-    public void SetCubePosition()
-    {
-        cubeCollider.SetCenter(this.transform.position);
-    }
+    //public void SetCubePosition()
+    //{
+    //    cubeCollider.SetCenter(this.transform.position);
+    //}
 
     private void ClimbOnCube(ICube cube)
     {
         //this.transform.position += new Vector3(0,5f,0);
         this.transform.position = cube.GetCenter + new Vector3(0, 0.5f, 0);
+    }
+
+    public delegate void ClimbOnObjectHandler(ICube collider);
+    public event ClimbOnObjectHandler ClimbOnObject;
+
+    private void ClimbOnObjectEnter(ICube collider)
+    {
+        //Debug.Log("isColliding + = " + collider.GetIsColliding);
+        ClimbOnObject(collider);
     }
 }
 

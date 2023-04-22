@@ -11,5 +11,7 @@ public interface ICollider
     bool CheckCollisionWithSphere(ISphere target);
 
     bool CheckCollisionWithCapsule(ICapsule target);
+
+    bool CheckCollisionWithPlane(IPlane target);
 }
 
