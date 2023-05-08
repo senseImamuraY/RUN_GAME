@@ -170,14 +170,18 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         Vector3 VectorPlaneToCapsuleBottom = (capsuleBottom) - planePoint;
         float minimumDistance = Vector3.Dot(normal, VectorPlaneToCapsuleBottom);
+        // minimumDistance‚Ì’l‚ª‚»‚Ì‚Ü‚Ü‚Å‚Í‘å‚«‚·‚¬‚é‚Ì‚ÅA‚PM‚ÅŠ„‚Á‚Ä’l‚ð’²®
+        minimumDistance = minimumDistance * 0.0000001f;
         Debug.Log("miniDistance = " + minimumDistance);
         if (IsInRange(plane) == false) return false;
         //Debug.Log("capsuleBottom = " + capsuleBottom);
 
+        //if (minimumDistance >= 0.1f)
         if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
         {
             Debug.Log("•½–Êã‚É—§‚Á‚Ä‚¢‚Ü‚·");
             return true;
+
         }
         else 
         {

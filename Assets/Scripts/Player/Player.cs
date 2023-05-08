@@ -16,10 +16,12 @@ public class Player : MonoBehaviour
     List<IPlane> planeTargetsList;
 
     CustomCapsuleCollider capsuleCollider;
+    Gravity gravity;
     //CustomCubeCollider cubeCollider;
 
     Vector3 endPos;
     Vector3 previousPos, currentPos;
+
 
     public bool isRunning;
     public float sensitivity = 1f;
@@ -29,6 +31,8 @@ public class Player : MonoBehaviour
     float speed = 20f;
     float moveDistance;
     private bool isJump = false;
+    private float jumpPower = 10f;
+    private bool onFloor;
 
     void Start()
     {
@@ -37,22 +41,38 @@ public class Player : MonoBehaviour
         sphereTargetsList = GameManager.Instance.GetSphereList;
         planeTargetsList = GameManager.Instance.GetLaneList;
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
-        //cubeCollider = gameObject.GetComponent<CustomCubeCollider>();
+        gravity = gameObject.GetComponent<Gravity>();
     }
 
     private void FixedUpdate()
     {
         //Debug.Log(cubeTargetsList);
+        onFloor = false;
         foreach (IPlane target in planeTargetsList)
         {
             if (capsuleCollider.CheckCollisionWithPlane(target))
             {
                 //target.SetColliding(true);
                 //Debug.Log("isColliding = " + target.GetIsColliding);
-
-                Debug.Log("Planeと衝突しました");
+                onFloor = true;
+                //Debug.Log("Planeと衝突しました");
+                //gravity.SetIsGravity(true);
+            }
+            else
+            {
+                //gravity.SetIsGravity(false);
             }
         }
+        if (onFloor)
+        {
+            Debug.Log("Planeと衝突しました");
+            gravity.SetIsGravity(true);
+        }
+        else
+        {
+            gravity.SetIsGravity(false);
+        }
+
         foreach (ISphere target in sphereTargetsList)
         {
             if (capsuleCollider.CheckCollisionWithSphere(target))
@@ -94,7 +114,7 @@ public class Player : MonoBehaviour
             float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
             //transform.localPosition = new Vector3(newX, 0, 0);
             moveDistance += speed * Time.deltaTime;
-            transform.position = new Vector3(newX, 0, moveDistance);
+            transform.position = new Vector3(newX, transform.position.y, moveDistance);
             // タップ位置を更新
             previousPos = currentPos;
         }
@@ -111,6 +131,7 @@ public class Player : MonoBehaviour
             if (isJump && animator.GetBool("IsGround"))
             {
                 animator.SetTrigger("IsJumping");
+                gravity.SetVelocity(jumpPower);
             }
 
         }

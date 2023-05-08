@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 
 public class Gravity : MonoBehaviour
@@ -7,8 +8,8 @@ public class Gravity : MonoBehaviour
     public float gravity = -9.81f; // 重力の大きさ
     public float groundHeight = 0f; // 地面の高さ
     public float groundCheckThreshold = 0.1f; // 接地判定の閾値
+    public Vector3 velocity; // 速度
 
-    private Vector3 velocity; // 速度
     private bool isGrounded; // 接地しているかどうか
     private bool OnObject;
     private bool isColliding;
@@ -27,10 +28,20 @@ public class Gravity : MonoBehaviour
         player.ClimbOnObject -= OnSubjectCollision;
     }
 
+    public void SetVelocity(float newVelocity)
+    {
+        velocity.y += newVelocity;
+    }
+
+    public void SetIsGravity(bool value)
+    {
+        isGrounded = value;
+    }
+
     void Update()
     {
         // 接地判定
-        isGrounded = transform.position.y <= groundHeight + groundCheckThreshold ;
+        //isGrounded = transform.position.y <= groundHeight + groundCheckThreshold ;
         Debug.Log(isGrounded);
     }
 
@@ -56,6 +67,7 @@ public class Gravity : MonoBehaviour
             velocity.y += gravity * Time.fixedDeltaTime;
         }
 
+        
         // 速度を使ってオブジェクトを移動
         transform.position += velocity * Time.fixedDeltaTime;
     }
@@ -76,5 +88,10 @@ public class Gravity : MonoBehaviour
         }
         Debug.Log("isColliding = "+isColliding);
         Debug.Log("onObject = " + OnObject);
+    }
+
+    public bool SetIsGrounded(bool value)
+    {
+        return isGrounded = value;
     }
 }

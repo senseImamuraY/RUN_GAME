@@ -234,8 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba2b316e7e5a9144ca5b0d69e599b721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSize: 50
-  zSize: 100
+  xSize: 5
+  zSize: 50
 --- !u!1 &315876161
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 315876165}
   - component: {fileID: 315876164}
   - component: {fileID: 315876163}
-  - component: {fileID: 315876162}
+  - component: {fileID: 315876167}
   m_Layer: 0
   m_Name: Plane (1)
   m_TagString: Ground
@@ -256,21 +256,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &315876162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 315876161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebb024f7bd0cee34dbe5f2720364538f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGround: 1
-  center: {x: 0, y: 0, z: 110}
-  size: {x: 1, y: 1, z: 10}
 --- !u!64 &315876163
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -350,6 +335,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &315876167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315876161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2b316e7e5a9144ca5b0d69e599b721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xSize: 5
+  zSize: 50
 --- !u!1 &320272885 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3252721490479082832, guid: d8a0af34463586b448ead9aa0e1b52a2,
@@ -872,6 +871,7 @@ MonoBehaviour:
   gravity: -9.81
   groundHeight: 0
   groundCheckThreshold: 0.1
+  velocity: {x: 0, y: 0, z: 0}
   player: {fileID: 0}
 --- !u!114 &748078244
 MonoBehaviour:
@@ -885,7 +885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44782f0f7f8915e4c8594a1dd7cb70df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: 0, y: 0, z: 0}
+  center: {x: 0, y: 1, z: 0}
   direction: 1
   height: 2
 --- !u!1 &1152105922 stripped
@@ -1068,7 +1068,7 @@ GameObject:
   - component: {fileID: 1404400907}
   - component: {fileID: 1404400906}
   - component: {fileID: 1404400905}
-  - component: {fileID: 1404400904}
+  - component: {fileID: 1404400909}
   m_Layer: 0
   m_Name: Plane (2)
   m_TagString: Ground
@@ -1076,21 +1076,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1404400904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404400903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebb024f7bd0cee34dbe5f2720364538f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGround: 1
-  center: {x: 0, y: 0, z: 220}
-  size: {x: 1, y: 1, z: 10}
 --- !u!64 &1404400905
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1170,6 +1155,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1404400909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404400903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2b316e7e5a9144ca5b0d69e599b721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xSize: 5
+  zSize: 50
 --- !u!1 &1541298015
 GameObject:
   m_ObjectHideFlags: 0
