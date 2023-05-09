@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Unity.Burst.Intrinsics.X86.Avx;
+using static UnityEngine.Rendering.DebugUI;
 
 public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 {
@@ -20,7 +22,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     public float GetRadius { get { return radius; } }
 
     [SerializeField]
-    private Vector3 center;
+    private Vector3 prevCenter,center;
     public Vector3 GetCenter() { return center; }
     public void SetCenter(Vector3 value) { center = value; }
 
@@ -32,9 +34,10 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     public float GetHeight { get { return height; } }
 
     private Player player;
-
+    private float prevY;
     //private Vector3 capsulePosition;
     private Vector3 capsuleBottom;
+
 
     float X, Y, Z;
     // Start is called before the first frame update
@@ -163,11 +166,34 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         {
             Z = normal.z;
         }
+        normal.y = Mathf.Round(normal.y * 100000) / 100000;
         // 平面の方程式のdを求める
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         float planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
-        //Debug.Log("planeY = " + planeY);
+        if (Mathf.Abs(prevY - planeY) <= 0.1)
+        {
+            planeY = prevY;
+        }
+        else if(prevY > planeY)
+        {
+            float descentSpeed = 10f;
 
+            // 時間経過に応じた下降速度を計算
+            Vector3 descentVelocity = normal * descentSpeed * Time.deltaTime;
+            Debug.Log("descentVelocity = " + descentVelocity);
+            // プレイヤーの新しい位置を計算
+            prevY = prevY + descentVelocity.y;
+
+            // プレイヤーを新しい位置に移動させる
+            planeY = prevY;
+            planeY = Mathf.Round(planeY * 10f) / 10f;
+
+        }
+        else
+        {
+            planeY = Mathf.Round(planeY * 10f) / 10f;
+        }
+        
         //Debug.Log("normal = " + normal);
         // 平面上の点は候補が無数に存在するが、
         // (-d/3a, -d/3b, -d/3c)が確実に平面上に存在するため
@@ -177,18 +203,19 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         Vector3 VectorPlaneToCapsuleBottom = (capsuleBottom) - planePoint;
         //Debug.Log("VectorPlaneToCapsuleBottom.y = " + VectorPlaneToCapsuleBottom.y);
         float minimumDistance = Vector3.Dot(normal, VectorPlaneToCapsuleBottom);
-        // minimumDistanceの値がそのままでは大きすぎるので、１Mで割って値を調整
+        // minimumDistanceの値がそのままでは大きすぎるので、割って値を調整
         minimumDistance = minimumDistance * 0.0000001f;
         //Debug.Log("miniDistance = " + minimumDistance);
 
         // Capsule(Player)が床の範囲内にいるかどうかを確認。いない場合returnする。
         if (IsInRange(plane) == false) return false;
 
-        if (minimumDistance <= 0f)
+        if (minimumDistance <= 1f)
             //if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
             //if (minimumDistance >= -0.1f && minimumDistance <= 1f)
         {
             player.setPlayerPosition(planeY);
+            prevY = planeY;
             Debug.Log("平面上に立っています");
             return true;
             
@@ -223,6 +250,12 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     
     public void SetCapsuleBottom()
     {
+        if (Mathf.Abs(prevCenter.y - center.y) <= 0.1)
+        {
+            center = (prevCenter + center) / 2;
+        }
+        center.y = Mathf.Round(center.y * 10f) / 10f;
         capsuleBottom = center - new Vector3(0.0f, (height / 2.0f), 0.0f);
+        prevCenter = center;
     }
 }

@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
-    public float gravity = -9.81f; // 重力の大きさ
+    public float gravity = -19.81f; // 重力の大きさ
+    //public float gravity = -9.81f; // 重力の大きさ
     public float groundHeight = 0f; // 地面の高さ
     public float groundCheckThreshold = 0.1f; // 接地判定の閾値
     public Vector3 velocity = new Vector3(0 ,0, 0); // 速度
+    private Vector3 prevVelocity = new Vector3 (0 ,0 ,0);
 
     private bool isGrounded; // 接地しているかどうか
     private bool OnObject;
@@ -47,6 +49,7 @@ public class Gravity : MonoBehaviour
 
     void FixedUpdate()
     {
+        //if (isGrounded && velocity.y <= 0)
         if (isGrounded && velocity.y <= 0)
         {
             // 接地している場合、y方向の速度をリセット
@@ -67,8 +70,18 @@ public class Gravity : MonoBehaviour
             // 重力を適用
             velocity.y += gravity * Time.fixedDeltaTime;
         }
-
         
+        velocity.y = Mathf.Round(velocity.y * 10f) / 10f;  // myFloatの小数点第2位を切り上げる
+        if (Mathf.Abs(prevVelocity.y - velocity.y) <= 0.1)
+        {
+            velocity = (prevVelocity + velocity) / 2;
+        }
+        else
+        {
+            prevVelocity = velocity;
+        }
+
+        //Debug.Log("velocity.y = " + velocity.y);
         // 速度を使ってオブジェクトを移動
         transform.position += velocity * Time.fixedDeltaTime;
     }

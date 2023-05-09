@@ -22,7 +22,8 @@ public class Player : MonoBehaviour
     Vector3 endPos;
     Vector3 previousPos, currentPos;
 
-    Vector3 playerPosition;
+    Vector3 prevPlayerPosition,playerPosition;
+
     public bool isRunning;
     public float sensitivity = 1f;
 
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour
     {
         
         onFloor = false;
-
+        SetCapsulePosition();
         // 床と衝突しているか確認
         foreach (IPlane target in planeTargetsList)
         {
@@ -86,7 +87,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         //this.transform.position = new Vector3(transform.position.x, playerPosition.y, transform.position.z);
-        SetCapsulePosition();
+       // SetCapsulePosition();
         //SetCubePosition();
         // プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
@@ -159,14 +160,24 @@ public class Player : MonoBehaviour
 
     public void SetCapsulePosition()
     {
-        capsuleCollider.SetCenter(this.transform.position + new Vector3(0 , 1f, 0));
+        float tmp = this.transform.position.y + 1f;
+        tmp = Mathf.Round(tmp * 10f) / 10f;
+        capsuleCollider.SetCenter(new Vector3(this.transform.position.x, tmp, this.transform.position.z));
         capsuleCollider.SetCapsuleBottom();
+        //capsuleCollider.SetCenter(this.transform.position + new Vector3(0, 1f, 0));
+        //capsuleCollider.SetCapsuleBottom();
     }
 
     public void setPlayerPosition(float position)
     {
+        if (Mathf.Abs(prevPlayerPosition.y - playerPosition.y) <= 0.1)
+        {
+            playerPosition = (prevPlayerPosition + playerPosition) / 2;
+        }
         playerPosition = new Vector3(transform.position.x, position, transform.position.z);
+        playerPosition.y = Mathf.Round(playerPosition.y * 10f) / 10f;
         this.transform.position = playerPosition;
+        prevPlayerPosition = playerPosition;
     }
     //public void SetCubePosition()
     //{
