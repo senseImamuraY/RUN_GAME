@@ -31,6 +31,8 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     private float height = 2.0f;
     public float GetHeight { get { return height; } }
 
+    private Player player;
+
     //private Vector3 capsulePosition;
     private Vector3 capsuleBottom;
 
@@ -39,6 +41,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     void Start()
     {
         radius = 0.5f;
+        player = GetComponent<Player>();
         //capsulePosition= transform.position;
     }
 
@@ -129,7 +132,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
     public bool CheckCollisionWithPlane(IPlane plane)
     {
-        // 平面上の点からカプセルの最低点までの距離は
+        // 平面上の点からカプセルの最低点（一番下の頂点）までの距離は
         // 平面の法線ベクトルと平面からカプセルの最低点へのベクトルの内積
         // をとることで求められるという性質を利用
         //capsuleBottom = center - new Vector3(0.0f, -(height / 2.0f), 0.0f);
@@ -162,6 +165,9 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         }
         // 平面の方程式のdを求める
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
+        float planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
+        //Debug.Log("planeY = " + planeY);
+
         //Debug.Log("normal = " + normal);
         // 平面上の点は候補が無数に存在するが、
         // (-d/3a, -d/3b, -d/3c)が確実に平面上に存在するため
@@ -169,19 +175,23 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         Vector3 planePoint = new Vector3(-d / (3 * X), -d / (3 * Y), -d / (3 * Z));
 
         Vector3 VectorPlaneToCapsuleBottom = (capsuleBottom) - planePoint;
+        //Debug.Log("VectorPlaneToCapsuleBottom.y = " + VectorPlaneToCapsuleBottom.y);
         float minimumDistance = Vector3.Dot(normal, VectorPlaneToCapsuleBottom);
         // minimumDistanceの値がそのままでは大きすぎるので、１Mで割って値を調整
         minimumDistance = minimumDistance * 0.0000001f;
-        Debug.Log("miniDistance = " + minimumDistance);
-        if (IsInRange(plane) == false) return false;
-        //Debug.Log("capsuleBottom = " + capsuleBottom);
+        //Debug.Log("miniDistance = " + minimumDistance);
 
-        //if (minimumDistance >= 0.1f)
-        if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
+        // Capsule(Player)が床の範囲内にいるかどうかを確認。いない場合returnする。
+        if (IsInRange(plane) == false) return false;
+
+        if (minimumDistance <= 0f)
+            //if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
+            //if (minimumDistance >= -0.1f && minimumDistance <= 1f)
         {
+            player.setPlayerPosition(planeY);
             Debug.Log("平面上に立っています");
             return true;
-
+            
         }
         else 
         {
@@ -210,10 +220,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
             return true;
         }
     }
-    //public static bool operator <=(Vector3 v, float f)
-    //{
-    //    return v.x <= f;
-    //}
+    
     public void SetCapsuleBottom()
     {
         capsuleBottom = center - new Vector3(0.0f, (height / 2.0f), 0.0f);

@@ -8,7 +8,7 @@ public class Gravity : MonoBehaviour
     public float gravity = -9.81f; // 重力の大きさ
     public float groundHeight = 0f; // 地面の高さ
     public float groundCheckThreshold = 0.1f; // 接地判定の閾値
-    public Vector3 velocity; // 速度
+    public Vector3 velocity = new Vector3(0 ,0, 0); // 速度
 
     private bool isGrounded; // 接地しているかどうか
     private bool OnObject;
@@ -47,12 +47,13 @@ public class Gravity : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y <= 0)
         {
             // 接地している場合、y方向の速度をリセット
             Debug.Log("重力が掛かっていません");
             velocity.y = 0f;
-            transform.position = new Vector3(transform.position.x, groundHeight, transform.position.z);
+            //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            //transform.position = new Vector3(transform.position.x, groundHeight, transform.position.z);
         }
         else if(OnObject && isColliding)
         {
@@ -90,8 +91,8 @@ public class Gravity : MonoBehaviour
         Debug.Log("onObject = " + OnObject);
     }
 
-    public bool SetIsGrounded(bool value)
-    {
-        return isGrounded = value;
-    }
+    //public bool SetIsGrounded(bool value)
+    //{
+    //    return isGrounded = value;
+    //}
 }

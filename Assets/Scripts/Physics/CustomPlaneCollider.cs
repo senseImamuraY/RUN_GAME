@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 
 public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
@@ -18,7 +19,7 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
     private float xSize = 5.0f;
     [SerializeField]
     private float zSize = 10.0f;
-
+    private Quaternion planeRotation;
     Vector3 VectorX;
     Vector3 VectorZ;
 
@@ -30,12 +31,18 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
 
     void Start()
     {
+        planeRotation = this.transform.rotation;
         center = transform.position;
-        VectorX = new Vector3(xSize, 0f, 0f);
-        VectorZ = new Vector3(0f, 0f, zSize);
+        //VectorX = new Vector3(xSize, transform.position.y, 0f);
+        //VectorZ = new Vector3(0f, transform.position.y, zSize);
+        VectorX = transform.TransformVector(new Vector3(xSize, transform.position.y, 0f));
+        VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));
     }
 
-
+    public Vector3 getPlanePosition()
+    {
+        return this.transform.position;
+    }
     
 
     Vector3 GetVectorX()
@@ -54,6 +61,7 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
     {
         Vector3 x = GetVectorX();
         Vector3 z = GetVectorZ();
+
         return Vector3.Cross(x, z);
     }
     

@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     Vector3 endPos;
     Vector3 previousPos, currentPos;
 
-
+    Vector3 playerPosition;
     public bool isRunning;
     public float sensitivity = 1f;
 
@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     private bool isJump = false;
     private float jumpPower = 10f;
     private bool onFloor;
+    private Vector3 planePosition;
+
 
     void Start()
     {
@@ -46,27 +48,23 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log(cubeTargetsList);
+        
         onFloor = false;
+
+        // 床と衝突しているか確認
         foreach (IPlane target in planeTargetsList)
         {
             if (capsuleCollider.CheckCollisionWithPlane(target))
             {
-                //target.SetColliding(true);
-                //Debug.Log("isColliding = " + target.GetIsColliding);
                 onFloor = true;
-                //Debug.Log("Planeと衝突しました");
-                //gravity.SetIsGravity(true);
-            }
-            else
-            {
-                //gravity.SetIsGravity(false);
+                planePosition = target.GetCenter();
             }
         }
         if (onFloor)
         {
             Debug.Log("Planeと衝突しました");
             gravity.SetIsGravity(true);
+            //isJump = false;
         }
         else
         {
@@ -80,12 +78,14 @@ public class Player : MonoBehaviour
                 Debug.Log("Sphereと衝突しました。");
             }
         }
+        Debug.Log("onFloor = " + onFloor);
 
     }
     // setterを使ってプレイヤーの位置をコライダーに伝える
 
     void Update()
     {
+        //this.transform.position = new Vector3(transform.position.x, playerPosition.y, transform.position.z);
         SetCapsulePosition();
         //SetCubePosition();
         // プレイ中以外は無効にする
@@ -114,7 +114,16 @@ public class Player : MonoBehaviour
             float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
             //transform.localPosition = new Vector3(newX, 0, 0);
             moveDistance += speed * Time.deltaTime;
-            transform.position = new Vector3(newX, transform.position.y, moveDistance);
+            if (onFloor)
+            {
+                transform.position = new Vector3(newX, playerPosition.y, moveDistance);
+            }
+            else
+            {
+                transform.position = new Vector3(newX, this.transform.position.y, moveDistance);
+            }
+            
+            
             // タップ位置を更新
             previousPos = currentPos;
         }
@@ -124,15 +133,14 @@ public class Player : MonoBehaviour
             helpUI.SetActive(true);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && onFloor)
         {
-            isJump = true;
+            //isJump = true;
             
-            if (isJump && animator.GetBool("IsGround"))
-            {
-                animator.SetTrigger("IsJumping");
-                gravity.SetVelocity(jumpPower);
-            }
+            //if (animator.GetBool("IsGround"))
+            
+            animator.SetTrigger("IsJumping");
+            gravity.SetVelocity(jumpPower);
 
         }
     }
@@ -155,6 +163,11 @@ public class Player : MonoBehaviour
         capsuleCollider.SetCapsuleBottom();
     }
 
+    public void setPlayerPosition(float position)
+    {
+        playerPosition = new Vector3(transform.position.x, position, transform.position.z);
+        this.transform.position = playerPosition;
+    }
     //public void SetCubePosition()
     //{
     //    cubeCollider.SetCenter(this.transform.position);
