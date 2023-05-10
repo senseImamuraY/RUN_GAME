@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Unity.Burst.Intrinsics.X86.Avx;
@@ -166,34 +168,48 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         {
             Z = normal.z;
         }
-        normal.y = Mathf.Round(normal.y * 100000) / 100000;
+        //normal.y = Mathf.Round(normal.y * 100000) / 100000;
         // 平面の方程式のdを求める
+
+        // 坂の傾斜角（θ）を計算
+        Vector3 up = Vector3.up;
+        float dotProduct = Vector3.Dot(normal, up);
+        dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
+        float angle = Mathf.Acos(dotProduct); // ラジアンで得られる
+        Debug.Log("angle = " + angle);
+        // tanθを計算
+        float tanTheta = Mathf.Tan(angle);
+        Debug.Log("tanTheta = " + tanTheta);
+
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         float planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
-        if (Mathf.Abs(prevY - planeY) <= 0.1)
-        {
-            planeY = prevY;
-        }
-        else if(prevY > planeY)
-        {
-            float descentSpeed = 10f;
 
-            // 時間経過に応じた下降速度を計算
-            Vector3 descentVelocity = normal * descentSpeed * Time.deltaTime;
-            Debug.Log("descentVelocity = " + descentVelocity);
-            // プレイヤーの新しい位置を計算
-            prevY = prevY + descentVelocity.y;
+        float diff = capsuleBottom.y - planeY;
 
-            // プレイヤーを新しい位置に移動させる
-            planeY = prevY;
-            planeY = Mathf.Round(planeY * 10f) / 10f;
+        //if (Mathf.Abs(prevY - planeY) <= 0.1)
+        //{
+        //    planeY = prevY;
+        //}
+        //else if(prevY > planeY)
+        //{
+        //    float descentSpeed = 10f;
 
-        }
-        else
-        {
-            planeY = Mathf.Round(planeY * 10f) / 10f;
-        }
-        
+        //    // 時間経過に応じた下降速度を計算
+        //    Vector3 descentVelocity = normal * descentSpeed * Time.deltaTime;
+        //    Debug.Log("descentVelocity = " + descentVelocity);
+        //    // プレイヤーの新しい位置を計算
+        //    prevY = prevY + descentVelocity.y;
+
+        //    // プレイヤーを新しい位置に移動させる
+        //    planeY = prevY;
+        //    planeY = Mathf.Round(planeY * 10f) / 10f;
+
+        //}
+        //else
+        //{
+        //    planeY = Mathf.Round(planeY * 10f) / 10f;
+        //}
+
         //Debug.Log("normal = " + normal);
         // 平面上の点は候補が無数に存在するが、
         // (-d/3a, -d/3b, -d/3c)が確実に平面上に存在するため
@@ -205,22 +221,40 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         float minimumDistance = Vector3.Dot(normal, VectorPlaneToCapsuleBottom);
         // minimumDistanceの値がそのままでは大きすぎるので、割って値を調整
         minimumDistance = minimumDistance * 0.0000001f;
-        //Debug.Log("miniDistance = " + minimumDistance);
+        Debug.Log("miniDistance = " + minimumDistance);
 
         // Capsule(Player)が床の範囲内にいるかどうかを確認。いない場合returnする。
         if (IsInRange(plane) == false) return false;
 
-        if (minimumDistance <= 1f)
-            //if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
-            //if (minimumDistance >= -0.1f && minimumDistance <= 1f)
+        //if (minimumDistance <= 1f)
+        //    //if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
+        //    //if (minimumDistance >= -0.1f && minimumDistance <= 1f)
+        //{
+        //    player.setPlayerPosition(planeY);
+        //    prevY = planeY;
+        //    Debug.Log("平面上に立っています");
+        //    return true;
+
+        //}
+        //else 
+        //{
+        //    Debug.Log("空中かオブジェクト上にいます");
+        //    return false;
+        //}
+        float speed = 0.05f;
+        //Debug.Log("diff = " + diff);
+        //Debug.Log("speed * tanTheta = " + speed * tanTheta);
+        if (0.0f < diff && diff < radius / 1.0f)
+        {
+            return true;
+        }
+        else if (diff <= speed * tanTheta)
         {
             player.setPlayerPosition(planeY);
-            prevY = planeY;
-            Debug.Log("平面上に立っています");
+            //Debug.Log("tanTheta = " + tanTheta);
             return true;
-            
         }
-        else 
+        else
         {
             Debug.Log("空中かオブジェクト上にいます");
             return false;
@@ -250,6 +284,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     
     public void SetCapsuleBottom()
     {
+        Debug.Log("center = " + center);
         if (Mathf.Abs(prevCenter.y - center.y) <= 0.1)
         {
             center = (prevCenter + center) / 2;

@@ -117,7 +117,8 @@ public class Player : MonoBehaviour
             moveDistance += speed * Time.deltaTime;
             if (onFloor)
             {
-                transform.position = new Vector3(newX, playerPosition.y, moveDistance);
+                transform.position = new Vector3(newX, transform.position.y, moveDistance);
+                //transform.position = new Vector3(newX, playerPosition.y, moveDistance);
             }
             else
             {
@@ -160,24 +161,26 @@ public class Player : MonoBehaviour
 
     public void SetCapsulePosition()
     {
-        float tmp = this.transform.position.y + 1f;
-        tmp = Mathf.Round(tmp * 10f) / 10f;
-        capsuleCollider.SetCenter(new Vector3(this.transform.position.x, tmp, this.transform.position.z));
-        capsuleCollider.SetCapsuleBottom();
-        //capsuleCollider.SetCenter(this.transform.position + new Vector3(0, 1f, 0));
+        //float tmp = this.transform.position.y + 1f;
+        //tmp = Mathf.Round(tmp * 10f) / 10f;
+        //capsuleCollider.SetCenter(new Vector3(this.transform.position.x, tmp, this.transform.position.z));
         //capsuleCollider.SetCapsuleBottom();
+        capsuleCollider.SetCenter(this.transform.position + new Vector3(0, 1f, 0));
+        //capsuleCollider.SetCenter(this.transform.position + new Vector3(0, 1f, 0));
+        capsuleCollider.SetCapsuleBottom();
     }
 
     public void setPlayerPosition(float position)
     {
-        if (Mathf.Abs(prevPlayerPosition.y - playerPosition.y) <= 0.1)
-        {
-            playerPosition = (prevPlayerPosition + playerPosition) / 2;
-        }
+        //if (Mathf.Abs(prevPlayerPosition.y - playerPosition.y) <= 0.1)
+        //{
+        //    playerPosition = (prevPlayerPosition + playerPosition) / 2;
+        //}
         playerPosition = new Vector3(transform.position.x, position, transform.position.z);
-        playerPosition.y = Mathf.Round(playerPosition.y * 10f) / 10f;
+        //playerPosition.y = Mathf.Round(playerPosition.y * 10f) / 10f;
         this.transform.position = playerPosition;
-        prevPlayerPosition = playerPosition;
+        //prevPlayerPosition = playerPosition;
+
     }
     //public void SetCubePosition()
     //{

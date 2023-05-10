@@ -80,7 +80,7 @@ public class Gravity : MonoBehaviour
         {
             prevVelocity = velocity;
         }
-
+        Debug.Log("velocity.y = " +  velocity.y);
         //Debug.Log("velocity.y = " + velocity.y);
         // 速度を使ってオブジェクトを移動
         transform.position += velocity * Time.fixedDeltaTime;

@@ -36,7 +36,8 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
         //VectorX = new Vector3(xSize, transform.position.y, 0f);
         //VectorZ = new Vector3(0f, transform.position.y, zSize);
         VectorX = transform.TransformVector(new Vector3(xSize, transform.position.y, 0f));
-        VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));
+        VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));        //VectorX = transform.TransformVector(new Vector3(xSize, transform.position.y, 0f));
+        //VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));
     }
 
     public Vector3 getPlanePosition()
@@ -62,7 +63,8 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
         Vector3 x = GetVectorX();
         Vector3 z = GetVectorZ();
 
-        return Vector3.Cross(x, z);
+        //return Vector3.Cross(x, z);
+        return transform.up;
     }
     
     public bool CheckCollisionWithCapsule(ICapsule capsule)

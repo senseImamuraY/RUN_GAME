@@ -216,7 +216,7 @@ Transform:
   m_GameObject: {fileID: 137523469}
   m_LocalRotation: {x: 0, y: 0, z: 0.17364816, w: 0.9848078}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xSize: 5
-  zSize: 50
+  zSize: 500
 --- !u!1 &315876161
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &315876163
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -885,6 +885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44782f0f7f8915e4c8594a1dd7cb70df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prevCenter: {x: 0, y: 0, z: 0}
   center: {x: 0, y: 1, z: 0}
   direction: 1
   height: 2
@@ -937,8 +938,6 @@ MonoBehaviour:
   - {fileID: 1361356586}
   - {fileID: 1541298015}
   - {fileID: 137523469}
-  - {fileID: 315876161}
-  - {fileID: 1404400903}
 --- !u!1 &1278903770 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3252721490665177360, guid: d8a0af34463586b448ead9aa0e1b52a2,
@@ -1077,7 +1076,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &1404400905
 MeshCollider:
   m_ObjectHideFlags: 0
