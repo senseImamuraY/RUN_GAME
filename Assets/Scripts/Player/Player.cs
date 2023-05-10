@@ -64,12 +64,12 @@ public class Player : MonoBehaviour
         if (onFloor)
         {
             Debug.Log("PlaneÇ∆è’ìÀÇµÇ‹ÇµÇΩ");
-            gravity.SetIsGravity(true);
+            gravity.SetIsGround(true);
             //isJump = false;
         }
         else
         {
-            gravity.SetIsGravity(false);
+            gravity.SetIsGround(false);
         }
 
         foreach (ISphere target in sphereTargetsList)

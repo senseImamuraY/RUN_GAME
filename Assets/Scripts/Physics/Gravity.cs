@@ -35,7 +35,13 @@ public class Gravity : MonoBehaviour
         velocity.y += newVelocity;
     }
 
-    public void SetIsGravity(bool value)
+    public void ClearVelocity()
+    {
+        velocity.y = 0;
+    }
+
+
+    public void SetIsGround(bool value)
     {
         isGrounded = value;
     }
@@ -44,7 +50,7 @@ public class Gravity : MonoBehaviour
     {
         // 接地判定
         //isGrounded = transform.position.y <= groundHeight + groundCheckThreshold ;
-        Debug.Log(isGrounded);
+        Debug.Log("isGravity = " + isGrounded);
     }
 
     void FixedUpdate()
@@ -80,7 +86,7 @@ public class Gravity : MonoBehaviour
         {
             prevVelocity = velocity;
         }
-        Debug.Log("velocity.y = " +  velocity.y);
+        //Debug.Log("velocity.y = " +  velocity.y);
         //Debug.Log("velocity.y = " + velocity.y);
         // 速度を使ってオブジェクトを移動
         transform.position += velocity * Time.fixedDeltaTime;

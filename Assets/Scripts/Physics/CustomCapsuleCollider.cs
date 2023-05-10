@@ -36,6 +36,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     public float GetHeight { get { return height; } }
 
     private Player player;
+    private Gravity gravity;
     private float prevY;
     //private Vector3 capsulePosition;
     private Vector3 capsuleBottom;
@@ -47,6 +48,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     {
         radius = 0.5f;
         player = GetComponent<Player>();
+        gravity = GetComponent<Gravity>();
         //capsulePosition= transform.position;
     }
 
@@ -137,6 +139,9 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
     public bool CheckCollisionWithPlane(IPlane plane)
     {
+        // Capsule(Player)が床の範囲内にいるかどうかを確認。いない場合returnする。
+        if (IsInRange(plane) == false) return false;
+
         // 平面上の点からカプセルの最低点（一番下の頂点）までの距離は
         // 平面の法線ベクトルと平面からカプセルの最低点へのベクトルの内積
         // をとることで求められるという性質を利用
@@ -221,10 +226,9 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         float minimumDistance = Vector3.Dot(normal, VectorPlaneToCapsuleBottom);
         // minimumDistanceの値がそのままでは大きすぎるので、割って値を調整
         minimumDistance = minimumDistance * 0.0000001f;
-        Debug.Log("miniDistance = " + minimumDistance);
+        //Debug.Log("miniDistance = " + minimumDistance);
 
-        // Capsule(Player)が床の範囲内にいるかどうかを確認。いない場合returnする。
-        if (IsInRange(plane) == false) return false;
+
 
         //if (minimumDistance <= 1f)
         //    //if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
@@ -256,6 +260,8 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         }
         else
         {
+            gravity.SetIsGround(false);
+            //gravity.ClearVelocity();
             Debug.Log("空中かオブジェクト上にいます");
             return false;
         }
@@ -278,13 +284,14 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         }
         else
         {
+
             return true;
         }
     }
     
     public void SetCapsuleBottom()
     {
-        Debug.Log("center = " + center);
+        //Debug.Log("center = " + center);
         if (Mathf.Abs(prevCenter.y - center.y) <= 0.1)
         {
             center = (prevCenter + center) / 2;
