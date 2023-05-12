@@ -34,6 +34,8 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     [SerializeField]
     private float height = 2.0f;
     public float GetHeight { get { return height; } }
+    public float GetPlaneY () { return planeY; }
+    private float planeY;
 
     private Player player;
     private Gravity gravity;
@@ -178,8 +180,10 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         // 坂の傾斜角（θ）を計算
         Vector3 up = Vector3.up;
+        //Vector3 up = Vector3.up;
+        // normalとupはどちらも正規化されて計算されるのでcosθの値を得ることができる
         float dotProduct = Vector3.Dot(normal, up);
-        dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
+        //dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
         float angle = Mathf.Acos(dotProduct); // ラジアンで得られる
         Debug.Log("angle = " + angle);
         // tanθを計算
@@ -187,10 +191,10 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         Debug.Log("tanTheta = " + tanTheta);
 
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
-        float planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
-
+        planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
+        
         float diff = capsuleBottom.y - planeY;
-
+        //Debug.Log("diff = " + diff);
         //if (Mathf.Abs(prevY - planeY) <= 0.1)
         //{
         //    planeY = prevY;
@@ -250,18 +254,27 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //Debug.Log("speed * tanTheta = " + speed * tanTheta);
         if (0.0f < diff && diff < radius / 1.0f)
         {
+            Debug.Log("ぶれ対策");
             return true;
         }
         else if (diff <= speed * tanTheta)
         {
-            player.setPlayerPosition(planeY);
+            Debug.Log("CollisionでplaneYを設定　= " + planeY);
+            //player.setPlayerPosition(planeY);
+            
             //Debug.Log("tanTheta = " + tanTheta);
             return true;
         }
         else
         {
-            gravity.SetIsGround(false);
+            //gravity.SetIsGround(false);
             //gravity.ClearVelocity();
+            //if (capsuleBottom.y <= planeY) 
+            //{
+            //    capsuleBottom.y = planeY;
+
+            //}
+            //if ()
             Debug.Log("空中かオブジェクト上にいます");
             return false;
         }

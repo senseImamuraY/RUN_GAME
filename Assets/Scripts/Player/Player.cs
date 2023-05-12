@@ -1,9 +1,12 @@
 using PathCreation;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
+
 
 public class Player : MonoBehaviour
 {
@@ -32,10 +35,12 @@ public class Player : MonoBehaviour
     float speed = 20f;
     float moveDistance;
     private bool isJump = false;
+    [SerializeField]
     private float jumpPower = 10f;
     private bool onFloor;
-    private Vector3 planePosition;
+    private Vector3 planeNormal;
 
+    float prevPlaneY = 0;
 
     void Start()
     {
@@ -58,7 +63,7 @@ public class Player : MonoBehaviour
             if (capsuleCollider.CheckCollisionWithPlane(target))
             {
                 onFloor = true;
-                planePosition = target.GetCenter();
+                planeNormal = target.GetNormal();
             }
         }
         if (onFloor)
@@ -80,14 +85,8 @@ public class Player : MonoBehaviour
             }
         }
         Debug.Log("onFloor = " + onFloor);
-
-    }
-    // setterを使ってプレイヤーの位置をコライダーに伝える
-
-    void Update()
-    {
         //this.transform.position = new Vector3(transform.position.x, playerPosition.y, transform.position.z);
-       // SetCapsulePosition();
+        // SetCapsulePosition();
         //SetCubePosition();
         // プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
@@ -100,32 +99,91 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             previousPos = Input.mousePosition;
+            prevPlayerPosition = this.transform.position;
         }
 
         if (Input.GetMouseButton(0))
         {
+
             animator.SetBool("IsRunning", true);
             helpUI.SetActive(false);
             // スワイプによる移動距離を取得
             currentPos = Input.mousePosition;
             float diffDistance = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
-            diffDistance *= sensitivity;
+            //Debug.Log($"{diffDistance}");
+            //if(diffDistance > 6)
+            //{
+            //    Debug.Log("いっぱい移動しました。");
+            //}
 
+            diffDistance *= sensitivity;
+            Debug.Log("diffDistance = "+ diffDistance);
             // 次のローカルx座標を設定 ※道の外にでないように
             float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
             //transform.localPosition = new Vector3(newX, 0, 0);
+
             moveDistance += speed * Time.deltaTime;
             if (onFloor)
             {
-                transform.position = new Vector3(newX, transform.position.y, moveDistance);
-                //transform.position = new Vector3(newX, playerPosition.y, moveDistance);
+                // 坂の傾斜角（θ）を計算
+                Vector3 up = transform.up;
+                // normalとupはどちらも正規化されて計算されるのでcosθの値を得ることができる
+                float dotProduct = Vector3.Dot(planeNormal, up);
+                dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
+                float angle = Mathf.Acos(dotProduct); // ラジアンで得られる
+                Debug.Log("angle = " + angle);
+                // tanθを計算
+                //float tanTheta = 20.0f;
+                float tanTheta = Mathf.Tan(angle);
+                //Debug.Log("tanTheta = " + tanTheta);
+                Debug.Log("y = " + (diffDistance * tanTheta));
+                float y = diffDistance * tanTheta;
+
+                float d = planeNormal.x * newX + planeNormal.y * (this.transform.position.y - 1.0f) + planeNormal.z * moveDistance;
+                //d = Mathf.Floor(d * 100 + 0.5f) / 100;
+                float planeY = -(planeNormal.x * newX + planeNormal.z * moveDistance + d) / planeNormal.y;
+                //planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
+
+                //Debug.Log("planeY in Player = " +  planeY);
+                //Debug.Log("planeY = " + planeY);
+                //Debug.Log("praviouPos - currentPos = " + (playerPosition.x - prevPlayerPosition.x));
+
+                //if (playerPosition.x - prevPlayerPosition.x < 0)
+                //{
+                float diffY = tanTheta * playerPosition.x - prevPlayerPosition.x;
+                //    //Debug.Log("diffY = " + diffY);
+                gravity.SetVelocity(diffY*1000f);
+                //    transform.position = new Vector3(newX, planeY  , moveDistance);
+                //}
+                //else
+                //{
+                //    transform.position = new Vector3(newX, planeY, moveDistance);
+                //}
+                float maxYChange = 0.01f;
+                if (Mathf.Abs(planeY - prevPlaneY) > maxYChange)
+                {
+                    if (planeY > prevPlaneY)
+                    {
+                        planeY = prevPlaneY + maxYChange;
+                    }
+                    else
+                    {
+                        planeY = prevPlaneY - maxYChange;
+                    }
+                    //transform.position = new Vector3(newX, planeY, moveDistance);
+                }
+                
+                //if()
+                prevPlaneY = planeY;
+                transform.position = new Vector3(newX, y, moveDistance);
+                //transform.position = new Vector3(newX, planeY, moveDistance);
             }
             else
             {
-                transform.position = new Vector3(newX, this.transform.position.y, moveDistance);
+                //transform.position = new Vector3(newX, this.transform.position.y, moveDistance);
             }
-            
-            
+            transform.position = new Vector3(newX, transform.position.y, moveDistance);
+            prevPlayerPosition = playerPosition;
             // タップ位置を更新
             previousPos = currentPos;
         }
@@ -138,13 +196,20 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && onFloor)
         {
             //isJump = true;
-            
+
             //if (animator.GetBool("IsGround"))
-            
+
             animator.SetTrigger("IsJumping");
             gravity.SetVelocity(jumpPower);
 
         }
+        gravity.VelocityUpdate();
+    }
+    // setterを使ってプレイヤーの位置をコライダーに伝える
+
+    void Update()
+    {
+
     }
 
     public void Clear(Vector3 pos)

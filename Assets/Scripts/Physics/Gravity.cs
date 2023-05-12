@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
-    public float gravity = -19.81f; // 重力の大きさ
+    //public float velocity = 0; 
     //public float gravity = -9.81f; // 重力の大きさ
     public float groundHeight = 0f; // 地面の高さ
     public float groundCheckThreshold = 0.1f; // 接地判定の閾値
@@ -15,6 +15,7 @@ public class Gravity : MonoBehaviour
     private bool isGrounded; // 接地しているかどうか
     private bool OnObject;
     private bool isColliding;
+    private float gravity = -36.0f; // 重力の大きさ
 
     private float objectHeight;
     public Player player;
@@ -53,10 +54,29 @@ public class Gravity : MonoBehaviour
         Debug.Log("isGravity = " + isGrounded);
     }
 
-    void FixedUpdate()
+    //void FixedUpdate()
+    public void VelocityUpdate()
     {
+
+        float maxYChange = 1f;
+        if (Mathf.Abs(velocity.y - prevVelocity.y) > maxYChange)
+        {
+            //Debug.Log("rere");
+            if (velocity.y > prevVelocity.y)
+            {
+                velocity.y = prevVelocity.y + maxYChange;
+            }
+            else
+            {
+                velocity.y = prevVelocity.y - maxYChange;
+            }
+            //transform.position = new Vector3(newX, planeY, moveDistance);
+        }
+        
+
         //if (isGrounded && velocity.y <= 0)
-        if (isGrounded && velocity.y <= 0)
+        //if (isGrounded && velocity.y <= 0)
+        if (isGrounded)
         {
             // 接地している場合、y方向の速度をリセット
             Debug.Log("重力が掛かっていません");
@@ -74,23 +94,24 @@ public class Gravity : MonoBehaviour
         {
             Debug.Log("重力がかかっています");
             // 重力を適用
-            velocity.y += gravity * Time.fixedDeltaTime;
+           
         }
-        
-        velocity.y = Mathf.Round(velocity.y * 10f) / 10f;  // myFloatの小数点第2位を切り上げる
-        if (Mathf.Abs(prevVelocity.y - velocity.y) <= 0.1)
-        {
-            velocity = (prevVelocity + velocity) / 2;
-        }
-        else
-        {
-            prevVelocity = velocity;
-        }
+
+        //velocity.y = Mathf.Round(velocity.y * 10f) / 10f;  // myFloatの小数点第2位を切り上げる
+        //if (Mathf.Abs(prevVelocity.y - velocity.y) <= 0.1)
+        //{
+        //    velocity = (prevVelocity + velocity) / 2;
+        //}
+        transform.position += velocity * Time.fixedDeltaTime;
+        velocity.y += gravity * Time.fixedDeltaTime;
+
+        prevVelocity = velocity;
+        Debug.Log("Velocity = " +  velocity.y);
         //Debug.Log("velocity.y = " +  velocity.y);
         //Debug.Log("velocity.y = " + velocity.y);
         // 速度を使ってオブジェクトを移動
-        transform.position += velocity * Time.fixedDeltaTime;
-    }
+        
+    } 
 
     private void OnSubjectCollision(ICube collistion)
     {
