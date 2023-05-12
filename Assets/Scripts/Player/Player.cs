@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     GameObject helpUI;
-    Animator animator;
+    public Animator animator;
     List<ICube> cubeTargetsList;
     List<ISphere> sphereTargetsList;
     List<IPlane> planeTargetsList;
@@ -36,12 +36,12 @@ public class Player : MonoBehaviour
     float moveDistance;
     private bool isJump = false;
     [SerializeField]
-    private float jumpPower = 10f;
+    public float jumpPower = 10f;
     private bool onFloor;
     private Vector3 planeNormal;
 
     float prevPlaneY = 0;
-
+    float planeY = 0;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -50,11 +50,12 @@ public class Player : MonoBehaviour
         planeTargetsList = GameManager.Instance.GetLaneList;
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
         gravity = gameObject.GetComponent<Gravity>();
+        
     }
 
     private void FixedUpdate()
     {
-        
+        if (transform.position.y < -10) return;
         onFloor = false;
         SetCapsulePosition();
         // 床と衝突しているか確認
@@ -117,7 +118,7 @@ public class Player : MonoBehaviour
             //}
 
             diffDistance *= sensitivity;
-            Debug.Log("diffDistance = "+ diffDistance);
+           // Debug.Log("diffDistance = "+ diffDistance);
             // 次のローカルx座標を設定 ※道の外にでないように
             float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
             //transform.localPosition = new Vector3(newX, 0, 0);
@@ -136,12 +137,12 @@ public class Player : MonoBehaviour
                 //float tanTheta = 20.0f;
                 float tanTheta = Mathf.Tan(angle);
                 //Debug.Log("tanTheta = " + tanTheta);
-                Debug.Log("y = " + (diffDistance * tanTheta));
+               // Debug.Log("y = " + (diffDistance * tanTheta));
                 float y = diffDistance * tanTheta;
 
-                float d = planeNormal.x * newX + planeNormal.y * (this.transform.position.y - 1.0f) + planeNormal.z * moveDistance;
+                float d = planeNormal.x * newX + planeNormal.y * this.transform.position.y + planeNormal.z * moveDistance;
                 //d = Mathf.Floor(d * 100 + 0.5f) / 100;
-                float planeY = -(planeNormal.x * newX + planeNormal.z * moveDistance + d) / planeNormal.y;
+                planeY = -(planeNormal.x * newX + planeNormal.z * moveDistance + d) / planeNormal.y;
                 //planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
 
                 //Debug.Log("planeY in Player = " +  planeY);
@@ -152,36 +153,42 @@ public class Player : MonoBehaviour
                 //{
                 float diffY = tanTheta * playerPosition.x - prevPlayerPosition.x;
                 //    //Debug.Log("diffY = " + diffY);
-                gravity.SetVelocity(diffY*1000f);
+                //gravity.SetVelocity(diffY*1000f);
                 //    transform.position = new Vector3(newX, planeY  , moveDistance);
                 //}
                 //else
                 //{
                 //    transform.position = new Vector3(newX, planeY, moveDistance);
                 //}
-                float maxYChange = 0.01f;
-                if (Mathf.Abs(planeY - prevPlaneY) > maxYChange)
+
+                planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
+                //float maxYChange = 0.1f;
+                Debug.Log("planeY = " + planeY);
+                //planeY = y;
+                //if (Mathf.Abs(planeY - prevPlaneY) < maxYChange)
                 {
                     if (planeY > prevPlaneY)
                     {
-                        planeY = prevPlaneY + maxYChange;
+                   //     planeY = prevPlaneY;
                     }
                     else
                     {
-                        planeY = prevPlaneY - maxYChange;
+                    //    planeY = prevPlaneY;
                     }
                     //transform.position = new Vector3(newX, planeY, moveDistance);
                 }
                 
                 //if()
                 prevPlaneY = planeY;
-                transform.position = new Vector3(newX, y, moveDistance);
+                Debug.Log("prevPlaneY = " + prevPlaneY);
+                //transform.position = new Vector3(newX, y, moveDistance);
                 //transform.position = new Vector3(newX, planeY, moveDistance);
             }
             else
             {
                 //transform.position = new Vector3(newX, this.transform.position.y, moveDistance);
             }
+           // transform.position = new Vector3(newX, planeY, moveDistance);
             transform.position = new Vector3(newX, transform.position.y, moveDistance);
             prevPlayerPosition = playerPosition;
             // タップ位置を更新
@@ -193,16 +200,7 @@ public class Player : MonoBehaviour
             helpUI.SetActive(true);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && onFloor)
-        {
-            //isJump = true;
 
-            //if (animator.GetBool("IsGround"))
-
-            animator.SetTrigger("IsJumping");
-            gravity.SetVelocity(jumpPower);
-
-        }
         gravity.VelocityUpdate();
     }
     // setterを使ってプレイヤーの位置をコライダーに伝える

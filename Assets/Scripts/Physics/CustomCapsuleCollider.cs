@@ -249,18 +249,20 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //    Debug.Log("空中かオブジェクト上にいます");
         //    return false;
         //}
-        float speed = 0.05f;
-        //Debug.Log("diff = " + diff);
+        float speed = 0.5f;
+        //float speed = 0.05f;
+        Debug.Log("diff = " + diff);
         //Debug.Log("speed * tanTheta = " + speed * tanTheta);
-        if (0.0f < diff && diff < radius / 1.0f)
+
+        if (0.0f < diff && diff < 0.5f)
         {
             Debug.Log("ぶれ対策");
             return true;
         }
-        else if (diff <= speed * tanTheta)
+         if (diff <= speed * tanTheta)
         {
-            Debug.Log("CollisionでplaneYを設定　= " + planeY);
-            //player.setPlayerPosition(planeY);
+            //Debug.Log("CollisionでplaneYを設定　= " + planeY);
+            player.setPlayerPosition(planeY);
             
             //Debug.Log("tanTheta = " + tanTheta);
             return true;

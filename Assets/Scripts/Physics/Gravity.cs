@@ -12,10 +12,10 @@ public class Gravity : MonoBehaviour
     public Vector3 velocity = new Vector3(0 ,0, 0); // 速度
     private Vector3 prevVelocity = new Vector3 (0 ,0 ,0);
 
-    private bool isGrounded; // 接地しているかどうか
+    public bool isGrounded; // 接地しているかどうか
     private bool OnObject;
     private bool isColliding;
-    private float gravity = -36.0f; // 重力の大きさ
+    public float gravity = -36.0f; // 重力の大きさ
 
     private float objectHeight;
     public Player player;
@@ -58,20 +58,7 @@ public class Gravity : MonoBehaviour
     public void VelocityUpdate()
     {
 
-        float maxYChange = 1f;
-        if (Mathf.Abs(velocity.y - prevVelocity.y) > maxYChange)
-        {
-            //Debug.Log("rere");
-            if (velocity.y > prevVelocity.y)
-            {
-                velocity.y = prevVelocity.y + maxYChange;
-            }
-            else
-            {
-                velocity.y = prevVelocity.y - maxYChange;
-            }
-            //transform.position = new Vector3(newX, planeY, moveDistance);
-        }
+    
         
 
         //if (isGrounded && velocity.y <= 0)
@@ -96,6 +83,16 @@ public class Gravity : MonoBehaviour
             // 重力を適用
            
         }
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            //isJump = true;
+
+            //if (animator.GetBool("IsGround"))
+
+            player.animator.SetTrigger("IsJumping");
+            SetVelocity(player.jumpPower);
+
+        }
 
         //velocity.y = Mathf.Round(velocity.y * 10f) / 10f;  // myFloatの小数点第2位を切り上げる
         //if (Mathf.Abs(prevVelocity.y - velocity.y) <= 0.1)
@@ -106,7 +103,7 @@ public class Gravity : MonoBehaviour
         velocity.y += gravity * Time.fixedDeltaTime;
 
         prevVelocity = velocity;
-        Debug.Log("Velocity = " +  velocity.y);
+        //Debug.Log("Velocity = " +  velocity.y);
         //Debug.Log("velocity.y = " +  velocity.y);
         //Debug.Log("velocity.y = " + velocity.y);
         // 速度を使ってオブジェクトを移動
