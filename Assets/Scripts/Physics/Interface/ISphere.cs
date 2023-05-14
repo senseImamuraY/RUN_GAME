@@ -16,4 +16,6 @@ public interface ISphere
     /// 中心のワールド座標
     /// </summary>
     Vector3 GetWorldCenter { get; }
+
+    void Enter();
 }

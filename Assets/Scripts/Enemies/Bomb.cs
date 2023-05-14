@@ -16,6 +16,7 @@ public class Bomb : MonoBehaviour
     float speed = 1f;　　　　　// 移動速度
     float rotateSpeed = 180f;  // 回転速度
     float rotateNum;           // 方向転換時の回転量
+    CustomSphereCollider sphereCollider;
 
     void Start()
     {
@@ -30,6 +31,7 @@ public class Bomb : MonoBehaviour
 
         // 開始位置をランダムに
         transform.position = Vector3.Lerp(startPos, endPos, Random.Range(0.0f, 1.0f));
+        sphereCollider = GetComponent<CustomSphereCollider>();
     }
 
     void Update()
@@ -38,6 +40,8 @@ public class Bomb : MonoBehaviour
         {
             return;
         }
+
+        sphereCollider.SetPosition();
 
         // 端に到達した時の方向転換処理
         if ((destPos - transform.position).magnitude < 0.1f)
@@ -68,17 +72,17 @@ public class Bomb : MonoBehaviour
         transform.position += transform.forward * speed * Time.deltaTime;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Enter(Player player)
     {
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
             return;
         }
-
-        if (other.CompareTag("Player"))
+        Debug.Log("bomb");
+        if (player.CompareTag("Player"))
         {
-            transform.LookAt(other.gameObject.transform);
-            other.gameObject.transform.LookAt(transform);
+            transform.LookAt(player.gameObject.transform);
+            player.gameObject.transform.LookAt(transform);
             anim.SetBool("walk", false);
             anim.SetTrigger("attack01");
 

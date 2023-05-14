@@ -14,6 +14,12 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
     public Vector3 GetWorldCenter { get { return sphereTransform + center; } }
 
     private Vector3 sphereTransform;
+
+    public void Enter()
+    {
+
+
+    }
     // sphere‚ÌˆÊ’u‚ð“ü‚ê‚é
 
     void Start()

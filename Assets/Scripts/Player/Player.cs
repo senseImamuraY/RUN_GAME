@@ -34,7 +34,10 @@ public class Player : MonoBehaviour
     const float MOVE_MAX = 4.5f;
     float speed = 20f;
     float moveDistance;
-    private bool isJump = false;
+    public bool isJump = false;
+    float jumpDelay = 1f; // 1秒のディレイ
+    float nextJumpTime = 0f;
+
     [SerializeField]
     public float jumpPower = 10f;
     private bool onFloor;
@@ -52,6 +55,8 @@ public class Player : MonoBehaviour
         gravity = gameObject.GetComponent<Gravity>();
         
     }
+
+
 
     private void FixedUpdate()
     {
@@ -82,6 +87,7 @@ public class Player : MonoBehaviour
         {
             if (capsuleCollider.CheckCollisionWithSphere(target))
             {
+                target.Enter();
                 Debug.Log("Sphereと衝突しました。");
             }
         }
@@ -207,7 +213,12 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
+        if (isJump) { return; }
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextJumpTime)
+        {
+            nextJumpTime = Time.time + jumpDelay;
+            isJump = true;
+        }
     }
 
     public void Clear(Vector3 pos)

@@ -83,9 +83,9 @@ public class Gravity : MonoBehaviour
             // d—Í‚ğ“K—p
            
         }
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (player.isJump && isGrounded)
         {
-            //isJump = true;
+            player.isJump = false;
 
             //if (animator.GetBool("IsGround"))
 
