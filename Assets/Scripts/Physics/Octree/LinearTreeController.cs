@@ -12,13 +12,13 @@ public class LinearTreeController : MonoBehaviour
     private float _left = 0f;
 
     [SerializeField]
-    private float _top = 0f;
+    private float _top = 10f;
 
     [SerializeField]
     private float _right = 10f;
 
     [SerializeField]
-    private float _bottom = 10f;
+    private float _bottom = 0f;
 
     [SerializeField]
     private float _front = 0f;

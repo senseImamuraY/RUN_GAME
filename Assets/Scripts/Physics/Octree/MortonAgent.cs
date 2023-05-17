@@ -45,6 +45,12 @@ public class MortonAgent : MonoBehaviour
         MyBounds.size = transform.localScale;
     }
 
+    private void FixedUpdate()
+    {
+        MyBounds.center = transform.position;
+        MyBounds.size = transform.localScale;
+    }
+
     void OnDestroy()
     {
         TreeData.Remove();
