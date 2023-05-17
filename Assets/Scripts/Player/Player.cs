@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
 
     const float LOAD_WIDTH = 10f;
     const float MOVE_MAX = 4.5f;
+    [SerializeField]
     float speed = 20f;
     float moveDistance;
     public bool isJump = false;

@@ -871,6 +871,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   isRunning: 0
   sensitivity: 1
+  speed: 40
   isJump: 0
   jumpPower: 55
 --- !u!4 &748078241 stripped
