@@ -186,6 +186,14 @@ public class LinearTreeManager<T>
         float front = bounds.min.z;
         float back = bounds.max.z;
 
+        // ここで上手くオブジェクトを表現できていない
+        // 具体的にはpositionの値で代用できない可能性
+        // positionではなくオブジェクトの形状を伝える必要がある
+        //Debug.Log(data.Cell.ToString());
+        Debug.Log("laft = " + left + "right = " + right);
+        Debug.Log("top = " + top + "bottom = " + bottom);
+        Debug.Log("front = " + front + " back = " + back);
+
         return Register(left, top, right, bottom, front, back, data);
     }
 
@@ -212,6 +220,10 @@ public class LinearTreeManager<T>
         int belongLevel;
         int elem = GetMortonNumber(left, top, right, bottom, front, back, out belongLevel);
         elem = ToLinearSpace(elem, belongLevel);
+
+        //Debug.Log("name = " + data+ " top = " + top + " bottom = " +  bottom + " front = " + front + "right = " + right +  "elem = " + elem);
+        //Debug.Log("elem = " + elem);
+
 
         // 算出されたモートン番号が、生成した空間分割数より大きい場合はエラー
         if (elem >= _cellNum)

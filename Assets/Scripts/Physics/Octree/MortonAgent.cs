@@ -40,15 +40,17 @@ public class MortonAgent : MonoBehaviour
     {
         TreeData = new TreeData<GameObject>(gameObject);
 
+        //Debug.Log(name);
         MyBounds = GetComponent<MyBounds>();
-        MyBounds.center = transform.position;
-        MyBounds.size = transform.localScale;
+        //MyBounds.center = transform.position;
+        //MyBounds.size = transform.localScale;
     }
 
     private void FixedUpdate()
     {
-        MyBounds.center = transform.position;
-        MyBounds.size = transform.localScale;
+        //MyBounds.center = transform.position;
+        //MyBounds.size = transform.localScale;
+        Debug.Log("name = " + name + "MyBounds = " + MyBounds.name);
     }
 
     void OnDestroy()

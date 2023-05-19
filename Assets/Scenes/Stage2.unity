@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -238,6 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSize: 5
   zSize: 50
+  size: {x: 10, y: 3, z: 100}
 --- !u!114 &137523475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   center: {x: 0, y: 0, z: 0}
   radius: 0.5
+  size: {x: 0, y: 0, z: 0}
 --- !u!114 &221855667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,6 +321,8 @@ GameObject:
   - component: {fileID: 315876164}
   - component: {fileID: 315876163}
   - component: {fileID: 315876167}
+  - component: {fileID: 315876169}
+  - component: {fileID: 315876168}
   m_Layer: 0
   m_Name: Plane (1)
   m_TagString: Ground
@@ -419,6 +423,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSize: 5
   zSize: 50
+  size: {x: 10, y: 5, z: 100}
+--- !u!114 &315876168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315876161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d958f7907743434c93cdf41f93e6404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &315876169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315876161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7697ad835686cca449b0748f682af44c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &320272885 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3252721490479082832, guid: d8a0af34463586b448ead9aa0e1b52a2,
@@ -836,6 +865,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   center: {x: 0, y: 0.5, z: 10}
   radius: 0.5
+  size: {x: 1, y: 1, z: 1}
 --- !u!23 &711326001
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -894,7 +924,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 711325999}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 10}
+  m_LocalPosition: {x: -2.34, y: 0.5, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -990,6 +1020,7 @@ MonoBehaviour:
   center: {x: 0, y: 1, z: 0}
   direction: 1
   height: 2
+  size: {x: 1, y: 2, z: 1}
 --- !u!114 &748078246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,6 +1071,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   center: {x: 0, y: 0, z: 0}
   radius: 0.5
+  size: {x: 0, y: 0, z: 0}
 --- !u!114 &1251087808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1102,15 +1134,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _level: 3
-  _left: -5
+  _left: -6
   _top: 5
-  _right: 5
-  _bottom: -2
-  _front: 0
+  _right: 6
+  _bottom: -5
+  _front: -5
   _back: 300
   _object1: {fileID: 748078238}
   _object2: {fileID: 137523469}
-  _object3: {fileID: 221855660}
+  _object3: {fileID: 315876161}
   _object4: {fileID: 711325999}
   _agentPrefab: {fileID: 0}
 --- !u!4 &1289744988
@@ -1354,6 +1386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSize: 5
   zSize: 50
+  size: {x: 0, y: 0, z: 0}
 --- !u!1 &1541298015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1775,17 +1808,17 @@ PrefabInstance:
     - target: {fileID: 5633045298161505068, guid: 0056c0ab760cb8f4788fea9a9c34dea0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.14
+      value: -1.97
       objectReference: {fileID: 0}
     - target: {fileID: 5633045298161505068, guid: 0056c0ab760cb8f4788fea9a9c34dea0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.63
+      value: 0.74
       objectReference: {fileID: 0}
     - target: {fileID: 5633045298161505068, guid: 0056c0ab760cb8f4788fea9a9c34dea0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.07
+      value: 2.82
       objectReference: {fileID: 0}
     - target: {fileID: 5633045298161505068, guid: 0056c0ab760cb8f4788fea9a9c34dea0,
         type: 3}
@@ -1826,6 +1859,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bomb
+      objectReference: {fileID: 0}
+    - target: {fileID: 5650262675385156516, guid: 0056c0ab760cb8f4788fea9a9c34dea0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0056c0ab760cb8f4788fea9a9c34dea0, type: 3}

@@ -8,6 +8,21 @@ public class MyBounds : MonoBehaviour
 
     private Vector3 m_Extents;
 
+    private IBounds m_Bounds;
+
+    private void Start()
+    {
+        m_Bounds = this.gameObject.GetComponent<IBounds>();
+        Debug.Log(gameObject);
+    }
+
+    private void Update()
+    {
+        center = m_Bounds.Center();
+        size = m_Bounds.Size();
+        //Debug.Log("center = "+ center + " size = " + size);
+    }
+
     //
     // ŠT—v:
     //     The center of the bounding box.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 //using System.Numerics;
 using UnityEngine;
 
-public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
+public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane, IBounds
 {
 
     //Vector3 GetPointOfPlane { get; }
@@ -23,22 +23,36 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
     Vector3 VectorX;
     Vector3 VectorZ;
 
+    
     private Vector3 center;
     public Vector3 GetCenter()
     {
         return center;
     }
 
+    public Vector3 Center() { return center; }
+
+    [SerializeField]
+    private Vector3 size;
+
+    public Vector3 Size() { return size; }
+
+    void Awake()
+    {
+        center = transform.position;
+    }
     void Start()
     {
         planeRotation = this.transform.rotation;
-        center = transform.position;
+        //center = transform.position;
         //VectorX = new Vector3(xSize, transform.position.y, 0f);
         //VectorZ = new Vector3(0f, transform.position.y, zSize);
         VectorX = transform.TransformVector(new Vector3(xSize, transform.position.y, 0f));
         VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));        //VectorX = transform.TransformVector(new Vector3(xSize, transform.position.y, 0f));
         //VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));
     }
+
+    
 
     public Vector3 getPlanePosition()
     {

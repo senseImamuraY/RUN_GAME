@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
                 float dotProduct = Vector3.Dot(planeNormal, up);
                 dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
                 float angle = Mathf.Acos(dotProduct); // ƒ‰ƒWƒAƒ“‚Å“¾‚ç‚ê‚é
-                Debug.Log("angle = " + angle);
+                //Debug.Log("angle = " + angle);
                 // tanƒÆ‚ðŒvŽZ
                 //float tanTheta = 20.0f;
                 float tanTheta = Mathf.Tan(angle);
@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
 
                 planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
                 //float maxYChange = 0.1f;
-                Debug.Log("planeY = " + planeY);
+                //Debug.Log("planeY = " + planeY);
                 //planeY = y;
                 //if (Mathf.Abs(planeY - prevPlaneY) < maxYChange)
                 {
@@ -187,7 +187,7 @@ public class Player : MonoBehaviour
                 
                 //if()
                 prevPlaneY = planeY;
-                Debug.Log("prevPlaneY = " + prevPlaneY);
+                //Debug.Log("prevPlaneY = " + prevPlaneY);
                 //transform.position = new Vector3(newX, y, moveDistance);
                 //transform.position = new Vector3(newX, planeY, moveDistance);
             }

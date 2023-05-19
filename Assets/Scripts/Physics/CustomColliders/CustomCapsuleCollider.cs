@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 using static Unity.Burst.Intrinsics.X86.Avx;
 using static UnityEngine.Rendering.DebugUI;
 
-public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
+public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
 {
     /// <summary>
     /// Ž²‚Ì•ûŒü
@@ -26,6 +26,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     [SerializeField]
     private Vector3 prevCenter,center;
     public Vector3 GetCenter() { return center; }
+    public Vector3 Center() { return center; }
     public void SetCenter(Vector3 value) { center = value; }
 
     [SerializeField]
@@ -43,6 +44,11 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     //private Vector3 capsulePosition;
     private Vector3 capsuleBottom;
 
+    [SerializeField]
+    private Vector3 size;
+
+    public Vector3 Size() {return size;}
+    public Vector3 GetSize() { return size; }
 
     float X, Y, Z;
     // Start is called before the first frame update
@@ -57,7 +63,14 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     // Update is called once per frame
     void Update()
     {
-
+        if (this.gameObject.tag == "Player")
+        {
+            center = transform.position + transform.up;
+        }
+        else
+        { 
+            center = transform.position; 
+        }
     }
 
     public bool CheckCollisionWithCube(ICube box)
@@ -185,10 +198,10 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         float dotProduct = Vector3.Dot(normal, up);
         //dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
         float angle = Mathf.Acos(dotProduct); // ƒ‰ƒWƒAƒ“‚Å“¾‚ç‚ê‚é
-        Debug.Log("angle = " + angle);
+        //Debug.Log("angle = " + angle);
         // tanƒÆ‚ðŒvŽZ
         float tanTheta = Mathf.Tan(angle);
-        Debug.Log("tanTheta = " + tanTheta);
+        //Debug.Log("tanTheta = " + tanTheta);
 
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
@@ -251,12 +264,12 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //}
         float speed = 0.5f;
         //float speed = 0.05f;
-        Debug.Log("diff = " + diff);
+        //Debug.Log("diff = " + diff);
         //Debug.Log("speed * tanTheta = " + speed * tanTheta);
 
         if (0.0f < diff && diff < 0.5f)
         {
-            Debug.Log("‚Ô‚ê‘Îô");
+            //Debug.Log("‚Ô‚ê‘Îô");
             return true;
         }
          if (diff <= speed * tanTheta)

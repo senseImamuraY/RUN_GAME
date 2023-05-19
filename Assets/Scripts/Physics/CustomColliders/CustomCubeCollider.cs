@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
-public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
+public class CustomCubeCollider : MonoBehaviour, ICollider, ICube, IBounds
 {
     //[SerializeField]
     //private float width, height;
@@ -34,12 +34,21 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     private Vector3 size = Vector3.one;
     public Vector3 GetSize { get { return size; } }
 
+    public Vector3 Size() { return size; }
+
+    public Vector3 Center() { return center; }
+
     private Transform cubeTransform;
 
     private void Awake()
     {
         cubeTransform = transform;
         SetCenter(this.transform.position);
+    }
+
+    void Update()
+    {
+        center = transform.position;
     }
     public bool CheckCollisionWithCube(ICube cube)
     {

@@ -63,6 +63,7 @@ public class LinearTreeController : MonoBehaviour
     private GameObject _agentPrefab;
     #endregion Variables
 
+    //public List<>
 
     #region MonoBehaviour
     void OnValidate()
