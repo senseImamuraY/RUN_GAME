@@ -190,9 +190,9 @@ public class LinearTreeManager<T>
         // 具体的にはpositionの値で代用できない可能性
         // positionではなくオブジェクトの形状を伝える必要がある
         //Debug.Log(data.Cell.ToString());
-        Debug.Log("laft = " + left + "right = " + right);
-        Debug.Log("top = " + top + "bottom = " + bottom);
-        Debug.Log("front = " + front + " back = " + back);
+        //Debug.Log("laft = " + left + "right = " + right);
+        //Debug.Log("top = " + top + "bottom = " + bottom);
+        //Debug.Log("front = " + front + " back = " + back);
 
         return Register(left, top, right, bottom, front, back, data);
     }
@@ -222,7 +222,7 @@ public class LinearTreeManager<T>
         elem = ToLinearSpace(elem, belongLevel);
 
         //Debug.Log("name = " + data+ " top = " + top + " bottom = " +  bottom + " front = " + front + "right = " + right +  "elem = " + elem);
-        //Debug.Log("elem = " + elem);
+        Debug.Log("elem = " + elem);
 
 
         // 算出されたモートン番号が、生成した空間分割数より大きい場合はエラー

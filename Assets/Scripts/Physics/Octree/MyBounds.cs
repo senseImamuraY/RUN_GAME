@@ -18,8 +18,8 @@ public class MyBounds : MonoBehaviour
 
     private void Update()
     {
-        center = m_Bounds.Center();
-        size = m_Bounds.Size();
+        //center = m_Bounds.Center();
+        //size = m_Bounds.Size();
         //Debug.Log("center = "+ center + " size = " + size);
     }
 

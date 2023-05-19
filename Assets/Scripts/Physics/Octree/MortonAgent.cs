@@ -34,14 +34,17 @@ public class MortonAgent : MonoBehaviour
 
     private MyBounds MyBounds;
 
+    private IBounds m_Bounds;
 
     #region MonoBehaviour
     void Awake()
     {
         TreeData = new TreeData<GameObject>(gameObject);
-
+        m_Bounds = this.gameObject.GetComponent<IBounds>();
         //Debug.Log(name);
         MyBounds = GetComponent<MyBounds>();
+        MyBounds.center = m_Bounds.Center();
+        MyBounds.size = m_Bounds.Size();
         //MyBounds.center = transform.position;
         //MyBounds.size = transform.localScale;
     }
@@ -50,7 +53,9 @@ public class MortonAgent : MonoBehaviour
     {
         //MyBounds.center = transform.position;
         //MyBounds.size = transform.localScale;
-        Debug.Log("name = " + name + "MyBounds = " + MyBounds.name);
+        MyBounds.center = m_Bounds.Center();
+        MyBounds.size = m_Bounds.Size();
+        //Debug.Log("name = " + name + "MyBounds = " + MyBounds.name);
     }
 
     void OnDestroy()

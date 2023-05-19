@@ -33,7 +33,7 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane, IBounds
     public Vector3 Center() { return center; }
 
     [SerializeField]
-    private Vector3 size;
+    private Vector3 size = new Vector3(1,1,1);
 
     public Vector3 Size() { return size; }
 
