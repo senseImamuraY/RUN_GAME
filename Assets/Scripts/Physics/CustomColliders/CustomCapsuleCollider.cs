@@ -6,6 +6,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Unity.Burst.Intrinsics.X86.Avx;
+using static UnityEngine.LightAnchor;
 using static UnityEngine.Rendering.DebugUI;
 
 public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
@@ -34,6 +35,9 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
     
     [SerializeField]
     private float height = 2.0f;
+
+    [SerializeField]
+    private Vector3 arangementCenter;
     public float GetHeight { get { return height; } }
     public float GetPlaneY () { return planeY; }
     private float planeY;
@@ -109,10 +113,12 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
 
     public bool CheckCollisionWithSphere(ISphere sphere)
     {
+        // 今回はカプセルをz軸に寝かせて考える
         // カプセルの空間との変換行列
         var forward = Vector3.zero;
         forward[(int)direction] = 1.0f;
-        var casuleToLocal = Matrix4x4.TRS(center, Quaternion.LookRotation(forward), Vector3.one);
+        var casuleToLocal = Matrix4x4.TRS(arangementCenter, Quaternion.LookRotation(forward), Vector3.one);
+        //var worldToCapsule = casuleToLocal * transform.worldToLocalMatrix;
         var worldToCapsule = casuleToLocal.inverse * transform.worldToLocalMatrix;
 
         // カプセルの空間における球の中心
@@ -120,6 +126,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
 
         // カプセルを構成する二つの半球の中心座標
         var end = new Vector3(0.0f, 0.0f, 1.0f) * (height - radius * 2.0f) / 2.0f;
+        //Debug.Log("end = " + end);
         var start = end * -1.0f;
 
         // 二つの球をつなぐ線分との近傍点を求める
@@ -328,4 +335,29 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
         capsuleBottom = center - new Vector3(0.0f, (height / 2.0f), 0.0f);
         prevCenter = center;
     }
+
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = new Color(0.2f, 0.5f, 1.0f);
+    //    float halfHeight = height / 2 - radius;
+    //    Vector3 upDirection = Vector3.up * halfHeight;
+    //    Vector3 downDirection = -Vector3.up * halfHeight;
+
+    //    // Draw the top sphere
+    //    Gizmos.DrawWireSphere(center + upDirection, radius);
+
+    //    // Draw the bottom sphere
+    //    Gizmos.DrawWireSphere(center + downDirection, radius);
+
+    //    // Draw the tube with multiple lines
+    //    int numLines = 4; // or increase this for a smoother tube
+    //    float angleStep = 360f / numLines;
+    //    for (int i = 0; i < numLines; i++)
+    //    {
+    //        float angle = i * angleStep * Mathf.Deg2Rad;
+    //        Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+    //        Gizmos.DrawLine(center + upDirection + offset, center + downDirection + offset);
+    //    }
+    //}
+
 }

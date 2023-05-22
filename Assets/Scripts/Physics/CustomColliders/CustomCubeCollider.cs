@@ -24,7 +24,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube, IBounds
     public void SetColliding(bool value) { isColliding = value; }
 
     [SerializeField]
-    private Vector3 center = Vector3.zero;
+    private Vector3 center;
     //public Vector3 GetAndSetCenter { get { return center; } set { center = value; } }  
     public Vector3 GetCenter { get { return center; } }
 
@@ -113,5 +113,18 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube, IBounds
     {
         throw new System.NotImplementedException();
     }
+
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = new Color(0.2f, 0.5f, 1.0f);
+
+    //    // Set the transformation matrix for the Gizmos to be the same as the object's transform.
+    //    Gizmos.matrix = transform.localToWorldMatrix;
+
+    //    // Draw a wireframe cube at the object's position with the object's scale.
+    //    // Since we've set the Gizmos.matrix, the position, rotation, and scale of the cube will be correct.
+    //    Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+    //}
+
 }
 

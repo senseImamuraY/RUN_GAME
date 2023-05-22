@@ -41,7 +41,7 @@ public class Bomb : MonoBehaviour
             return;
         }
 
-        sphereCollider.SetPosition();
+        //sphereCollider.SetPosition();
 
         // ’[‚É“’B‚µ‚½‚Ì•ûŒü“]Š·ˆ—
         if ((destPos - transform.position).magnitude < 0.1f)

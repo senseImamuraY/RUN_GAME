@@ -32,19 +32,37 @@ public class MortonAgent : MonoBehaviour
 
     public TreeData<GameObject> TreeData { get; private set; }
 
-    private MyBounds MyBounds;
+    //private MyBounds MyBounds;
+    //private Bounds Bounds;
 
     private IBounds m_Bounds;
 
     #region MonoBehaviour
+
+    private Collider _collider;
+    // Bounds like AABB of this game object.
+    public Bounds Bounds
+    {
+        get
+        {
+            if (_collider == null)
+            {
+                _collider = GetComponent<Collider>();
+            }
+            return _collider.bounds;
+        }
+    }
     void Awake()
     {
         TreeData = new TreeData<GameObject>(gameObject);
         m_Bounds = this.gameObject.GetComponent<IBounds>();
         //Debug.Log(name);
-        MyBounds = GetComponent<MyBounds>();
-        MyBounds.center = m_Bounds.Center();
-        MyBounds.size = m_Bounds.Size();
+        //MyBounds = GetComponent<MyBounds>();
+        //Bound = GetComponent<Bounds>();
+        //Debug.Log(Bounds);
+        //MyBounds.center = m_Bounds.Center();
+        //MyBounds.size = m_Bounds.Size();
+        //MyBounds = new MyBounds(m_Bounds.Center(), m_Bounds.Size());
         //MyBounds.center = transform.position;
         //MyBounds.size = transform.localScale;
     }
@@ -53,8 +71,8 @@ public class MortonAgent : MonoBehaviour
     {
         //MyBounds.center = transform.position;
         //MyBounds.size = transform.localScale;
-        MyBounds.center = m_Bounds.Center();
-        MyBounds.size = m_Bounds.Size();
+        //Bounds.center = m_Bounds.Center();
+        //MyBounds.size = m_Bounds.Size();
         //Debug.Log("name = " + name + "MyBounds = " + MyBounds.name);
     }
 
@@ -76,6 +94,8 @@ public class MortonAgent : MonoBehaviour
 
     void RegisterUpdate()
     {
-        _manager.Register(MyBounds, TreeData);
+        _manager.Register(Bounds, TreeData);
     }
+
+
 }

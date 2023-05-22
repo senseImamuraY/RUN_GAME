@@ -66,7 +66,7 @@ public class Gravity : MonoBehaviour
         if (isGrounded)
         {
             // 接地している場合、y方向の速度をリセット
-            Debug.Log("重力が掛かっていません");
+            //Debug.Log("重力が掛かっていません");
             velocity.y = 0f;
             //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             //transform.position = new Vector3(transform.position.x, groundHeight, transform.position.z);
@@ -79,7 +79,7 @@ public class Gravity : MonoBehaviour
         }
         else if (!isGrounded && !OnObject)
         {
-            Debug.Log("重力がかかっています");
+            //Debug.Log("重力がかかっています");
             // 重力を適用
            
         }

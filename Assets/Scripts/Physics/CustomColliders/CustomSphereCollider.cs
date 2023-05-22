@@ -6,22 +6,26 @@ using UnityEngine;
 public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere, IBounds
 {
     [SerializeField]
-    private Vector3 center;
+    private Vector3 center = Vector3.zero;
     public Vector3 GetCenter { get { return center; } }
     [SerializeField]
     private float radius = 0.5f;
     public float GetRadius { get { return radius; } }
 
-    public Vector3 GetWorldCenter { get { return sphereTransform + center; } }
+    public Vector3 GetWorldCenter { get { return sphereTransform.position + adjustmentCenter; } }
+    //public Vector3 GetWorldCenter { get { return sphereTransform ; } }
 
-    private Vector3 sphereTransform;
-
+    private Transform sphereTransform;
+    
     public Vector3 Center() { return center; }
 
     [SerializeField]
     private Vector3 size;
 
     public Vector3 Size() { return size; }
+
+    [SerializeField]
+    Vector3 adjustmentCenter = new Vector3(0, 0, 0);
 
     public void Enter()
     {
@@ -30,9 +34,14 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere, IBounds
     }
     // sphere‚ÌˆÊ’u‚ð“ü‚ê‚é
 
+    void Awake()
+    {
+        sphereTransform = GetComponent<Transform>();
+    }
     void Start()
     {
-        SetPosition();
+        //SetPosition();
+        center = transform.position;
     }
 
     void Update()
@@ -40,10 +49,10 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere, IBounds
         center = transform.position;
     }
 
-    public void SetPosition()
-    {
-        sphereTransform = this.transform.position;
-    }
+    //public void SetPosition()
+    //{
+    //    sphereTransform = this.transform.position;
+    //}
     public bool CheckCollisionWithSphere(ISphere sphere)
     {
         var collideDistance = GetRadius + sphere.GetRadius;
@@ -64,4 +73,13 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere, IBounds
     {
         throw new System.NotImplementedException();
     }
+
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = new Color(0.2f, 0.5f, 1.0f);
+    //    Gizmos.matrix = transform.localToWorldMatrix;
+    //    Gizmos.DrawWireSphere(Vector3.zero, radius);
+    //}
+
+
 }

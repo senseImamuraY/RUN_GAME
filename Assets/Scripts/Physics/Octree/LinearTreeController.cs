@@ -50,8 +50,8 @@ public class LinearTreeController : MonoBehaviour
     [SerializeField]
     private List<GameObject> _objects;
 
-    [SerializeField]
-    private GameObject _agentPrefab;
+    //[SerializeField]
+    //private GameObject _agentPrefab;
     #endregion Variables
 
     //public List<>
@@ -96,21 +96,31 @@ public class LinearTreeController : MonoBehaviour
     void Update()
     {
         // Check collisions
+        //if (_manager.isClearing) return; 
         _manager.GetAllCollisionList(_collisionList);
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GameObject obj = Instantiate(_agentPrefab);
-            float s = Random.Range(0.5f, 2.5f);
-            obj.transform.localScale = Vector3.one * s;
-            MortonAgent agent = obj.GetComponent<MortonAgent>();
-            agent.Manager = _manager;
-        }
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    GameObject obj = Instantiate(_agentPrefab);
+        //    float s = Random.Range(0.5f, 2.5f);
+        //    obj.transform.localScale = Vector3.one * s;
+        //    MortonAgent agent = obj.GetComponent<MortonAgent>();
+        //    agent.Manager = _manager;
+        //}
     }
 
     void OnDrawGizmos()
     {
+        //if(_manager.isClearing) return;
         // Connect collision pairs with line.
+        for (int i = 0; i < _collisionList.Count; i++)
+        {
+            GameObject go = _collisionList[i] as GameObject;
+            if (go == null || !go.activeInHierarchy)
+            {
+                Debug.Log($"GameObject at index {i} is either destroyed or inactive.");
+            }
+        }
         Gizmos.color = Color.cyan;
         for (int i = 0; i < _collisionList.Count; i += 2)
         {
@@ -118,7 +128,14 @@ public class LinearTreeController : MonoBehaviour
             GameObject g1 = _collisionList[i + 1];
 
             Gizmos.DrawLine(g0.transform.position, g1.transform.position);
+
+            //Debug.Log("g1 = " + g0.name +" g2 = " + g1.name);
+            if(g0.name == "Player" || g1.name == "Player")
+            {
+                //Debug.Log("g1 = " + g0.name + " g2 = " + g1.name);
+            }
         }
+
     }
     #endregion MonoBehaviour
 
