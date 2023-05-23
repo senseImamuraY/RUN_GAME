@@ -40,6 +40,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube, IBounds
 
     private Transform cubeTransform;
 
+    public Transform GetTransform() { return cubeTransform; }
     private void Awake()
     {
         cubeTransform = transform;

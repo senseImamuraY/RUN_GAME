@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
@@ -91,8 +92,81 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
         //{
         //    return false;
         //}
-        Debug.Log("CapsuleコライダーのWithBox");
-        throw new System.NotImplementedException();
+
+
+        Vector3 Interval = box.GetCenter - center;
+
+        Transform targetTransform = box.GetTransform();
+        Vector3 targetLocalScale = targetTransform.localScale;
+
+        // 分離軸Ae1
+       // float rA = transform.localScale.x;
+        //loat rB = LenSegOnSeparateAxis(new Vector3(targetLocalScale.normalized.x, 0, 0), targetTransform);
+        //float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetLocalScale.normalized.x, 0, 0)));
+        //if (L > rA + rB) return false;
+        float rA = transform.localScale.x - 0.5f;
+        float rB = LenSegOnSeparateAxis(new Vector3(transform.localScale.normalized.x, 0, 0), targetTransform, false);
+        float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(transform.localScale.normalized.x, 0, 0)));
+        if (L > rA + rB) return false;
+
+        // 分離軸Ae2
+        rA = transform.localScale.y + 1.0f;
+        rB = LenSegOnSeparateAxis(new Vector3(0, transform.localScale.normalized.y, 0), targetTransform, false);
+        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, transform.localScale.normalized.y, 0)));
+        if (L > rA + rB) return false;
+
+        // 分離軸Ae3
+        rA = transform.localScale.z - 0.5f;
+        rB = LenSegOnSeparateAxis(new Vector3(0, 0, transform.localScale.normalized.z), targetTransform, false);
+        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, 0, transform.localScale.normalized.z)));
+        if (L > rA + rB) return false;
+
+        // 
+        rA = LenSegOnSeparateAxis(new Vector3(targetLocalScale.normalized.x, 0, 0), this.transform, true);
+        rB = targetTransform.localScale.x / 2.0f;
+        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetTransform.localScale.x, 0, 0)));
+        if (L > rA + rB) return false;
+
+        rA = LenSegOnSeparateAxis(new Vector3(0, targetLocalScale.normalized.y, 0), this.transform, true);
+        rB = targetTransform.localScale.y / 2.0f;
+        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, targetTransform.localScale.y, 0)));
+        if (L > rA + rB) return false;
+
+        rA = LenSegOnSeparateAxis(new Vector3(0, 0, targetLocalScale.normalized.z), this.transform, true);
+        rB = targetTransform.localScale.z / 2.0f;
+        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, 0, targetTransform.localScale.z)));
+        if (L > rA + rB) return false;
+
+        Vector3[] axesA = new Vector3[3]
+        {
+            new Vector3(transform.localScale.normalized.x, 0, 0), // X axis
+            new Vector3(0, transform.localScale.normalized.y, 0), // Y axis
+            new Vector3(0, 0, transform.localScale.normalized.z)  // Z axis
+        };
+
+        Vector3[] axesB = new Vector3[3]
+        {
+            new Vector3(targetLocalScale.normalized.x, 0, 0), // X axis
+            new Vector3(0, targetLocalScale.normalized.y, 0), // Y axis
+            new Vector3(0, 0, targetLocalScale.normalized.z)  // Z axis
+        };
+
+        for (int i = 0; i < axesA.Length; i++)
+        {
+            for (int j = 0; j < axesB.Length; j++)
+            {
+                Vector3 Cross = Vector3.Cross(axesA[i], axesB[j]);
+                rA = LenSegOnSeparateAxis(Cross, transform, true);
+                rB = LenSegOnSeparateAxis(Cross, targetTransform, false);
+                L = Mathf.Abs(Vector3.Dot(Interval, Cross));
+                if (L > rA + rB)
+                {
+                    return false; // No collision
+                }
+            }
+        }
+
+        return true;
     }
 
     public bool CheckCollisionWithCapsule(ICapsule capsule)
@@ -108,6 +182,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
         //{
         //    return false;
         //}
+        
         throw new System.NotImplementedException();
     }
 
@@ -359,5 +434,32 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
     //        Gizmos.DrawLine(center + upDirection + offset, center + downDirection + offset);
     //    }
     //}
+
+    // 分離軸に投影された軸成分から投影線分長を算出
+    public static float LenSegOnSeparateAxis(Vector3 Sep, Transform target, bool isCapsule)
+    {
+        Vector3 targetLocalScale = target.localScale;
+        if(isCapsule)
+        {
+            targetLocalScale.x -= 0.5f;
+            targetLocalScale.y += 1.0f;
+            targetLocalScale.z -= 0.5f;
+        }
+        else
+        {
+            targetLocalScale = targetLocalScale / 2.0f;
+        }
+        float sum = 0;
+
+        // X, Y, Zの各軸に対して処理を行う
+        for (int i = 0; i < 3; i++)
+        {
+            Vector3 axis = Vector3.zero;
+            axis[i] = targetLocalScale[i]; // 各軸のスケールを適用
+            sum += Mathf.Abs(Vector3.Dot(Sep, axis)); // 各軸に対する投影の長さを計算
+        }
+
+        return sum;
+    }
 
 }

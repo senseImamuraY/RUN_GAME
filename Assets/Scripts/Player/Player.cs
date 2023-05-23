@@ -95,7 +95,22 @@ public class Player : MonoBehaviour
                 Debug.Log("SphereÇ∆è’ìÀÇµÇ‹ÇµÇΩÅB");
             }
         }
-        Debug.Log("onFloor = " + onFloor);
+
+        foreach(ICube target in cubeTargetsList)
+        {
+            Debug.Log("CubeCount = "+ cubeTargetsList.Count);
+            if (capsuleCollider.CheckCollisionWithCube(target))
+            {
+                Debug.Log("CubeÇ∆è’ìÀÇµÇ‹ÇµÇΩÅB");
+            }
+        }
+
+        //planeTargetsList.Clear();
+        cubeTargetsList.Clear();
+        sphereTargetsList.Clear();
+
+
+        //Debug.Log("onFloor = " + onFloor);
         //this.transform.position = new Vector3(transform.position.x, playerPosition.y, transform.position.z);
         // SetCapsulePosition();
         //SetCubePosition();
