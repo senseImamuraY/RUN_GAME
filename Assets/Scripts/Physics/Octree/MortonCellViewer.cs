@@ -140,60 +140,60 @@ public class MortonCellViewer : MonoBehaviour
     /// <summary>
     /// On draw gizomos.
     /// </summary>
-    void OnDrawGizmos()
-    {
-        if (!Application.isPlaying)
-        {
-            return;
-        }
+    //void OnDrawGizmos()
+    //{
+    //    if (!Application.isPlaying)
+    //    {
+    //        return;
+    //    }
 
-        Vector3 tow = transform.right * _width;
-        Vector3 toh = transform.up * _height;
-        Vector3 tod = transform.forward * _depth;
+    //    Vector3 tow = transform.right * _width;
+    //    Vector3 toh = transform.up * _height;
+    //    Vector3 tod = transform.forward * _depth;
 
-        // XY平面
-        for (int i = 0; i <= Division; i++)
-        {
-            for (int j = 0; j <= Division; j++)
-            {
-                bool isCenter = (i == _halfDivision || j == _halfDivision);
-                Gizmos.color = isCenter ? _centerColor : _normalColor;
+    //    // XY平面
+    //    for (int i = 0; i <= Division; i++)
+    //    {
+    //        for (int j = 0; j <= Division; j++)
+    //        {
+    //            bool isCenter = (i == _halfDivision || j == _halfDivision);
+    //            Gizmos.color = isCenter ? _centerColor : _normalColor;
 
-                Vector3 offset = (transform.right * (_unitWidth * i + _left)) + (transform.up * (_unitHeight * j + _bottom)) + (transform.forward * _front);
-                Vector3 from = transform.position + offset;
-                Vector3 to = from + tod;
-                Gizmos.DrawLine(from, to);
-            }
-        }
+    //            Vector3 offset = (transform.right * (_unitWidth * i + _left)) + (transform.up * (_unitHeight * j + _bottom)) + (transform.forward * _front);
+    //            Vector3 from = transform.position + offset;
+    //            Vector3 to = from + tod;
+    //            Gizmos.DrawLine(from, to);
+    //        }
+    //    }
 
-        // YZ平面
-        for (int i = 0; i <= Division; i++)
-        {
-            for (int j = 0; j <= Division; j++)
-            {
-                bool isCenter = (i == _halfDivision || j == _halfDivision);
-                Gizmos.color = isCenter ? _centerColor : _normalColor;
+    //    // YZ平面
+    //    for (int i = 0; i <= Division; i++)
+    //    {
+    //        for (int j = 0; j <= Division; j++)
+    //        {
+    //            bool isCenter = (i == _halfDivision || j == _halfDivision);
+    //            Gizmos.color = isCenter ? _centerColor : _normalColor;
 
-                Vector3 offset = (transform.forward * (_unitDepth * i + _front)) + (transform.up * (_unitHeight * j + _bottom)) + (transform.right * _left);
-                Vector3 from = transform.position + offset;
-                Vector3 to = from + tow;
-                Gizmos.DrawLine(from, to);
-            }
-        }
+    //            Vector3 offset = (transform.forward * (_unitDepth * i + _front)) + (transform.up * (_unitHeight * j + _bottom)) + (transform.right * _left);
+    //            Vector3 from = transform.position + offset;
+    //            Vector3 to = from + tow;
+    //            Gizmos.DrawLine(from, to);
+    //        }
+    //    }
 
-        // XZ平面
-        for (int i = 0; i <= Division; i++)
-        {
-            for (int j = 0; j <= Division; j++)
-            {
-                bool isCenter = (i == _halfDivision || j == _halfDivision);
-                Gizmos.color = isCenter ? _centerColor : _normalColor;
+    //    // XZ平面
+    //    for (int i = 0; i <= Division; i++)
+    //    {
+    //        for (int j = 0; j <= Division; j++)
+    //        {
+    //            bool isCenter = (i == _halfDivision || j == _halfDivision);
+    //            Gizmos.color = isCenter ? _centerColor : _normalColor;
 
-                Vector3 offset = (transform.forward * (_unitDepth * i + _front)) + (transform.right * (_unitWidth * j + _left)) + (transform.up * _bottom);
-                Vector3 from = transform.position + offset;
-                Vector3 to = from + toh;
-                Gizmos.DrawLine(from, to);
-            }
-        }
-    }
+    //            Vector3 offset = (transform.forward * (_unitDepth * i + _front)) + (transform.right * (_unitWidth * j + _left)) + (transform.up * _bottom);
+    //            Vector3 from = transform.position + offset;
+    //            Vector3 to = from + toh;
+    //            Gizmos.DrawLine(from, to);
+    //        }
+    //    }
+    //}
 }

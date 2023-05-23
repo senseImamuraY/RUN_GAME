@@ -44,6 +44,10 @@ public class Player : MonoBehaviour
     private bool onFloor;
     private Vector3 planeNormal;
 
+
+
+    
+
     float prevPlaneY = 0;
     float planeY = 0;
     void Start()
@@ -54,7 +58,6 @@ public class Player : MonoBehaviour
         planeTargetsList = GameManager.Instance.GetLaneList;
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
         gravity = gameObject.GetComponent<Gravity>();
-        
     }
 
 

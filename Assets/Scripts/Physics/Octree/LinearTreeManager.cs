@@ -361,7 +361,7 @@ public class LinearTreeManager<T>
         }
         isClearing = true;
         // 結果リストをクリア
-          Debug.Log("collisionList = " + collisionList.Count);
+          //Debug.Log("collisionList = " + collisionList.Count);
         collisionList.Clear();
         
         isClearing = false;
@@ -402,8 +402,8 @@ public class LinearTreeManager<T>
         //collisionPairs = new HashSet<string>();
 
 
-        Debug.Log("Start  "+"data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-            + " calStac = " + colStac.Count);
+        //Debug.Log("Start  "+"data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
+        //    + " calStac = " + colStac.Count);
 
         int numRecursive = 0;
 
@@ -500,12 +500,12 @@ public class LinearTreeManager<T>
                 colStac.RemoveLast();
             }
         }
-        Debug.Log("NumRecursive = " + numRecursive);
+        //Debug.Log("NumRecursive = " + numRecursive);
 
-        Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-        + " calStac = " + colStac.Count);
+        //Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
+        //+ " calStac = " + colStac.Count);
 
-        Debug.Log("CollisionKey = " + collisionPairs.Count);
+        //Debug.Log("CollisionKey = " + collisionPairs.Count);
         return true;
 
 

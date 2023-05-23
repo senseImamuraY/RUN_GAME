@@ -1098,6 +1098,7 @@ MonoBehaviour:
   - {fileID: 315876161}
   - {fileID: 1404400903}
   - {fileID: 221855660}
+  linearTreeController: {fileID: 1289744987}
 --- !u!1 &1278903770 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3252721490665177360, guid: d8a0af34463586b448ead9aa0e1b52a2,
@@ -1147,6 +1148,9 @@ MonoBehaviour:
   - {fileID: 711325999}
   - {fileID: 221855660}
   - {fileID: 684909081}
+  - {fileID: 1361356586}
+  - {fileID: 1541298015}
+  - {fileID: 1404400903}
 --- !u!4 &1289744988
 Transform:
   m_ObjectHideFlags: 0

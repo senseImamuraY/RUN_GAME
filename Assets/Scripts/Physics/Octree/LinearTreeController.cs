@@ -93,6 +93,9 @@ public class LinearTreeController : MonoBehaviour
 	}
 
     private List<GameObject> _collisionList = new List<GameObject>();
+
+    public List<GameObject> GetCollisionList(){ return _collisionList; }
+
     void Update()
     {
         // Check collisions
@@ -107,6 +110,7 @@ public class LinearTreeController : MonoBehaviour
         //    MortonAgent agent = obj.GetComponent<MortonAgent>();
         //    agent.Manager = _manager;
         //}
+
     }
 
     void OnDrawGizmos()
@@ -132,7 +136,7 @@ public class LinearTreeController : MonoBehaviour
             //Debug.Log("g1 = " + g0.name +" g2 = " + g1.name);
             if(g0.name == "Player" || g1.name == "Player")
             {
-                //Debug.Log("g1 = " + g0.name + " g2 = " + g1.name);
+                Debug.Log("g1 = " + g0.name + " g2 = " + g1.name);
             }
         }
 

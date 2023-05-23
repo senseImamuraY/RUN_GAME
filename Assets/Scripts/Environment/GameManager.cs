@@ -42,6 +42,10 @@ public class GameManager : MonoBehaviour
     int levelNum; // 現在の進行数
     int stageNum; // 読み込むステージ番号
 
+    [SerializeField]
+    private LinearTreeController linearTreeController;
+
+    private List<GameObject> collisionList;
 
     private void Awake()
     {
@@ -54,6 +58,38 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        collisionList = linearTreeController.GetCollisionList();
+
+        foreach (GameObject target in collisionList)
+        {
+            if (target.GetComponent<ISphere>() != null)
+            {
+                Debug.Log("Sphereに追加されました。");
+                sphereList.Add(target.GetComponent<ISphere>());
+            }
+            else if (target.GetComponent<ICube>() != null)
+            {
+                Debug.Log("Boxに追加されました。");
+                cubeList.Add(target.GetComponent<ICube>());
+                Debug.Log(cubeList);
+            }
+            else if (target.GetComponent<ICapsule>() != null)
+            {
+                Debug.Log("Capsuleに追加されました。");
+                capsuleList.Add(target.GetComponent<ICapsule>());
+            }
+            else if (target.GetComponent<IPlane>() != null)
+            {
+                Debug.Log("Planeに追加されました。");
+                planeList.Add(target.GetComponent<IPlane>());
+            }
+            else
+            {
+                Debug.Log("どれにも追加されませんでした");
+            }
+        }
+
     }
 
 
@@ -82,8 +118,44 @@ public class GameManager : MonoBehaviour
         // ステータスをPlayに
         status = GAME_STATUS.Play;
 
+        
+
         // ターゲットリストの中からどのインターフェイスを所持しているのかを分類
-        foreach (GameObject target in targetList)
+        //foreach (GameObject target in collisionList)
+        //{
+        //    if (target.GetComponent<ISphere>() != null)
+        //    {
+        //        Debug.Log("Sphereに追加されました。");
+        //        sphereList.Add(target.GetComponent<ISphere>());
+        //    }
+        //    else if (target.GetComponent<ICube>() != null)
+        //    {
+        //        Debug.Log("Boxに追加されました。");
+        //        cubeList.Add(target.GetComponent<ICube>());
+        //        Debug.Log(cubeList);
+        //    }
+        //    else if (target.GetComponent<ICapsule>() != null)
+        //    {
+        //        Debug.Log("Capsuleに追加されました。");
+        //        capsuleList.Add(target.GetComponent<ICapsule>());
+        //    }
+        //    else if (target.GetComponent<IPlane>() != null)
+        //    {
+        //        Debug.Log("Planeに追加されました。");
+        //        planeList.Add(target.GetComponent<IPlane>());
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("どれにも追加されませんでした");
+        //    }
+        //}
+    }
+
+    private void FixedUpdate()
+    {
+        collisionList = linearTreeController.GetCollisionList();
+
+        foreach (GameObject target in collisionList)
         {
             if (target.GetComponent<ISphere>() != null)
             {
@@ -112,9 +184,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     void Update()
     {
+        
         if (status == GAME_STATUS.Clear)
         {
             // 現在のステージで獲得したコインの枚数
