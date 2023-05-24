@@ -61,34 +61,7 @@ public class GameManager : MonoBehaviour
 
         collisionList = linearTreeController.GetCollisionList();
 
-        foreach (GameObject target in collisionList)
-        {
-            if (target.GetComponent<ISphere>() != null)
-            {
-                Debug.Log("Sphereに追加されました。");
-                sphereList.Add(target.GetComponent<ISphere>());
-            }
-            else if (target.GetComponent<ICube>() != null)
-            {
-                Debug.Log("Boxに追加されました。");
-                cubeList.Add(target.GetComponent<ICube>());
-                Debug.Log(cubeList);
-            }
-            else if (target.GetComponent<ICapsule>() != null)
-            {
-                Debug.Log("Capsuleに追加されました。");
-                capsuleList.Add(target.GetComponent<ICapsule>());
-            }
-            else if (target.GetComponent<IPlane>() != null)
-            {
-                Debug.Log("Planeに追加されました。");
-                planeList.Add(target.GetComponent<IPlane>());
-            }
-            else
-            {
-                Debug.Log("どれにも追加されませんでした");
-            }
-        }
+
 
     }
 
@@ -118,9 +91,38 @@ public class GameManager : MonoBehaviour
         // ステータスをPlayに
         status = GAME_STATUS.Play;
 
-        
+
 
         // ターゲットリストの中からどのインターフェイスを所持しているのかを分類
+        foreach (GameObject target in collisionList)
+        {
+            if (target.GetComponent<ISphere>() != null)
+            {
+                Debug.Log("Sphereに追加されました。");
+                sphereList.Add(target.GetComponent<ISphere>());
+            }
+            else if (target.GetComponent<ICube>() != null)
+            {
+                Debug.Log("Boxに追加されました。");
+                cubeList.Add(target.GetComponent<ICube>());
+                Debug.Log(cubeList);
+            }
+            else if (target.GetComponent<ICapsule>() != null)
+            {
+                Debug.Log("Capsuleに追加されました。");
+                capsuleList.Add(target.GetComponent<ICapsule>());
+            }
+            else if (target.GetComponent<IPlane>() != null)
+            {
+                Debug.Log("Planeに追加されました。");
+                planeList.Add(target.GetComponent<IPlane>());
+            }
+            else
+            {
+                Debug.Log("どれにも追加されませんでした");
+            }
+        }
+
         //foreach (GameObject target in collisionList)
         //{
         //    if (target.GetComponent<ISphere>() != null)

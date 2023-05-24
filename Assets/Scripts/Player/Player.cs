@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
         // è∞Ç∆è’ìÀÇµÇƒÇ¢ÇÈÇ©ämîF
         foreach (IPlane target in planeTargetsList)
         {
+            //Debug.Log("PlaneCount = " + planeTargetsList.Count);
             if (capsuleCollider.CheckCollisionWithPlane(target))
             {
                 onFloor = true;
@@ -105,7 +106,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        //planeTargetsList.Clear();
+        planeTargetsList.Clear();
         cubeTargetsList.Clear();
         sphereTargetsList.Clear();
 
