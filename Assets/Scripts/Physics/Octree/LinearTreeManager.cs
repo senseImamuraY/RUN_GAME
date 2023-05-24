@@ -376,7 +376,7 @@ public class LinearTreeManager<T>
         LinkedList<T> colStac = new LinkedList<T>();
         HashClear();
         GetCollisionList(0, collisionList, colStac, collisionPairs);
-
+        Debug.Log("collisionList = " + collisionList.Count);
         return collisionList.Count;
     }
 
@@ -414,33 +414,26 @@ public class LinearTreeManager<T>
             TreeData<T> next = data.Next;
             while (next != null)
             {
-                string pairKey = $"{data.Object}-{next.Object}";
-                if (!collisionPairs.Contains(pairKey))
-                {
-                    collisionList.Add(data.Object);
-                    collisionList.Add(next.Object);
-                    collisionPairs.Add(pairKey);
-                }
-
+  
 
                 //// 衝突リスト作成
-                //collisionList.Add(data.Object);
-                //collisionList.Add(next.Object);
+                collisionList.Add(data.Object);
+                collisionList.Add(next.Object);
                 next = next.Next;
             }
 
             // 衝突スタックと衝突リスト作成
             foreach (var obj in colStac)
             {
-                string pairKey = $"{data.Object}-{obj}";
-                if (!collisionPairs.Contains(pairKey))
-                {
-                    collisionList.Add(data.Object);
-                    collisionList.Add(obj);
-                    collisionPairs.Add(pairKey);
-                }
-                //collisionList.Add(data.Object);
-                //collisionList.Add(obj);
+    //            string pairKey = $"{data.Object}-{obj}";
+      //          if (!collisionPairs.Contains(pairKey))
+        //        {
+        //            collisionList.Add(data.Object);
+         //           collisionList.Add(obj);
+         //           collisionPairs.Add(pairKey);
+             //   }
+                collisionList.Add(data.Object);
+                collisionList.Add(obj);
             }
 
             data = data.Next;

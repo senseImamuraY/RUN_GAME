@@ -112,17 +112,20 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Capsuleに追加されました。");
                 capsuleList.Add(target.GetComponent<ICapsule>());
             }
-            else if (target.GetComponent<IPlane>() != null)
-            {
-                Debug.Log("Planeに追加されました。");
-                planeList.Add(target.GetComponent<IPlane>());
-            }
             else
             {
                 Debug.Log("どれにも追加されませんでした");
             }
         }
 
+        foreach (GameObject target in targetList)
+        {
+            if (target.GetComponent<IPlane>() != null)
+            {
+                Debug.Log("Planeに追加されました。");
+                planeList.Add(target.GetComponent<IPlane>());
+            }
+        }
         //foreach (GameObject target in collisionList)
         //{
         //    if (target.GetComponent<ISphere>() != null)
@@ -174,11 +177,6 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Capsuleに追加されました。");
                 capsuleList.Add(target.GetComponent<ICapsule>());
-            }
-            else if (target.GetComponent<IPlane>() != null)
-            {
-                Debug.Log("Planeに追加されました。");
-                planeList.Add(target.GetComponent<IPlane>());
             }
             else
             {

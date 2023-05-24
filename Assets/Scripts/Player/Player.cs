@@ -66,6 +66,9 @@ public class Player : MonoBehaviour
     {
         if (transform.position.y < -10) return;
         onFloor = false;
+        //cubeTargetsList = GameManager.Instance.GetCubeList;
+        //sphereTargetsList = GameManager.Instance.GetSphereList;
+        //planeTargetsList = GameManager.Instance.GetLaneList;
         SetCapsulePosition();
         // °‚ÆÕ“Ë‚µ‚Ä‚¢‚é‚©Šm”F
         foreach (IPlane target in planeTargetsList)
@@ -106,7 +109,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        planeTargetsList.Clear();
+        //planeTargetsList.Clear();
         cubeTargetsList.Clear();
         sphereTargetsList.Clear();
 
