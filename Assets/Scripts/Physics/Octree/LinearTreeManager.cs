@@ -11,6 +11,7 @@ public class LinearTreeManager<T>
 {
     #region Variables
     // 分割最大数
+    //private readonly int _MaxLevel = 3;
     private readonly int _MaxLevel = 4;
 
     private int[] _pow;
@@ -399,11 +400,11 @@ public class LinearTreeManager<T>
         // ルート空間に登録されているリンクリストの最初の要素を取り出す
         TreeData<T> data = _cellList[elem].FirstData;
 
-        //collisionPairs = new HashSet<string>();
+        collisionPairs = new HashSet<string>();
 
 
-        //Debug.Log("Start  "+"data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-        //    + " calStac = " + colStac.Count);
+        Debug.Log("Start  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
+            + " calStac = " + colStac.Count);
 
         int numRecursive = 0;
 
@@ -414,24 +415,31 @@ public class LinearTreeManager<T>
             TreeData<T> next = data.Next;
             while (next != null)
             {
-  
+                string pairKey = $"{data.Object}-{next.Object}";
+                if (!collisionPairs.Contains(pairKey))
+                {
+                    collisionList.Add(data.Object);
+                    collisionList.Add(next.Object);
+                    collisionPairs.Add(pairKey);
+                }
+
 
                 //// 衝突リスト作成
-                collisionList.Add(data.Object);
-                collisionList.Add(next.Object);
+                //collisionList.Add(data.Object);
+                //collisionList.Add(next.Object);
                 next = next.Next;
             }
 
             // 衝突スタックと衝突リスト作成
             foreach (var obj in colStac)
             {
-    //            string pairKey = $"{data.Object}-{obj}";
-      //          if (!collisionPairs.Contains(pairKey))
-        //        {
-        //            collisionList.Add(data.Object);
-         //           collisionList.Add(obj);
-         //           collisionPairs.Add(pairKey);
-             //   }
+                string pairKey = $"{data.Object}-{obj}";
+                if (!collisionPairs.Contains(pairKey))
+                {
+                    collisionList.Add(data.Object);
+                    collisionList.Add(obj);
+                    collisionPairs.Add(pairKey);
+                }
                 collisionList.Add(data.Object);
                 collisionList.Add(obj);
             }
@@ -495,8 +503,8 @@ public class LinearTreeManager<T>
         }
         //Debug.Log("NumRecursive = " + numRecursive);
 
-        //Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-        //+ " calStac = " + colStac.Count);
+        Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
+        + " calStac = " + colStac.Count);
 
         //Debug.Log("CollisionKey = " + collisionPairs.Count);
         return true;

@@ -110,8 +110,8 @@ public class Player : MonoBehaviour
         }
 
         //planeTargetsList.Clear();
-        cubeTargetsList.Clear();
-        sphereTargetsList.Clear();
+        //cubeTargetsList.Clear();
+        //sphereTargetsList.Clear();
 
 
         //Debug.Log("onFloor = " + onFloor);

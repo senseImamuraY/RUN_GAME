@@ -10,7 +10,7 @@ using static Unity.Burst.Intrinsics.X86.Avx;
 using static UnityEngine.LightAnchor;
 using static UnityEngine.Rendering.DebugUI;
 
-public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule, IBounds
+public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 {
     /// <summary>
     /// Ž²‚Ì•ûŒü

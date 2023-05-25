@@ -34,15 +34,6 @@ public class LinearTreeController : MonoBehaviour
     {
         get
         {
-            if (_cellViewer == null)
-            {
-                MortonCellViewer viewer = GetComponent<MortonCellViewer>();
-                if (viewer == null)
-                {
-                    viewer = gameObject.AddComponent<MortonCellViewer>();
-                }
-                _cellViewer = viewer;
-            }
             return _cellViewer;
         }
     }
@@ -59,7 +50,7 @@ public class LinearTreeController : MonoBehaviour
     #region MonoBehaviour
     void OnValidate()
     {
-        if (!Application.isPlaying)
+        if (!Application.isPlaying || _cellViewer == null)
         {
             return;
         }
@@ -75,6 +66,18 @@ public class LinearTreeController : MonoBehaviour
 
     void Awake()
     {
+
+        MortonCellViewer viewer = GetComponent<MortonCellViewer>();
+        if (viewer == null)
+        {
+            viewer = gameObject.AddComponent<MortonCellViewer>();
+        }
+        _cellViewer = viewer;
+    }
+
+	void Start()
+    {
+        // Set initial values
         CellViewer.Left = _left;
         CellViewer.Right = _right;
         CellViewer.Top = _top;
@@ -82,10 +85,7 @@ public class LinearTreeController : MonoBehaviour
         CellViewer.Front = _front;
         CellViewer.Back = _back;
         CellViewer.Division = 1 << _level;
-    }
 
-	void Start()
-    {
         _manager = new LinearTreeManager<GameObject>(_level, _left, _top, _right, _bottom, _front, _back);
 
         // オブジェクトを仮登録してみる
@@ -96,11 +96,20 @@ public class LinearTreeController : MonoBehaviour
 
     public List<GameObject> GetCollisionList(){ return _collisionList; }
 
-    void Update()
+    //void Update()
+    void FixedUpdate()
     {
+        // Update values if needed
+        CellViewer.Left = _left;
+        CellViewer.Right = _right;
+        CellViewer.Top = _top;
+        CellViewer.Bottom = _bottom;
+        CellViewer.Front = _front;
+        CellViewer.Back = _back;
+        CellViewer.Division = 1 << _level;
         // Check collisions
         //if (_manager.isClearing) return; 
-        _manager.GetAllCollisionList(_collisionList);
+        //_manager.GetAllCollisionList(_collisionList);
 
         //if (Input.GetKeyDown(KeyCode.A))
         //{

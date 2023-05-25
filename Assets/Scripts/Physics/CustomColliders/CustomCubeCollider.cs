@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
-public class CustomCubeCollider : MonoBehaviour, ICollider, ICube, IBounds
+public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
 {
     //[SerializeField]
     //private float width, height;

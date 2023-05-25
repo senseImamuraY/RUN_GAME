@@ -3,7 +3,7 @@ using System.Collections.Generic;
 //using System.Numerics;
 using UnityEngine;
 
-public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane, IBounds
+public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
 {
 
     //Vector3 GetPointOfPlane { get; }

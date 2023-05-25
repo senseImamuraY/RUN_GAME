@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
@@ -62,8 +63,36 @@ public class GameManager : MonoBehaviour
         collisionList = linearTreeController.GetCollisionList();
 
 
+        foreach (GameObject target in targetList)
+            //{
+        if (target.GetComponent<IPlane>() != null)
+        {
+            Debug.Log("Planeに追加されました。");
+            planeList.Add(target.GetComponent<IPlane>());
+        }
+        else if (target.GetComponent<ISphere>() != null)
+        {
+            Debug.Log("Sphereに追加されました。");
+            sphereList.Add(target.GetComponent<ISphere>());
+        }
+        else if (target.GetComponent<ICube>() != null)
+        {
+            Debug.Log("Boxに追加されました。");
+            cubeList.Add(target.GetComponent<ICube>());
+            Debug.Log(cubeList);
+        }
+        else if (target.GetComponent<ICapsule>() != null)
+        {
+            Debug.Log("Capsuleに追加されました。");
+            capsuleList.Add(target.GetComponent<ICapsule>());
+        }
+            else
+        {
+            Debug.Log("どれにも追加されませんでした");
+        }
 
     }
+
 
 
     void Start()
@@ -94,38 +123,31 @@ public class GameManager : MonoBehaviour
 
 
         // ターゲットリストの中からどのインターフェイスを所持しているのかを分類
-        foreach (GameObject target in collisionList)
-        {
-            if (target.GetComponent<ISphere>() != null)
-            {
-                Debug.Log("Sphereに追加されました。");
-                sphereList.Add(target.GetComponent<ISphere>());
-            }
-            else if (target.GetComponent<ICube>() != null)
-            {
-                Debug.Log("Boxに追加されました。");
-                cubeList.Add(target.GetComponent<ICube>());
-                Debug.Log(cubeList);
-            }
-            else if (target.GetComponent<ICapsule>() != null)
-            {
-                Debug.Log("Capsuleに追加されました。");
-                capsuleList.Add(target.GetComponent<ICapsule>());
-            }
-            else
-            {
-                Debug.Log("どれにも追加されませんでした");
-            }
-        }
+        //foreach (GameObject target in collisionList)
+        //{
+        //    if (target.GetComponent<ISphere>() != null)
+        //    {
+        //        Debug.Log("Sphereに追加されました。");
+        //        sphereList.Add(target.GetComponent<ISphere>());
+        //    }
+        //    else if (target.GetComponent<ICube>() != null)
+        //    {
+        //        Debug.Log("Boxに追加されました。");
+        //        cubeList.Add(target.GetComponent<ICube>());
+        //        Debug.Log(cubeList);
+        //    }
+        //    //else if (target.GetComponent<ICapsule>() != null)
+        //    //{
+        //    //    Debug.Log("Capsuleに追加されました。");
+        //    //    capsuleList.Add(target.GetComponent<ICapsule>());
+        //    //}
+        //    else
+        //    {
+        //        Debug.Log("どれにも追加されませんでした");
+        //    }
+        //}
 
-        foreach (GameObject target in targetList)
-        {
-            if (target.GetComponent<IPlane>() != null)
-            {
-                Debug.Log("Planeに追加されました。");
-                planeList.Add(target.GetComponent<IPlane>());
-            }
-        }
+
         //foreach (GameObject target in collisionList)
         //{
         //    if (target.GetComponent<ISphere>() != null)
@@ -158,31 +180,31 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        collisionList = linearTreeController.GetCollisionList();
+        //collisionList = linearTreeController.GetCollisionList();
 
-        foreach (GameObject target in collisionList)
-        {
-            if (target.GetComponent<ISphere>() != null)
-            {
-                Debug.Log("Sphereに追加されました。");
-                sphereList.Add(target.GetComponent<ISphere>());
-            }
-            else if (target.GetComponent<ICube>() != null)
-            {
-                Debug.Log("Boxに追加されました。");
-                cubeList.Add(target.GetComponent<ICube>());
-                Debug.Log(cubeList);
-            }
-            else if (target.GetComponent<ICapsule>() != null)
-            {
-                Debug.Log("Capsuleに追加されました。");
-                capsuleList.Add(target.GetComponent<ICapsule>());
-            }
-            else
-            {
-                Debug.Log("どれにも追加されませんでした");
-            }
-        }
+        //foreach (GameObject target in collisionList)
+        //{
+        //    if (target.GetComponent<ISphere>() != null)
+        //    {
+        //        Debug.Log("Sphereに追加されました。");
+        //        sphereList.Add(target.GetComponent<ISphere>());
+        //    }
+        //    else if (target.GetComponent<ICube>() != null)
+        //    {
+        //        Debug.Log("Boxに追加されました。");
+        //        cubeList.Add(target.GetComponent<ICube>());
+        //        Debug.Log(cubeList);
+        //    }
+        //    //else if (target.GetComponent<ICapsule>() != null)
+        //    //{
+        //    //    Debug.Log("Capsuleに追加されました。");
+        //    //    capsuleList.Add(target.GetComponent<ICapsule>());
+        //    //}
+        //    else
+        //    {
+        //        Debug.Log("どれにも追加されませんでした");
+        //    }
+        //}
     }
     void Update()
     {
