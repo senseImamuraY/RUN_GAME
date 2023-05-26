@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
-    //public float velocity = 0; 
-    //public float gravity = -9.81f; // 重力の大きさ
     public float groundHeight = 0f; // 地面の高さ
     public float groundCheckThreshold = 0.1f; // 接地判定の閾値
     public Vector3 velocity = new Vector3(0 ,0, 0); // 速度
@@ -50,7 +48,6 @@ public class Gravity : MonoBehaviour
     void Update()
     {
         // 接地判定
-        //isGrounded = transform.position.y <= groundHeight + groundCheckThreshold ;
         Debug.Log("isGravity = " + isGrounded);
     }
 
@@ -58,30 +55,17 @@ public class Gravity : MonoBehaviour
     public void VelocityUpdate()
     {
 
-    
-        
-
-        //if (isGrounded && velocity.y <= 0)
-        //if (isGrounded && velocity.y <= 0)
         if (isGrounded)
         {
             // 接地している場合、y方向の速度をリセット
             //Debug.Log("重力が掛かっていません");
             velocity.y = 0f;
-            //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-            //transform.position = new Vector3(transform.position.x, groundHeight, transform.position.z);
         }
         else if(OnObject && isColliding)
         {
             Debug.Log("Objectに乗っている");
             velocity.y = 0f;
             transform.position = new Vector3(transform.position.x, objectHeight, transform.position.z);
-        }
-        else if (!isGrounded && !OnObject)
-        {
-            //Debug.Log("重力がかかっています");
-            // 重力を適用
-           
         }
         if (player.isJump && isGrounded)
         {
@@ -94,18 +78,10 @@ public class Gravity : MonoBehaviour
 
         }
 
-        //velocity.y = Mathf.Round(velocity.y * 10f) / 10f;  // myFloatの小数点第2位を切り上げる
-        //if (Mathf.Abs(prevVelocity.y - velocity.y) <= 0.1)
-        //{
-        //    velocity = (prevVelocity + velocity) / 2;
-        //}
         transform.position += velocity * Time.fixedDeltaTime;
         velocity.y += gravity * Time.fixedDeltaTime;
 
         prevVelocity = velocity;
-        //Debug.Log("Velocity = " +  velocity.y);
-        //Debug.Log("velocity.y = " +  velocity.y);
-        //Debug.Log("velocity.y = " + velocity.y);
         // 速度を使ってオブジェクトを移動
         
     } 
@@ -127,9 +103,4 @@ public class Gravity : MonoBehaviour
         Debug.Log("isColliding = "+isColliding);
         Debug.Log("onObject = " + OnObject);
     }
-
-    //public bool SetIsGrounded(bool value)
-    //{
-    //    return isGrounded = value;
-    //}
 }

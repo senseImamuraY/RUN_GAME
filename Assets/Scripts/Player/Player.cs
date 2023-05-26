@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
 
     CustomCapsuleCollider capsuleCollider;
     Gravity gravity;
-    //CustomCubeCollider cubeCollider;
 
     Vector3 endPos;
     Vector3 previousPos, currentPos;
@@ -44,10 +43,6 @@ public class Player : MonoBehaviour
     private bool onFloor;
     private Vector3 planeNormal;
 
-
-
-    
-
     float prevPlaneY = 0;
     float planeY = 0;
     void Start()
@@ -66,9 +61,6 @@ public class Player : MonoBehaviour
     {
         if (transform.position.y < -10) return;
         onFloor = false;
-        //cubeTargetsList = GameManager.Instance.GetCubeList;
-        //sphereTargetsList = GameManager.Instance.GetSphereList;
-        //planeTargetsList = GameManager.Instance.GetLaneList;
         SetCapsulePosition();
         // 床と衝突しているか確認
         foreach (IPlane target in planeTargetsList)
@@ -108,16 +100,6 @@ public class Player : MonoBehaviour
                 Debug.Log("Cubeと衝突しました。");
             }
         }
-
-        //planeTargetsList.Clear();
-        //cubeTargetsList.Clear();
-        //sphereTargetsList.Clear();
-
-
-        //Debug.Log("onFloor = " + onFloor);
-        //this.transform.position = new Vector3(transform.position.x, playerPosition.y, transform.position.z);
-        // SetCapsulePosition();
-        //SetCubePosition();
         // プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
@@ -140,18 +122,10 @@ public class Player : MonoBehaviour
             // スワイプによる移動距離を取得
             currentPos = Input.mousePosition;
             float diffDistance = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
-            //Debug.Log($"{diffDistance}");
-            //if(diffDistance > 6)
-            //{
-            //    Debug.Log("いっぱい移動しました。");
-            //}
 
             diffDistance *= sensitivity;
-           // Debug.Log("diffDistance = "+ diffDistance);
             // 次のローカルx座標を設定 ※道の外にでないように
             float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
-            //transform.localPosition = new Vector3(newX, 0, 0);
-
             moveDistance += speed * Time.deltaTime;
             if (onFloor)
             {
@@ -163,61 +137,17 @@ public class Player : MonoBehaviour
                 float angle = Mathf.Acos(dotProduct); // ラジアンで得られる
                 //Debug.Log("angle = " + angle);
                 // tanθを計算
-                //float tanTheta = 20.0f;
                 float tanTheta = Mathf.Tan(angle);
-                //Debug.Log("tanTheta = " + tanTheta);
-               // Debug.Log("y = " + (diffDistance * tanTheta));
+
                 float y = diffDistance * tanTheta;
 
                 float d = planeNormal.x * newX + planeNormal.y * this.transform.position.y + planeNormal.z * moveDistance;
                 //d = Mathf.Floor(d * 100 + 0.5f) / 100;
                 planeY = -(planeNormal.x * newX + planeNormal.z * moveDistance + d) / planeNormal.y;
-                //planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
-
-                //Debug.Log("planeY in Player = " +  planeY);
-                //Debug.Log("planeY = " + planeY);
-                //Debug.Log("praviouPos - currentPos = " + (playerPosition.x - prevPlayerPosition.x));
-
-                //if (playerPosition.x - prevPlayerPosition.x < 0)
-                //{
                 float diffY = tanTheta * playerPosition.x - prevPlayerPosition.x;
-                //    //Debug.Log("diffY = " + diffY);
-                //gravity.SetVelocity(diffY*1000f);
-                //    transform.position = new Vector3(newX, planeY  , moveDistance);
-                //}
-                //else
-                //{
-                //    transform.position = new Vector3(newX, planeY, moveDistance);
-                //}
-
                 planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
-                //float maxYChange = 0.1f;
-                //Debug.Log("planeY = " + planeY);
-                //planeY = y;
-                //if (Mathf.Abs(planeY - prevPlaneY) < maxYChange)
-                {
-                    if (planeY > prevPlaneY)
-                    {
-                   //     planeY = prevPlaneY;
-                    }
-                    else
-                    {
-                    //    planeY = prevPlaneY;
-                    }
-                    //transform.position = new Vector3(newX, planeY, moveDistance);
-                }
-                
-                //if()
                 prevPlaneY = planeY;
-                //Debug.Log("prevPlaneY = " + prevPlaneY);
-                //transform.position = new Vector3(newX, y, moveDistance);
-                //transform.position = new Vector3(newX, planeY, moveDistance);
             }
-            else
-            {
-                //transform.position = new Vector3(newX, this.transform.position.y, moveDistance);
-            }
-           // transform.position = new Vector3(newX, planeY, moveDistance);
             transform.position = new Vector3(newX, transform.position.y, moveDistance);
             prevPlayerPosition = playerPosition;
             // タップ位置を更新
@@ -258,31 +188,16 @@ public class Player : MonoBehaviour
 
     public void SetCapsulePosition()
     {
-        //float tmp = this.transform.position.y + 1f;
-        //tmp = Mathf.Round(tmp * 10f) / 10f;
-        //capsuleCollider.SetCenter(new Vector3(this.transform.position.x, tmp, this.transform.position.z));
-        //capsuleCollider.SetCapsuleBottom();
         capsuleCollider.SetCenter(this.transform.position + new Vector3(0, 1f, 0));
-        //capsuleCollider.SetCenter(this.transform.position + new Vector3(0, 1f, 0));
         capsuleCollider.SetCapsuleBottom();
     }
 
     public void setPlayerPosition(float position)
     {
-        //if (Mathf.Abs(prevPlayerPosition.y - playerPosition.y) <= 0.1)
-        //{
-        //    playerPosition = (prevPlayerPosition + playerPosition) / 2;
-        //}
         playerPosition = new Vector3(transform.position.x, position, transform.position.z);
-        //playerPosition.y = Mathf.Round(playerPosition.y * 10f) / 10f;
         this.transform.position = playerPosition;
-        //prevPlayerPosition = playerPosition;
 
     }
-    //public void SetCubePosition()
-    //{
-    //    cubeCollider.SetCenter(this.transform.position);
-    //}
 
     private void ClimbOnCube(ICube cube)
     {

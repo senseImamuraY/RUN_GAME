@@ -8,12 +8,6 @@ using static UnityEngine.Rendering.DebugUI;
 [System.Serializable]
 public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
 {
-    //[SerializeField]
-    //private float width, height;
-    //public float GetWidth { get { return width; } }
-    //public float GetHeight { get { return height; } }
-    //public float GetHalfWidth { get { return width * 0.5f; } }
-    //public float GetHalfHeight { get { return height * 0.5f; } }
     [SerializeField]
     private bool isGround = false;
     public bool IsGround { get { return isGround; } }
@@ -24,8 +18,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     public void SetColliding(bool value) { isColliding = value; }
 
     [SerializeField]
-    private Vector3 center;
-    //public Vector3 GetAndSetCenter { get { return center; } set { center = value; } }  
+    private Vector3 center; 
     public Vector3 GetCenter { get { return center; } }
 
     public void SetCenter(Vector3 value) { center = value; }
@@ -53,7 +46,6 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     }
     public bool CheckCollisionWithCube(ICube cube)
     {
-        //Debug.Log("isColliding = " + isColliding);
         Vector3 v3SubAbs = this.GetCenter - cube.GetCenter;
         v3SubAbs = new Vector3(Mathf.Abs(v3SubAbs.x), Mathf.Abs(v3SubAbs.y), Mathf.Abs(v3SubAbs.z));
         Vector3 v3AddScale = (this.GetSize + cube.GetSize) / 2.0f;

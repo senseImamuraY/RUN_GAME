@@ -44,12 +44,9 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
     void Start()
     {
         planeRotation = this.transform.rotation;
-        //center = transform.position;
-        //VectorX = new Vector3(xSize, transform.position.y, 0f);
-        //VectorZ = new Vector3(0f, transform.position.y, zSize);
         VectorX = transform.TransformVector(new Vector3(xSize, transform.position.y, 0f));
-        VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));        //VectorX = transform.TransformVector(new Vector3(xSize, transform.position.y, 0f));
-        //VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));
+        VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));
+
     }
 
     
