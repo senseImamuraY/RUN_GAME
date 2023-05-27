@@ -284,12 +284,12 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         // tanθを計算
         float tanTheta = Mathf.Tan(angle);
         //Debug.Log("tanTheta = " + tanTheta);
-
+        //Debug.Log("CpasuleBottom.x =" + capsuleBottom.x);
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
         
         float diff = capsuleBottom.y - planeY;
-        //Debug.Log("diff = " + diff);
+        Debug.Log("diff = " + diff);
         //if (Mathf.Abs(prevY - planeY) <= 0.1)
         //{
         //    planeY = prevY;
@@ -326,20 +326,21 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         // minimumDistanceの値がそのままでは大きすぎるので、割って値を調整
         minimumDistance = minimumDistance * 0.0000001f;
         //Debug.Log("miniDistance = " + minimumDistance);
+        //Debug.Log("planeY = " + planeY);
 
-
+        //カプセルをYにする
 
         //if (minimumDistance <= 1f)
-        //    //if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
-        //    //if (minimumDistance >= -0.1f && minimumDistance <= 1f)
-        //{
+        //    if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
+        //        //if (minimumDistance >= -0.1f && minimumDistance <= 1f)
+        //    {
         //    player.setPlayerPosition(planeY);
-        //    prevY = planeY;
+            
         //    Debug.Log("平面上に立っています");
         //    return true;
 
         //}
-        //else 
+        //else
         //{
         //    Debug.Log("空中かオブジェクト上にいます");
         //    return false;
@@ -349,17 +350,20 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //Debug.Log("diff = " + diff);
         //Debug.Log("speed * tanTheta = " + speed * tanTheta);
 
-        if (0.0f < diff && diff < 0.5f)
-        {
-            //Debug.Log("ぶれ対策");
-            return true;
-        }
-         if (diff <= speed * tanTheta)
+        //if (0.0f < diff && diff < 0.5f)
+        ////if (0.0f < diff && diff < 0.5f || -0.5f < diff && diff < 0.0f)
+        //{
+        //    //Debug.Log("ぶれ対策");
+        //    //player.setPlayerPosition(planeY + diff);
+        //    return true;
+        //}
+        if (diff <= speed * tanTheta)
         {
             //Debug.Log("CollisionでplaneYを設定　= " + planeY);
+
             player.setPlayerPosition(planeY);
-            
-            //Debug.Log("tanTheta = " + tanTheta);
+            //capsuleBottom.y = planeY;
+            Debug.Log("tanTheta = " + tanTheta);
             return true;
         }
         else

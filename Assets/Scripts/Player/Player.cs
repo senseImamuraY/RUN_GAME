@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (transform.position.y < -10) return;
+        //if (transform.position.y < -10) return;
         onFloor = false;
         SetCapsulePosition();
         // °‚ÆÕ“Ë‚µ‚Ä‚¢‚é‚©Šm”F
@@ -114,7 +114,8 @@ public class Player : MonoBehaviour
             prevPlayerPosition = this.transform.position;
         }
 
-        if (Input.GetMouseButton(0))
+        if (true)
+        //if (Input.GetMouseButton(0))
         {
 
             animator.SetBool("IsRunning", true);
@@ -145,7 +146,8 @@ public class Player : MonoBehaviour
                 //d = Mathf.Floor(d * 100 + 0.5f) / 100;
                 planeY = -(planeNormal.x * newX + planeNormal.z * moveDistance + d) / planeNormal.y;
                 float diffY = tanTheta * playerPosition.x - prevPlayerPosition.x;
-                planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
+                Debug.Log("planeY = " + planeY);
+                //planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
                 prevPlaneY = planeY;
             }
             transform.position = new Vector3(newX, transform.position.y, moveDistance);
