@@ -278,12 +278,13 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //Vector3 up = Vector3.up;
         // normalとupはどちらも正規化されて計算されるのでcosθの値を得ることができる
         float dotProduct = Vector3.Dot(normal, up);
-        //dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
+        dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
+        Debug.Log("dotProduct = " + dotProduct); 
         float angle = Mathf.Acos(dotProduct); // ラジアンで得られる
-        //Debug.Log("angle = " + angle);
+        Debug.Log("angle = " + angle);
         // tanθを計算
         float tanTheta = Mathf.Tan(angle);
-        //Debug.Log("tanTheta = " + tanTheta);
+        Debug.Log("tanTheta = " + tanTheta);
         //Debug.Log("CpasuleBottom.x =" + capsuleBottom.x);
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
@@ -335,7 +336,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //        //if (minimumDistance >= -0.1f && minimumDistance <= 1f)
         //    {
         //    player.setPlayerPosition(planeY);
-            
+
         //    Debug.Log("平面上に立っています");
         //    return true;
 
@@ -345,25 +346,30 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //    Debug.Log("空中かオブジェクト上にいます");
         //    return false;
         //}
+        //float speed = 0.5f;
         float speed = 0.5f;
-        //float speed = 0.05f;
         //Debug.Log("diff = " + diff);
         //Debug.Log("speed * tanTheta = " + speed * tanTheta);
 
-        //if (0.0f < diff && diff < 0.5f)
-        ////if (0.0f < diff && diff < 0.5f || -0.5f < diff && diff < 0.0f)
-        //{
-        //    //Debug.Log("ぶれ対策");
-        //    //player.setPlayerPosition(planeY + diff);
-        //    return true;
-        //}
+        if (0.0f <= diff && diff < 0.5f)
+            //if (0.0f <= diff && diff < 0.5f)
+            {
+            //Debug.Log("ぶれ対策");
+            //player.setPlayerPosition(planeY + diff);
+            //player.setPlayerPosition(planeY);
+            player.setForward(plane.getForward());
+            //player.setPlayerPosition(planeY);
+            //player.setRotation(plane.GetRotation());
+            return true;
+            }
         if (diff <= speed * tanTheta)
         {
             //Debug.Log("CollisionでplaneYを設定　= " + planeY);
-
+            //player.setRotation(plane.GetRotation());
+            player.setForward(plane.getForward());
             player.setPlayerPosition(planeY);
             //capsuleBottom.y = planeY;
-            Debug.Log("tanTheta = " + tanTheta);
+            //Debug.Log("tanTheta = " + tanTheta);
             return true;
         }
         else

@@ -49,7 +49,20 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
 
     }
 
-    
+    public Quaternion GetRotation()
+    {
+        return transform.rotation;
+    }
+
+    public Vector3 getForward() 
+    {
+        return transform.forward;
+    }
+
+    //public void movePlayer(float num)
+    //{
+        
+    //}
 
     public Vector3 getPlanePosition()
     {

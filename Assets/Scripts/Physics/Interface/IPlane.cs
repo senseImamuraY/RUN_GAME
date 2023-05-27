@@ -11,4 +11,8 @@ public interface IPlane
     float GetZSize { get; }
 
     Vector3 GetCenter();
+
+    Quaternion GetRotation();
+
+    Vector3 getForward();
 }

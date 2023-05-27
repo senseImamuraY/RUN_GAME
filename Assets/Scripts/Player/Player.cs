@@ -33,10 +33,12 @@ public class Player : MonoBehaviour
     const float MOVE_MAX = 4.5f;
     [SerializeField]
     float speed = 20f;
-    float moveDistance;
+    float moveDistance,prevMoveDistance = 0;
     public bool isJump = false;
     float jumpDelay = 1f; // 1秒のディレイ
     float nextJumpTime = 0f;
+
+    Vector3 planeForward;
 
     [SerializeField]
     public float jumpPower = 10f;
@@ -127,7 +129,14 @@ public class Player : MonoBehaviour
             diffDistance *= sensitivity;
             // 次のローカルx座標を設定 ※道の外にでないように
             float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
+            //prevMoveDistance = moveDistance;
             moveDistance += speed * Time.deltaTime;
+
+            //transform.forward *= moveDistance;
+            Debug.Log("planeForward = " + planeForward);
+            Debug.Log("moveDistance = " + moveDistance);
+            transform.position += planeForward * moveDistance * Time.deltaTime;
+
             if (onFloor)
             {
                 // 坂の傾斜角（θ）を計算
@@ -139,9 +148,9 @@ public class Player : MonoBehaviour
                 //Debug.Log("angle = " + angle);
                 // tanθを計算
                 float tanTheta = Mathf.Tan(angle);
-
-                float y = diffDistance * tanTheta;
-
+                float diffZ = moveDistance - prevMoveDistance;
+                float y = diffZ * tanTheta;
+                Debug.Log("y = " + y);
                 float d = planeNormal.x * newX + planeNormal.y * this.transform.position.y + planeNormal.z * moveDistance;
                 //d = Mathf.Floor(d * 100 + 0.5f) / 100;
                 planeY = -(planeNormal.x * newX + planeNormal.z * moveDistance + d) / planeNormal.y;
@@ -149,8 +158,17 @@ public class Player : MonoBehaviour
                 Debug.Log("planeY = " + planeY);
                 //planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
                 prevPlaneY = planeY;
+                //planeY = planeNormal.x * planeY;
+                //transform.position = new Vector3(newX, planeY, moveDistance);
+                transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+                //setPlayerPosition(planeY);
             }
-            transform.position = new Vector3(newX, transform.position.y, moveDistance);
+            else
+            {
+            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+
+            }
+            //transform.position = new Vector3(newX, transform.position.y, moveDistance);
             prevPlayerPosition = playerPosition;
             // タップ位置を更新
             previousPos = currentPos;
@@ -174,6 +192,17 @@ public class Player : MonoBehaviour
             nextJumpTime = Time.time + jumpDelay;
             isJump = true;
         }
+    }
+    public void setForward(Vector3 forward)
+    {
+        planeForward = forward;
+        //Debug.Log("planeforward = " + planeForward);
+    }
+
+    public void setRotation(Quaternion rot)
+    {
+        this.transform.rotation = rot;
+        //this.transform.localRotation = rot;
     }
 
     public void Clear(Vector3 pos)
