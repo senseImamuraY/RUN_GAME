@@ -80,20 +80,8 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
     public bool CheckCollisionWithCube(ICube box)
     {
-        // それぞれの中心からの距離を足した値と、ベクトルの大きさを比較する
-        //float dist = (box.transform.position - this.transform.position).magnitude;
-        //float wR = box.GetHalfWidth + this.Radius;
-
-        //if (dist < wR)
-        //{
-        //    return true;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
-
-
+        // 今回は当たり判定を簡易的に作成
+        // OBBとOBBの当たり判定を使用
         Vector3 Interval = box.GetCenter - center;
 
         Transform targetTransform = box.GetTransform();
@@ -242,150 +230,44 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         // 平面上の点からカプセルの最低点（一番下の頂点）までの距離は
         // 平面の法線ベクトルと平面からカプセルの最低点へのベクトルの内積
         // をとることで求められるという性質を利用
-        //capsuleBottom = center - new Vector3(0.0f, -(height / 2.0f), 0.0f);
-        Vector3 normal = plane.GetNormal();
-        // 法線ベクトルの成分が0の場合、0で割ることになるので、
-        // それを回避するために値を代入
-        if (normal.x < 0.01f)
-        {
-            X = 0.01f;
-        }
-        else
-        {
-            X = normal.x;
-        }
-        if (normal.y < 0.01f)
-        {
-            Y = 0.01f;
-        }
-        else
-        {
-            Y = normal.y;
-        }
-        if (normal.z < 0.01f)
-        {
-            Z = 0.01f;
-        }
-        else
-        {
-            Z = normal.z;
-        }
-        //normal.y = Mathf.Round(normal.y * 100000) / 100000;
-        // 平面の方程式のdを求める
 
+        Vector3 normal = plane.GetNormal();
+
+        // 平面の方程式のdを求める
         // 坂の傾斜角（θ）を計算
         Vector3 up = Vector3.up;
-        //Vector3 up = Vector3.up;
+
         // normalとupはどちらも正規化されて計算されるのでcosθの値を得ることができる
         float dotProduct = Vector3.Dot(normal, up);
         dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
-        Debug.Log("dotProduct = " + dotProduct); 
-        float angle = Mathf.Acos(dotProduct); // ラジアンで得られる
-        Debug.Log("angle = " + angle);
+
+        // ラジアンで得られる
+        float angle = Mathf.Acos(dotProduct);
+
         // tanθを計算
         float tanTheta = Mathf.Tan(angle);
-        Debug.Log("tanTheta = " + tanTheta);
-        //Debug.Log("CpasuleBottom.x =" + capsuleBottom.x);
+
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
         
         float diff = capsuleBottom.y - planeY;
-        Debug.Log("diff = " + diff);
-        //if (Mathf.Abs(prevY - planeY) <= 0.1)
-        //{
-        //    planeY = prevY;
-        //}
-        //else if(prevY > planeY)
-        //{
-        //    float descentSpeed = 10f;
-
-        //    // 時間経過に応じた下降速度を計算
-        //    Vector3 descentVelocity = normal * descentSpeed * Time.deltaTime;
-        //    Debug.Log("descentVelocity = " + descentVelocity);
-        //    // プレイヤーの新しい位置を計算
-        //    prevY = prevY + descentVelocity.y;
-
-        //    // プレイヤーを新しい位置に移動させる
-        //    planeY = prevY;
-        //    planeY = Mathf.Round(planeY * 10f) / 10f;
-
-        //}
-        //else
-        //{
-        //    planeY = Mathf.Round(planeY * 10f) / 10f;
-        //}
-
-        //Debug.Log("normal = " + normal);
-        // 平面上の点は候補が無数に存在するが、
-        // (-d/3a, -d/3b, -d/3c)が確実に平面上に存在するため
-        // これを平面上の点とする
-        Vector3 planePoint = new Vector3(-d / (3 * X), -d / (3 * Y), -d / (3 * Z));
-
-        Vector3 VectorPlaneToCapsuleBottom = (capsuleBottom) - planePoint;
-        //Debug.Log("VectorPlaneToCapsuleBottom.y = " + VectorPlaneToCapsuleBottom.y);
-        float minimumDistance = Vector3.Dot(normal, VectorPlaneToCapsuleBottom);
-        // minimumDistanceの値がそのままでは大きすぎるので、割って値を調整
-        minimumDistance = minimumDistance * 0.0000001f;
-        //Debug.Log("miniDistance = " + minimumDistance);
-        //Debug.Log("planeY = " + planeY);
-
-        //カプセルをYにする
-
-        //if (minimumDistance <= 1f)
-        //    if (minimumDistance >= -0.1f && minimumDistance <= 0.1f)
-        //        //if (minimumDistance >= -0.1f && minimumDistance <= 1f)
-        //    {
-        //    player.setPlayerPosition(planeY);
-
-        //    Debug.Log("平面上に立っています");
-        //    return true;
-
-        //}
-        //else
-        //{
-        //    Debug.Log("空中かオブジェクト上にいます");
-        //    return false;
-        //}
-        //float speed = 0.5f;
         float speed = 0.5f;
-        //Debug.Log("diff = " + diff);
-        //Debug.Log("speed * tanTheta = " + speed * tanTheta);
-
         if (0.0f <= diff && diff < 0.5f)
-            //if (0.0f <= diff && diff < 0.5f)
-            {
-            //Debug.Log("ぶれ対策");
-            //player.setPlayerPosition(planeY + diff);
-            //player.setPlayerPosition(planeY);
+        {
             player.setForward(plane.getForward());
-            //player.setPlayerPosition(planeY);
-            //player.setRotation(plane.GetRotation());
             return true;
-            }
+        }
         if (diff <= speed * tanTheta)
         {
-            //Debug.Log("CollisionでplaneYを設定　= " + planeY);
-            //player.setRotation(plane.GetRotation());
             player.setForward(plane.getForward());
             player.setPlayerPosition(planeY);
-            //capsuleBottom.y = planeY;
-            //Debug.Log("tanTheta = " + tanTheta);
             return true;
         }
         else
         {
-            //gravity.SetIsGround(false);
-            //gravity.ClearVelocity();
-            //if (capsuleBottom.y <= planeY) 
-            //{
-            //    capsuleBottom.y = planeY;
-
-            //}
-            //if ()
             Debug.Log("空中かオブジェクト上にいます");
             return false;
         }
-        //float dist = Vector3.Dot(plane.GetNormal, capsuleBottom - plane.GetPoint);
     }
 
     bool IsInRange(IPlane plane)

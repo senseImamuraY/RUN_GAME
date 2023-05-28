@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     Vector3 endPos;
     Vector3 previousPos, currentPos;
 
-    Vector3 prevPlayerPosition,playerPosition;
+    Vector3 playerPosition;
 
     public bool isRunning;
     public float sensitivity = 1f;
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     const float MOVE_MAX = 4.5f;
     [SerializeField]
     float speed = 20f;
-    float moveDistance,prevMoveDistance = 0;
+    float moveDistance;
     public bool isJump = false;
     float jumpDelay = 1f; // 1秒のディレイ
     float nextJumpTime = 0f;
@@ -45,8 +45,6 @@ public class Player : MonoBehaviour
     private bool onFloor;
     private Vector3 planeNormal;
 
-    float prevPlaneY = 0;
-    float planeY = 0;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -113,76 +111,30 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             previousPos = Input.mousePosition;
-            prevPlayerPosition = this.transform.position;
         }
 
-        if (true)
-        //if (Input.GetMouseButton(0))
-        {
+        animator.SetBool("IsRunning", true);
+        helpUI.SetActive(false);
 
-            animator.SetBool("IsRunning", true);
-            helpUI.SetActive(false);
-            // スワイプによる移動距離を取得
-            currentPos = Input.mousePosition;
-            float diffDistance = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
+        // スワイプによる移動距離を取得
+        currentPos = Input.mousePosition;
+        float diffDistance = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
 
-            diffDistance *= sensitivity;
-            // 次のローカルx座標を設定 ※道の外にでないように
-            float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
-            //prevMoveDistance = moveDistance;
-            moveDistance += speed * Time.deltaTime;
+        diffDistance *= sensitivity;
 
-            //transform.forward *= moveDistance;
-            Debug.Log("planeForward = " + planeForward);
-            Debug.Log("moveDistance = " + moveDistance);
-            transform.position += planeForward * moveDistance * Time.deltaTime;
+        // 次のローカルx座標を設定 ※道の外にでないように
+        float newX = Mathf.Clamp(transform.position.x + diffDistance, -MOVE_MAX, MOVE_MAX);
 
-            if (onFloor)
-            {
-                // 坂の傾斜角（θ）を計算
-                Vector3 up = transform.up;
-                // normalとupはどちらも正規化されて計算されるのでcosθの値を得ることができる
-                float dotProduct = Vector3.Dot(planeNormal, up);
-                dotProduct = Mathf.Clamp(dotProduct, -1f, 1f);
-                float angle = Mathf.Acos(dotProduct); // ラジアンで得られる
-                //Debug.Log("angle = " + angle);
-                // tanθを計算
-                float tanTheta = Mathf.Tan(angle);
-                float diffZ = moveDistance - prevMoveDistance;
-                float y = diffZ * tanTheta;
-                Debug.Log("y = " + y);
-                float d = planeNormal.x * newX + planeNormal.y * this.transform.position.y + planeNormal.z * moveDistance;
-                //d = Mathf.Floor(d * 100 + 0.5f) / 100;
-                planeY = -(planeNormal.x * newX + planeNormal.z * moveDistance + d) / planeNormal.y;
-                float diffY = tanTheta * playerPosition.x - prevPlayerPosition.x;
-                Debug.Log("planeY = " + planeY);
-                //planeY = Mathf.Floor(planeY * 100 + 0.5f) / 100;
-                prevPlaneY = planeY;
-                //planeY = planeNormal.x * planeY;
-                //transform.position = new Vector3(newX, planeY, moveDistance);
-                transform.position = new Vector3(newX, transform.position.y, transform.position.z);
-                //setPlayerPosition(planeY);
-            }
-            else
-            {
-            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+        moveDistance += speed * Time.deltaTime;
+        transform.position += planeForward * moveDistance * Time.deltaTime;
+        transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 
-            }
-            //transform.position = new Vector3(newX, transform.position.y, moveDistance);
-            prevPlayerPosition = playerPosition;
-            // タップ位置を更新
-            previousPos = currentPos;
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            animator.SetBool("IsRunning", false);
-            helpUI.SetActive(true);
-        }
-
-
+        // タップ位置を更新
+        previousPos = currentPos;
+        
+        // 加速度を設定
         gravity.VelocityUpdate();
     }
-    // setterを使ってプレイヤーの位置をコライダーに伝える
 
     void Update()
     {
