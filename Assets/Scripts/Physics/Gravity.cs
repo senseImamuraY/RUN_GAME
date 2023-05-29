@@ -48,7 +48,7 @@ public class Gravity : MonoBehaviour
     void Update()
     {
         // Ú’n”»’è
-        Debug.Log("isGravity = " + isGrounded);
+        //Debug.Log("isGravity = " + isGrounded);
     }
 
     //void FixedUpdate()

@@ -21,12 +21,20 @@ public class TreeData<T>
         }
         set
         {
-            if (value == _cell)
-            {
-                return;
-            }
+            //if (value == _cell)
+            //{
+            //    return;
+            //}
 
-            if (value == null)
+            //if (value == null)
+            //{
+            //    return;
+            //}
+
+            //// Remove from current cell.
+            //Remove();
+            //_cell = value;
+            if (value == _cell)
             {
                 return;
             }
@@ -50,36 +58,75 @@ public class TreeData<T>
     /// 空間から逸脱する
     /// </summary>
     /// <returns>成功: true, 失敗: false</returns>
-    public bool Remove()
+    //public bool Remove()
+    //{
+    //    // すでに逸脱している場合は処理しない
+    //    if (Cell == null)
+    //    {
+    //        return false;
+    //    }
+
+    //    // 逸脱を空間に伝える
+    //    if (!Cell.OnRemove(this))
+    //    {
+    //        return false;
+    //    }
+
+    //    // 逸脱処理
+    //    // リンクリストの前後をつなぎ、自身のリンクを外す
+    //    if (Previous != null)
+    //    {
+    //        Previous.Next = Next;
+    //    }
+
+    //    if (Next != null)
+    //    {
+    //        Next.Previous = Previous;
+    //    }
+
+    //    Previous = null;
+    //    Next = null;
+    //    Cell = null;
+
+    //    return true;
+    //}
+
+    public void Remove()
     {
-        // すでに逸脱している場合は処理しない
-        if (Cell == null)
+        if (_cell != null)
         {
-            return false;
+            // 逸脱を空間に伝える
+            _cell.OnRemove(this);
+
+            // 逸脱処理
+            // リンクリストの前後をつなぎ、自身のリンクを外す
+            if (Previous != null)
+            {
+                Previous.Next = Next;
+            }
+
+            if (Next != null)
+            {
+                Next.Previous = Previous;
+            }
+
+            Previous = null;
+            Next = null;
+
+            _cell = null; // 直接_cellの値をnullに設定
         }
-
-        // 逸脱を空間に伝える
-        if (!Cell.OnRemove(this))
-        {
-            return false;
-        }
-
-        // 逸脱処理
-        // リンクリストの前後をつなぎ、自身のリンクを外す
-        if (Previous != null)
-        {
-            Previous.Next = Next;
-        }
-
-        if (Next != null)
-        {
-            Next.Previous = Previous;
-        }
-
-        Previous = null;
-        Next = null;
-        Cell = null;
-
-        return true;
     }
+
+
+    public void SetCellWithoutRemoval(Cell<T> value)
+    {
+        if (value == _cell)
+        {
+            return;
+        }
+
+        Remove();
+        _cell = value;
+    }
+
 }

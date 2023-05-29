@@ -12,13 +12,13 @@ public class LinearTreeController : MonoBehaviour
     private float _left = 0f;
 
     [SerializeField]
-    private float _top = 10f;
+    private float _top = 0f;
 
     [SerializeField]
     private float _right = 10f;
 
     [SerializeField]
-    private float _bottom = 0f;
+    private float _bottom = 10f;
 
     [SerializeField]
     private float _front = 0f;
@@ -34,6 +34,15 @@ public class LinearTreeController : MonoBehaviour
     {
         get
         {
+            if (_cellViewer == null)
+            {
+                MortonCellViewer viewer = GetComponent<MortonCellViewer>();
+                if (viewer == null)
+                {
+                    viewer = gameObject.AddComponent<MortonCellViewer>();
+                }
+                _cellViewer = viewer;
+            }
             return _cellViewer;
         }
     }
@@ -41,16 +50,15 @@ public class LinearTreeController : MonoBehaviour
     [SerializeField]
     private List<GameObject> _objects;
 
-    //[SerializeField]
-    //private GameObject _agentPrefab;
+    [SerializeField]
+    private GameObject _agentPrefab;
     #endregion Variables
 
-    //public List<>
 
     #region MonoBehaviour
     void OnValidate()
     {
-        if (!Application.isPlaying || _cellViewer == null)
+        if (!Application.isPlaying)
         {
             return;
         }
@@ -66,18 +74,6 @@ public class LinearTreeController : MonoBehaviour
 
     void Awake()
     {
-
-        MortonCellViewer viewer = GetComponent<MortonCellViewer>();
-        if (viewer == null)
-        {
-            viewer = gameObject.AddComponent<MortonCellViewer>();
-        }
-        _cellViewer = viewer;
-    }
-
-	void Start()
-    {
-        // Set initial values
         CellViewer.Left = _left;
         CellViewer.Right = _right;
         CellViewer.Top = _top;
@@ -85,55 +81,39 @@ public class LinearTreeController : MonoBehaviour
         CellViewer.Front = _front;
         CellViewer.Back = _back;
         CellViewer.Division = 1 << _level;
+    }
 
+    void Start()
+    {
         _manager = new LinearTreeManager<GameObject>(_level, _left, _top, _right, _bottom, _front, _back);
 
         // オブジェクトを仮登録してみる
         RegisterObjects();
-	}
+    }
 
     private List<GameObject> _collisionList = new List<GameObject>();
+    public List<GameObject> GetCollisionList() { return _collisionList; }
 
-    public List<GameObject> GetCollisionList(){ return _collisionList; }
-
-    //void Update()
-    void FixedUpdate()
+    void Update()
     {
-        // Update values if needed
-        CellViewer.Left = _left;
-        CellViewer.Right = _right;
-        CellViewer.Top = _top;
-        CellViewer.Bottom = _bottom;
-        CellViewer.Front = _front;
-        CellViewer.Back = _back;
-        CellViewer.Division = 1 << _level;
         // Check collisions
-        //if (_manager.isClearing) return; 
-        //_manager.GetAllCollisionList(_collisionList);
+        //Debug.Log("tree CollisionList = " + _collisionList.Count);
 
-        //if (Input.GetKeyDown(KeyCode.A))
-        //{
-        //    GameObject obj = Instantiate(_agentPrefab);
-        //    float s = Random.Range(0.5f, 2.5f);
-        //    obj.transform.localScale = Vector3.one * s;
-        //    MortonAgent agent = obj.GetComponent<MortonAgent>();
-        //    agent.Manager = _manager;
-        //}
+        _manager.GetAllCollisionList(_collisionList);
 
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            GameObject obj = Instantiate(_agentPrefab);
+            float s = Random.Range(0.5f, 2.5f);
+            obj.transform.localScale = Vector3.one * s;
+            MortonAgent agent = obj.GetComponent<MortonAgent>();
+            agent.Manager = _manager;
+        }
     }
 
     void OnDrawGizmos()
     {
-        //if(_manager.isClearing) return;
         // Connect collision pairs with line.
-        for (int i = 0; i < _collisionList.Count; i++)
-        {
-            GameObject go = _collisionList[i] as GameObject;
-            if (go == null || !go.activeInHierarchy)
-            {
-                Debug.Log($"GameObject at index {i} is either destroyed or inactive.");
-            }
-        }
         Gizmos.color = Color.cyan;
         for (int i = 0; i < _collisionList.Count; i += 2)
         {
@@ -141,14 +121,7 @@ public class LinearTreeController : MonoBehaviour
             GameObject g1 = _collisionList[i + 1];
 
             Gizmos.DrawLine(g0.transform.position, g1.transform.position);
-
-            //Debug.Log("g1 = " + g0.name +" g2 = " + g1.name);
-            if(g0.name == "Player" || g1.name == "Player")
-            {
-                Debug.Log("g1 = " + g0.name + " g2 = " + g1.name);
-            }
         }
-
     }
     #endregion MonoBehaviour
 
@@ -178,15 +151,11 @@ public class LinearTreeController : MonoBehaviour
     /// </summary>
     void RegisterObjects()
     {
-        //RegisterObject(_object1);
-        //RegisterObject(_object2);
-        //RegisterObject(_object3);
-        //RegisterObject(_object4);
-
         for (int i = 0; i < _objects.Count; i++)
         {
             RegisterObject(_objects[i]);
         }
+
 
         #region For Mock
         //TreeData<GameObject> data1 = new TreeData<GameObject>(_object1);

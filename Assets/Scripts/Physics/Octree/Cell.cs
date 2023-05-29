@@ -44,8 +44,18 @@ public class Cell<T>
             return false;
         }
 
+
+        //既存のセルからdataを削除
+        if (data.Cell != null)
+        {
+            //Debug.Log("OnRemove = " + data.Cell.OnRemove(data));
+            data.Cell.OnRemove(data);
+        }
+
+        //// 空間を登録
+        //data.Cell = this;
         // 空間を登録
-        data.Cell = this;
+        data.SetCellWithoutRemoval(this); // ここを変更
 
         // まだ空間にひとつも登録がない場合は、
         // リンクリストの初めのデータとして登録する
@@ -62,4 +72,21 @@ public class Cell<T>
 
         return true;
     }
+
+    public int GetObjectsCount()
+    {
+        int count = 0;
+        TreeData<T> current = _latestData;
+        while (current != null)
+        {
+            count++;
+            current = current.Next;
+        }
+        return count;
+    }
+    public void Reset()
+    {
+        _latestData = null;
+    }
+
 }

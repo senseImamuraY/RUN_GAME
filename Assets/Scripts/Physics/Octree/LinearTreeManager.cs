@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-//using tryMyBounds;
 
 /// <summary>
 /// 線形4分木管理をする
@@ -11,8 +10,8 @@ public class LinearTreeManager<T>
 {
     #region Variables
     // 分割最大数
-    //private readonly int _MaxLevel = 3;
-    private readonly int _MaxLevel = 4;
+    private readonly int _MaxLevel = 3;
+    //private readonly int _MaxLevel = 4;
 
     private int[] _pow;
 
@@ -26,6 +25,8 @@ public class LinearTreeManager<T>
 
     private int _level;
 
+    //private int numRecursive;
+
     private float _offsetLeft;
     private float _offsetBottom;
     private float _offsetFront;
@@ -35,11 +36,6 @@ public class LinearTreeManager<T>
     private float _unitWidth;
     private float _unitHeight;
     private float _unitDepth;
-
-    public bool isClearing;
-
-    HashSet<string> collisionPairs = new HashSet<string>();
-
     #endregion Variables
 
     // コンストラクタ
@@ -49,10 +45,7 @@ public class LinearTreeManager<T>
         Initialize(level, left, top, right, bottom, front, back);
     }
 
-    public void HashClear()
-    {
-        collisionPairs.Clear();
-    }
+    HashSet<string> collisionPairs = new HashSet<string>();
     /// <summary>
     /// 初期化
     /// </summary>
@@ -197,10 +190,7 @@ public class LinearTreeManager<T>
         float front = bounds.min.z;
         float back = bounds.max.z;
 
-        // ここで上手くオブジェクトを表現できていない
-        // 具体的にはpositionの値で代用できない可能性
-        // positionではなくオブジェクトの形状を伝える必要がある
-        //Debug.Log(data.Cell.ToString());
+
         //Debug.Log("laft = " + left + "right = " + right);
         //Debug.Log("top = " + top + "bottom = " + bottom);
         //Debug.Log("front = " + front + " back = " + back);
@@ -232,9 +222,7 @@ public class LinearTreeManager<T>
         int elem = GetMortonNumber(left, top, right, bottom, front, back, out belongLevel);
         elem = ToLinearSpace(elem, belongLevel);
 
-        //Debug.Log("name = " + data+ " top = " + top + " bottom = " +  bottom + " front = " + front + "right = " + right +  "elem = " + elem);
-        //Debug.Log("elem = " + elem);
-
+        //Debug.Log("name = " + data + "elem = " + elem);
 
         // 算出されたモートン番号が、生成した空間分割数より大きい場合はエラー
         if (elem >= _cellNum)
@@ -249,7 +237,15 @@ public class LinearTreeManager<T>
         if (_cellList[elem] == null)
         {
             CreateNewCell(elem);
+            //Debug.Log("新しく空間が作成された");
         }
+        int totalObjectCount = 0;
+        foreach (var cell in _cellList)
+        {
+            if (cell != null)
+                totalObjectCount += cell.GetObjectsCount();
+        }
+        //Debug.Log("Total object count in all cells: " + totalObjectCount);
 
         return _cellList[elem].Push(data);
     }
@@ -303,7 +299,7 @@ public class LinearTreeManager<T>
         int ltd_y = (int)(bottom / _unitHeight);
         int ltd_z = (int)(front / _unitDepth);
         int ltd = BitSeparate3D(ltd_x) | (BitSeparate3D(ltd_y) << 1) | (BitSeparate3D(ltd_z) << 2);
-        
+
         // 右上奥のモートン番号を算出
         int rbd_x = (int)(right / _unitWidth);
         int rbd_y = (int)(top / _unitHeight);
@@ -340,6 +336,12 @@ public class LinearTreeManager<T>
         return morton;
     }
 
+
+    public void HashClear()
+    {
+        collisionPairs.Clear();
+    }
+
     /// <summary>
     /// 登録されているオブジェクトの衝突リストを取得する
     /// </summary>
@@ -347,26 +349,8 @@ public class LinearTreeManager<T>
     /// <returns>衝突リストのサイズ</returns>
     public int GetAllCollisionList(List<T> collisionList)
     {
-        for (int i = 0; i < collisionList.Count; i++)
-        {
-            GameObject go = collisionList[i] as GameObject;
-            if (go == null || !go.activeInHierarchy)
-            {
-                Debug.Log($"GameObject at index {i} is either destroyed or inactive.");
-            }
-        }
-
-        if (collisionList == null)
-        {
-            throw new ArgumentNullException(nameof(collisionList), "Provided list cannot be null.");
-        }
-        isClearing = true;
         // 結果リストをクリア
-          //Debug.Log("collisionList = " + collisionList.Count);
         collisionList.Clear();
-        
-        isClearing = false;
-
         // ルート空間の存在をチェック
         if (_cellList[0] == null)
         {
@@ -377,7 +361,9 @@ public class LinearTreeManager<T>
         LinkedList<T> colStac = new LinkedList<T>();
         HashClear();
         GetCollisionList(0, collisionList, colStac, collisionPairs);
-        Debug.Log("collisionList = " + collisionList.Count);
+
+        //GetCollisionList(0, collisionList, colStac);
+
         return collisionList.Count;
     }
 
@@ -388,7 +374,110 @@ public class LinearTreeManager<T>
     /// <param name="collisionList">衝突可能性のあるリストを格納する</param>
     /// <param name="colStac">衝突検知用のスタック</param>
     /// <returns><c>true</c>, if collision list was gotten, <c>false</c> otherwise.</returns>
-    bool GetCollisionList(int elem, List<T> collisionList, LinkedList<T> colStac, HashSet<string> collisionPairs)
+    //    bool GetCollisionList(int elem, List<T> collisionList, LinkedList<T> colStac)
+    //    {
+    //        // 空間内のオブジェクト同士の衝突リスト作成
+    //        // ルート空間からはじめ、その子空間へと移動しながら、「衝突可能性のある」オブジェクト同士の
+    //        // ペアとなるリストを作成する
+    //        // 結果は「collisionList」に格納される。
+    //        // なお、リストは「ペア」構造となっていて、
+    //        // 完成したリストからはふたつずつ取り出して衝突の詳細判定を行う想定。
+
+    //        // ルート空間に登録されているリンクリストの最初の要素を取り出す
+    //        TreeData<T> data = _cellList[elem].FirstData;
+
+
+    //        collisionPairs = new HashSet<string>();
+
+    //        Debug.Log("Start  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
+    //    + " calStac = " + colStac.Count);
+    //        // データがなくなるまで繰り返す
+    //        while (data != null)
+    //        {
+    //            // まず、リンクリストの次を取り出す
+    //            TreeData<T> next = data.Next;
+    //            while (next != null)
+    //            {
+    //                string pairKey = $"{data.Object}-{next.Object}";
+    //                if (!collisionPairs.Contains(pairKey))
+    //                {
+    //                    collisionList.Add(data.Object);
+    //                    collisionList.Add(next.Object);
+    //                    collisionPairs.Add(pairKey);
+    //                }
+    //                //// 衝突リスト作成
+    //                //collisionList.Add(data.Object);
+    //                //collisionList.Add(next.Object);
+    //                next = next.Next;
+    //            }
+
+    //            // 衝突スタックと衝突リスト作成
+    //            foreach (var obj in colStac)
+    //            {
+    //                collisionList.Add(data.Object);
+    //                collisionList.Add(obj);
+    //            }
+
+    //            data = data.Next;
+    //        }
+
+    //        bool child = false;
+
+    //        // 子空間に移動
+    //        int objNum = 0;
+    //        int nextElem;
+
+    //        // 小空間を巡る
+    //        // 例えば、8分木の場合は子空間は8分割される
+    //        // つまり、8回ループすることで小空間を網羅する
+    //        for (int i = 0; i < _divisionNumber; i++)
+    //        {
+    //            nextElem = elem * _divisionNumber + 1 + i;
+
+    //            // 空間分割数以上 or 対象空間がない場合はスキップ
+    //            bool needsSkip = (nextElem >= _cellNum ||
+    //                             _cellList[nextElem] == null);
+    //            if (needsSkip)
+    //            {
+    //                continue;
+    //            }
+
+    //            // 子空間への処理がまだ済んでいない場合は処理を行う
+    //            // 同空間内のオブジェクトをスタックに追加した上で小空間の衝突リストを作成する
+    //            // ただし、一度セットアップが済んでいる場合は本処理をスキップし、小空間の検索のみを実行する
+    //            // （同空間のオブジェクト追加は一度のみ行う必要があるため）
+    //            if (!child)
+    //            {
+    //                // 同空間のオブジェクトをスタックに積む
+    //                data = _cellList[elem].FirstData;
+    //                while (data != null)
+    //                {
+    //                    colStac.AddLast(data.Object);
+    //                    objNum++;
+    //                    data = data.Next;
+    //                }
+    //            }
+
+    //            child = true;
+
+    //            // 子空間を検索
+    //            GetCollisionList(nextElem, collisionList, colStac);
+    //        }
+
+    //        // スタックからオブジェクトを外す
+    //        // 計測したobjNum個数分、スタックから取り除く（＝子空間検索用に追加した分）
+    //        if (child)
+    //        {
+    //            for (int i = 0; i < objNum; i++)
+    //            {
+    //                colStac.RemoveLast();
+    //            }
+    //        }
+    //        Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
+    //+ " calStac = " + colStac.Count);
+    //        return true;
+    //    }
+    bool GetCollisionList(int elem, List<T> collisionList, LinkedList<T> colStac, HashSet<string> collisionPairs, int numRecursive = 0)
     {
         // 空間内のオブジェクト同士の衝突リスト作成
         // ルート空間からはじめ、その子空間へと移動しながら、「衝突可能性のある」オブジェクト同士の
@@ -399,14 +488,15 @@ public class LinearTreeManager<T>
 
         // ルート空間に登録されているリンクリストの最初の要素を取り出す
         TreeData<T> data = _cellList[elem].FirstData;
+        if (numRecursive >= 4)
+        {
+            return true;
+        }
+        //collisionPairs = new HashSet<string>();
 
-        collisionPairs = new HashSet<string>();
 
-
-        Debug.Log("Start  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-            + " calStac = " + colStac.Count);
-
-        int numRecursive = 0;
+        //Debug.Log("Start  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
+        //    + " calStac = " + colStac.Count + " pair = " + collisionPairs.Count);
 
         // データがなくなるまで繰り返す
         while (data != null)
@@ -416,8 +506,10 @@ public class LinearTreeManager<T>
             while (next != null)
             {
                 string pairKey = $"{data.Object}-{next.Object}";
+                //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                 if (!collisionPairs.Contains(pairKey))
                 {
+                    //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                     collisionList.Add(data.Object);
                     collisionList.Add(next.Object);
                     collisionPairs.Add(pairKey);
@@ -434,14 +526,16 @@ public class LinearTreeManager<T>
             foreach (var obj in colStac)
             {
                 string pairKey = $"{data.Object}-{obj}";
+                //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                 if (!collisionPairs.Contains(pairKey))
                 {
+                    //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                     collisionList.Add(data.Object);
                     collisionList.Add(obj);
                     collisionPairs.Add(pairKey);
                 }
-                collisionList.Add(data.Object);
-                collisionList.Add(obj);
+                //collisionList.Add(data.Object);
+                //collisionList.Add(obj);
             }
 
             data = data.Next;
@@ -485,11 +579,9 @@ public class LinearTreeManager<T>
             }
 
             child = true;
-
+            //Debug.Log("NumRecursive = " + numRecursive);
             // 子空間を検索
-            GetCollisionList(nextElem, collisionList, colStac, collisionPairs);
-
-            numRecursive++;
+            GetCollisionList(nextElem, collisionList, colStac, collisionPairs, numRecursive + 1);
         }
 
         // スタックからオブジェクトを外す
@@ -501,15 +593,13 @@ public class LinearTreeManager<T>
                 colStac.RemoveLast();
             }
         }
-        //Debug.Log("NumRecursive = " + numRecursive);
 
-        Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-        + " calStac = " + colStac.Count);
+
+        //Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
+        //+ " calStac = " + colStac.Count + " pair = " + collisionPairs.Count);
 
         //Debug.Log("CollisionKey = " + collisionPairs.Count);
         return true;
-
-
     }
 
     #region Static Methods

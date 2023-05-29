@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
 
         foreach(ICube target in cubeTargetsList)
         {
-            Debug.Log("CubeCount = "+ cubeTargetsList.Count);
+            //Debug.Log("CubeCount = "+ cubeTargetsList.Count);
             if (capsuleCollider.CheckCollisionWithCube(target))
             {
                 Debug.Log("CubeÇ∆è’ìÀÇµÇ‹ÇµÇΩÅB");
