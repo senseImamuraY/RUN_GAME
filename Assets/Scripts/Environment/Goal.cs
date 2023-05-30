@@ -29,7 +29,8 @@ public class Goal : MonoBehaviour
     {
         if(goal.CheckCollisionWithCapsule(player.GetCustomCapsuleCollider()))
         {
-            player.Clear(centerPos);
+            player.Clear(centerPos + new Vector3(0, transform.localScale.y /2, 0));
+            Debug.Log("clear!");
         }
     }
 }

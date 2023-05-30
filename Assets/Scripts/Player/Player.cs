@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
         planeTargetsList = GameManager.Instance.GetLaneList;
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
         gravity = gameObject.GetComponent<Gravity>();
+        Debug.Log("Status = " + GameManager.status);
     }
 
 
@@ -102,12 +103,15 @@ public class Player : MonoBehaviour
             if (capsuleCollider.CheckCollisionWithCube(target))
             {
                 Debug.Log("Cubeと衝突しました。");
+                //Clear(this.transform.position);
+                //Clear(target.GetCenter);
+                //enabled = false;
             }
         }
-        // プレイ中以外は無効にする
+        //// プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
-            helpUI.SetActive(false);
+            //helpUI.SetActive(false);
             return;
         }
 
@@ -118,7 +122,7 @@ public class Player : MonoBehaviour
         }
 
         animator.SetBool("IsRunning", true);
-        helpUI.SetActive(false);
+        //helpUI.SetActive(false);
 
         // スワイプによる移動距離を取得
         currentPos = Input.mousePosition;
@@ -190,6 +194,7 @@ public class Player : MonoBehaviour
     public void Clear(Vector3 pos)
     {
         GameManager.status = GameManager.GAME_STATUS.Clear;
+        //dest = this.transform.position;
         dest = pos;
     }
 

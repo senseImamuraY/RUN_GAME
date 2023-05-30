@@ -116,34 +116,34 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         //float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetLocalScale.normalized.x, 0, 0)));
         //if (L > rA + rB) return false;
         float rA = transform.localScale.x - 0.5f;
-        float rB = LenSegOnSeparateAxis(new Vector3(transform.localScale.normalized.x, 0, 0), targetTransform, true);
+        float rB = LenSegOnSeparateAxis(new Vector3(transform.localScale.normalized.x, 0, 0), targetTransform, true, arrange);
         float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(transform.localScale.normalized.x, 0, 0)));
         if (L > rA + rB) return false;
 
         // •ª—£²Ae2
         rA = transform.localScale.y + 1.0f;
-        rB = LenSegOnSeparateAxis(new Vector3(0, transform.localScale.normalized.y, 0), targetTransform, true);
+        rB = LenSegOnSeparateAxis(new Vector3(0, transform.localScale.normalized.y, 0), targetTransform, true, arrange);
         L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, transform.localScale.normalized.y, 0)));
         if (L > rA + rB) return false;
 
         // •ª—£²Ae3
         rA = transform.localScale.z - 0.5f;
-        rB = LenSegOnSeparateAxis(new Vector3(0, 0, transform.localScale.normalized.z), targetTransform, true);
+        rB = LenSegOnSeparateAxis(new Vector3(0, 0, transform.localScale.normalized.z), targetTransform, true, arrange);
         L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, 0, transform.localScale.normalized.z)));
         if (L > rA + rB) return false;
 
         // 
-        rA = LenSegOnSeparateAxis(new Vector3(targetLocalScale.normalized.x, 0, 0), this.transform, false);
+        rA = LenSegOnSeparateAxis(new Vector3(targetLocalScale.normalized.x, 0, 0), this.transform, false, arrange);
         rB = targetTransform.localScale.x / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetTransform.localScale.x, 0, 0)));
         if (L > rA + rB) return false;
 
-        rA = LenSegOnSeparateAxis(new Vector3(0, targetLocalScale.normalized.y, 0), this.transform, false);
-        rB = targetTransform.localScale.y / 2.0f;
+        rA = LenSegOnSeparateAxis(new Vector3(0, targetLocalScale.normalized.y, 0), this.transform, false, arrange);
+        rB = (targetTransform.localScale.y + arrange.y) / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, targetTransform.localScale.y, 0)));
         if (L > rA + rB) return false;
 
-        rA = LenSegOnSeparateAxis(new Vector3(0, 0, targetLocalScale.normalized.z), this.transform, false);
+        rA = LenSegOnSeparateAxis(new Vector3(0, 0, targetLocalScale.normalized.z), this.transform, false, arrange);
         rB = targetTransform.localScale.z / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, 0, targetTransform.localScale.z)));
         if (L > rA + rB) return false;
@@ -167,8 +167,8 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
             for (int j = 0; j < axesB.Length; j++)
             {
                 Vector3 Cross = Vector3.Cross(axesA[i], axesB[j]);
-                rA = LenSegOnSeparateAxis(Cross, transform, false);
-                rB = LenSegOnSeparateAxis(Cross, targetTransform, true);
+                rA = LenSegOnSeparateAxis(Cross, transform, false, arrange);
+                rB = LenSegOnSeparateAxis(Cross, targetTransform, true, arrange);
                 L = Mathf.Abs(Vector3.Dot(Interval, Cross));
                 if (L > rA + rB)
                 {
@@ -197,7 +197,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
     }
     // •ª—£²‚É“Š‰e‚³‚ê‚½²¬•ª‚©‚ç“Š‰eü•ª’·‚ğZo
-    public static float LenSegOnSeparateAxis(Vector3 Sep, Transform target, bool isCapsule)
+    public static float LenSegOnSeparateAxis(Vector3 Sep, Transform target, bool isCapsule, Vector3 arrangeNum)
     {
         Vector3 targetLocalScale = target.localScale;
         if (isCapsule)
@@ -208,7 +208,8 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         }
         else
         {
-            targetLocalScale = targetLocalScale / 2.0f;
+            targetLocalScale = targetLocalScale + arrangeNum / 2.0f;
+            
         }
         float sum = 0;
 
