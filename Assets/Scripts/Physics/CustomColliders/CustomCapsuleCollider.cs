@@ -55,6 +55,10 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     public Vector3 Size() {return size;}
     public Vector3 GetSize() { return size; }
 
+    private Transform capsuleTransform;
+
+    public Transform GetTransform() {  return capsuleTransform; }
+
     float X, Y, Z;
     // Start is called before the first frame update
     void Start()
@@ -62,6 +66,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         radius = 0.5f;
         player = GetComponent<Player>();
         gravity = GetComponent<Gravity>();
+        capsuleTransform = transform;
         //capsulePosition= transform.position;
     }
 

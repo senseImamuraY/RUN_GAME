@@ -507,7 +507,7 @@ public class LinearTreeManager<T>
             {
                 string pairKey = $"{data.Object}-{next.Object}";
                 //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
-                if (!collisionPairs.Contains(pairKey))
+                if (!collisionPairs.Contains(pairKey) && (data.Object.ToString() == "Player (UnityEngine.GameObject)" || next.Object.ToString() == "Player (UnityEngine.GameObject)"))
                 {
                     //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                     collisionList.Add(data.Object);
@@ -527,7 +527,7 @@ public class LinearTreeManager<T>
             {
                 string pairKey = $"{data.Object}-{obj}";
                 //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
-                if (!collisionPairs.Contains(pairKey))
+                if (!collisionPairs.Contains(pairKey) && (data.Object.ToString() == "Player (UnityEngine.GameObject)" || obj.ToString() == "Player (UnityEngine.GameObject)"))
                 {
                     //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                     collisionList.Add(data.Object);

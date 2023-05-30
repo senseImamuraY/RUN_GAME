@@ -38,4 +38,5 @@ public interface ICapsule
     /// </summary>
     public float GetHeight { get; }
     //public void SetHeight(float value);
+    Transform GetTransform();
 }

@@ -48,6 +48,11 @@ public class GameManager : MonoBehaviour
 
     private List<GameObject> collisionList;
 
+    [SerializeField]
+    Goal goal;
+
+    [SerializeField]
+    Player player;
     private void Awake()
     {
         if (Instance == null)
@@ -64,32 +69,45 @@ public class GameManager : MonoBehaviour
 
 
         foreach (GameObject target in targetList)
-            //{
-        if (target.GetComponent<IPlane>() != null)
         {
-            Debug.Log("Planeに追加されました。");
-            planeList.Add(target.GetComponent<IPlane>());
+            if (target.GetComponent<IPlane>() != null)
+            {
+                Debug.Log("Planeに追加されました。");
+                planeList.Add(target.GetComponent<IPlane>());
+            }
+            else
+            {
+                Debug.Log("どれにも追加されませんでした");
+            }
         }
-        else if (target.GetComponent<ISphere>() != null)
-        {
-            Debug.Log("Sphereに追加されました。");
-            sphereList.Add(target.GetComponent<ISphere>());
-        }
-        else if (target.GetComponent<ICube>() != null)
-        {
-            Debug.Log("Boxに追加されました。");
-            cubeList.Add(target.GetComponent<ICube>());
-            Debug.Log(cubeList);
-        }
-        else if (target.GetComponent<ICapsule>() != null)
-        {
-            Debug.Log("Capsuleに追加されました。");
-            capsuleList.Add(target.GetComponent<ICapsule>());
-        }
-        else
-        {
-            Debug.Log("どれにも追加されませんでした");
-        }
+
+        //foreach (GameObject target in targetList)
+        //    //{
+        //if (target.GetComponent<IPlane>() != null)
+        //{
+        //    Debug.Log("Planeに追加されました。");
+        //    planeList.Add(target.GetComponent<IPlane>());
+        //}
+        //else if (target.GetComponent<ISphere>() != null)
+        //{
+        //    Debug.Log("Sphereに追加されました。");
+        //    sphereList.Add(target.GetComponent<ISphere>());
+        //}
+        //else if (target.GetComponent<ICube>() != null)
+        //{
+        //    Debug.Log("Boxに追加されました。");
+        //    cubeList.Add(target.GetComponent<ICube>());
+        //    Debug.Log(cubeList);
+        //}
+        //else if (target.GetComponent<ICapsule>() != null)
+        //{
+        //    Debug.Log("Capsuleに追加されました。");
+        //    capsuleList.Add(target.GetComponent<ICapsule>());
+        //}
+        //else
+        //{
+        //    Debug.Log("どれにも追加されませんでした");
+        //}
 
     }
 
@@ -123,7 +141,28 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        collisionList = linearTreeController.GetCollisionList();
 
+        foreach (GameObject target in collisionList)
+        {
+            if (target.GetComponent<ISphere>() != null)
+            {
+                Debug.Log("Sphereに追加されました。");
+                sphereList.Add(target.GetComponent<ISphere>());
+            }
+            else if (target.GetComponent<ICube>() != null)
+            {
+                Debug.Log("Boxに追加されました。");
+                cubeList.Add(target.GetComponent<ICube>());
+                Debug.Log(cubeList);
+            }
+            else
+            {
+                Debug.Log("どれにも追加されませんでした");
+            }
+        }
+        Debug.Log("collisionList.Count = " +  collisionList.Count);
+        goal.GoalEffect(player);
     }
     void Update()
     {
@@ -149,6 +188,8 @@ public class GameManager : MonoBehaviour
         }
 
         coinNumText.text = tempCoinNum.ToString();
+
+        
     }
 
     public void LoadCurrentScene()
