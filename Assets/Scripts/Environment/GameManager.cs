@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    //public static GameManager Instance { get; private set; }
 
     public enum GAME_STATUS { Play, Clear, Pause, GameOver };
     public static GAME_STATUS status;
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     public List<ICube> GetCubeList { get { return cubeList; } }
     public List<ICapsule> GetCapsuleList { get { return capsuleList; } }
 
-    public List<IPlane> GetLaneList { get { return planeList; } }
+    public List<IPlane> GetPlaneList { get { return planeList; } }
     int stageCoinNum;
 
     const string STAGE_NAME_PREFIX = "Stage";
@@ -55,15 +55,15 @@ public class GameManager : MonoBehaviour
     Player player;
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //if (Instance == null)
+        //{
+        //    Instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
 
         collisionList = linearTreeController.GetCollisionList();
 

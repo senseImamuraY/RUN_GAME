@@ -16,7 +16,7 @@ public class Gravity : MonoBehaviour
     public float gravity = -36.0f; // d—Í‚Ì‘å‚«‚³
 
     private float objectHeight;
-    public Player player;
+    private Player player;
 
     void Start()
     {

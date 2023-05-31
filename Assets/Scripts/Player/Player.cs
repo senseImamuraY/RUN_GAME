@@ -14,6 +14,10 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     GameObject helpUI;
+
+    [SerializeField]
+    GameManager gameManager;
+
     public Animator animator;
     List<ICube> cubeTargetsList;
     List<ISphere> sphereTargetsList;
@@ -52,9 +56,13 @@ public class Player : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        cubeTargetsList = GameManager.Instance.GetCubeList;
-        sphereTargetsList = GameManager.Instance.GetSphereList;
-        planeTargetsList = GameManager.Instance.GetLaneList;
+        //cubeTargetsList = GameManager.Instance.GetCubeList;
+        //sphereTargetsList = GameManager.Instance.GetSphereList;
+        //planeTargetsList = GameManager.Instance.GetLaneList;
+        cubeTargetsList = gameManager.GetCubeList;
+        sphereTargetsList = gameManager.GetSphereList;
+        planeTargetsList = gameManager.GetPlaneList;
+
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
         gravity = gameObject.GetComponent<Gravity>();
         Debug.Log("Status = " + GameManager.status);
