@@ -98,24 +98,56 @@ public class Player : MonoBehaviour
 
         foreach (ISphere target in sphereTargetsList)
         {
+            if (target.IsColliding == true) return;
             if (capsuleCollider.CheckCollisionWithSphere(target))
             {
-                target.Enter();
+                // targetをCustomColliderにキャストします
+                CustomSphereCollider customCollider = target as CustomSphereCollider;
+                if (customCollider == null)
+                {
+                    Debug.Log("キャストできませんでした");
+                    return;
+                }
+                IEnemy ememy = customCollider.Enemy;
+                if (ememy != null)
+                {
+                    ememy.Enter(this);
+                    Debug.Log("Enterが呼ばれました");
+                }
+                else
+                {
+                    Debug.Log("変換失敗");
+                }
                 Debug.Log("Sphereと衝突しました。");
             }
         }
 
         foreach(ICube target in cubeTargetsList)
         {
-            //Debug.Log("CubeCount = "+ cubeTargetsList.Count);
+            if (target.IsColliding == true) return;
             if (capsuleCollider.CheckCollisionWithCube(target))
             {
+                // targetをCustomColliderにキャストします
+                CustomCubeCollider customCollider = target as CustomCubeCollider;
+                if (customCollider == null)
+                {
+                    Debug.Log("キャストできませんでした");
+                    return;
+                }
+                IEnemy ememy = customCollider.Enemy;
+                if (ememy != null)
+                {
+                    ememy.Enter(this);
+                    Debug.Log("Enterが呼ばれました");
+                }
+                else
+                {
+                    Debug.Log("変換失敗");
+                }
                 Debug.Log("Cubeと衝突しました。");
-                //Clear(this.transform.position);
-                //Clear(target.GetCenter);
-                //enabled = false;
             }
         }
+
         //// プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
@@ -150,6 +182,11 @@ public class Player : MonoBehaviour
         
         // 加速度を設定
         gravity.VelocityUpdate();
+
+        // リストをクリア
+        sphereTargetsList.Clear();
+        cubeTargetsList.Clear();
+
     }
 
     void Update()

@@ -15,4 +15,6 @@ public interface ICube
     void SetColliding(bool isColliding);
 
     Transform GetTransform();
+
+    bool IsColliding { get; set; }
 }

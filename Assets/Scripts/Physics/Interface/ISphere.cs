@@ -17,5 +17,6 @@ public interface ISphere
     /// </summary>
     Vector3 GetWorldCenter { get; }
 
-    void Enter();
+    bool IsColliding { get; set; }
+         
 }

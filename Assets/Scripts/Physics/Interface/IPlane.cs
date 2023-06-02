@@ -9,6 +9,8 @@ public interface IPlane
     float GetXSize { get; }
 
     float GetZSize { get; }
+    //Vector3 GetVectorX();
+    //Vector3 GetVectorZ();
 
     Vector3 GetCenter();
 

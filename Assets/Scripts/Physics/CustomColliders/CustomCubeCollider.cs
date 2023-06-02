@@ -38,6 +38,12 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     private Vector3 arrange = new Vector3(0, 0, 0);
 
     public Transform GetTransform() { return cubeTransform; }
+
+    public bool IsColliding { get; set; } = false;
+
+    // EnemyƒNƒ‰ƒX‚Ö‚ÌQÆ
+    public IEnemy Enemy { get; set; }
+
     private void Awake()
     {
         cubeTransform = transform;

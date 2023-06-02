@@ -32,10 +32,10 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
 
     public Vector3 Center() { return center; }
 
-    [SerializeField]
-    private Vector3 size = new Vector3(1,1,1);
+    //[SerializeField]
+    //private Vector3 size = new Vector3(1,1,1);
 
-    public Vector3 Size() { return size; }
+    //public Vector3 Size() { return size; }
 
     void Awake()
     {
@@ -44,8 +44,8 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
     void Start()
     {
         planeRotation = this.transform.rotation;
-        VectorX = transform.TransformVector(new Vector3(xSize, transform.position.y, 0f));
-        VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, zSize));
+        VectorX = transform.TransformVector(new Vector3(transform.right.x * xSize, transform.position.y, 0f));
+        VectorZ = transform.TransformVector(new Vector3(0f, transform.position.y, transform.forward.z * zSize));
 
     }
 
@@ -72,12 +72,12 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
 
     Vector3 GetVectorX()
     {
-        return VectorX + center;
+        return this.transform.right.x * VectorX + center;
     }
 
     Vector3 GetVectorZ()
     {
-        return VectorZ + center;
+        return this.transform.forward.z * VectorZ + center;
     }
 
 

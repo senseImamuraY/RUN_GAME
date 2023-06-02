@@ -16,7 +16,12 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
     //public Vector3 GetWorldCenter { get { return sphereTransform ; } }
 
     private Transform sphereTransform;
-    
+
+    // Enemyクラスへの参照
+    public IEnemy Enemy { get; set; }
+
+    public bool IsColliding { get; set; } = false;
+
     public Vector3 Center() { return center; }
 
     [SerializeField]
@@ -26,13 +31,6 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
 
     [SerializeField]
     Vector3 adjustmentCenter = new Vector3(0, 0, 0);
-
-    public void Enter()
-    {
-
-
-    }
-    // sphereの位置を入れる
 
     void Awake()
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bomb : MonoBehaviour
+public class Bomb : MonoBehaviour, IEnemy
 {
     Animator anim;
 
@@ -17,6 +17,15 @@ public class Bomb : MonoBehaviour
     float rotateSpeed = 180f;  // 回転速度
     float rotateNum;           // 方向転換時の回転量
     CustomSphereCollider sphereCollider;
+
+    void Awake()
+    {
+        // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
+        CustomSphereCollider collider = GetComponent<CustomSphereCollider>();
+        collider.Enemy = this;
+        Debug.Log(collider.Enemy);
+
+    }
 
     void Start()
     {
@@ -72,23 +81,65 @@ public class Bomb : MonoBehaviour
         transform.position += transform.forward * speed * Time.deltaTime;
     }
 
-    public void Enter(Player player)
+
+    IEnumerator WaitForSecond(float num)
+    {
+        yield return new WaitForSeconds(num);
+    }
+
+    //public void Enter(Player player)
+    //{
+    //    if (GameManager.status != GameManager.GAME_STATUS.Play)
+    //    {
+    //        return;
+    //    }
+    //    Debug.Log("bomb");
+    //    if (player.CompareTag("Player"))
+    //    {
+    //        transform.LookAt(player.gameObject.transform);
+    //        //player.gameObject.transform.LookAt(transform);
+    //        anim.SetBool("walk", false);
+    //        anim.SetTrigger("attack01");
+    //        GetComponent<AudioSource>().Play();
+    //        // 1秒待機
+    //        StartCoroutine(WaitForSecond(10));
+
+    //        player.TakeDamage();
+    //        GameManager.status = GameManager.GAME_STATUS.Pause;
+    //    }
+    //}
+
+    IEnumerator EnterCoroutine(Player player)
     {
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
-            return;
+            yield break;  // コルーチンを終了します。
         }
+
         Debug.Log("bomb");
         if (player.CompareTag("Player"))
         {
             transform.LookAt(player.gameObject.transform);
-            player.gameObject.transform.LookAt(transform);
+            //player.gameObject.transform.LookAt(transform);
             anim.SetBool("walk", false);
             anim.SetTrigger("attack01");
+            GameManager.status = GameManager.GAME_STATUS.Pause;
 
+            // 数秒待機
+            yield return new WaitForSeconds(0.7f);
             GetComponent<AudioSource>().Play();
 
-            GameManager.status = GameManager.GAME_STATUS.Pause;
+            // 数秒待機
+            yield return new WaitForSeconds(1.25f);
+
+            player.TakeDamage();
+            
         }
     }
+
+    public void Enter(Player player)
+    {
+        StartCoroutine(EnterCoroutine(player));
+    }
+
 }

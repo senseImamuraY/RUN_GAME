@@ -98,50 +98,51 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetLocalScale.normalized.x, 0, 0)));
         //if (L > rA + rB) return false;
         float rA = transform.localScale.x - 0.5f;
-        float rB = LenSegOnSeparateAxis(new Vector3(transform.localScale.normalized.x, 0, 0), targetTransform, false);
-        float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(transform.localScale.normalized.x, 0, 0)));
+        float rB = LenSegOnSeparateAxis(transform.right * transform.localScale.x, targetTransform, false);
+        float L = Mathf.Abs(Vector3.Dot(Interval, transform.right));
         if (L > rA + rB) return false;
 
         // •ª—£Ž²Ae2
-        rA = transform.localScale.y + 1.0f;
-        rB = LenSegOnSeparateAxis(new Vector3(0, transform.localScale.normalized.y, 0), targetTransform, false);
-        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, transform.localScale.normalized.y, 0)));
+        rA = transform.localScale.y;
+        //rA = transform.localScale.y + 1.0f;
+        rB = LenSegOnSeparateAxis(transform.up * transform.localScale.y, targetTransform, false);
+        L = Mathf.Abs(Vector3.Dot(Interval, transform.up));
         if (L > rA + rB) return false;
 
         // •ª—£Ž²Ae3
         rA = transform.localScale.z - 0.5f;
-        rB = LenSegOnSeparateAxis(new Vector3(0, 0, transform.localScale.normalized.z), targetTransform, false);
-        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, 0, transform.localScale.normalized.z)));
+        rB = LenSegOnSeparateAxis(transform.forward * transform.localScale.z, targetTransform, false);
+        L = Mathf.Abs(Vector3.Dot(Interval, transform.forward));
         if (L > rA + rB) return false;
 
         // 
-        rA = LenSegOnSeparateAxis(new Vector3(targetLocalScale.normalized.x, 0, 0), this.transform, true);
+        rA = LenSegOnSeparateAxis(targetTransform.right * targetTransform.localScale.x, this.transform, true);
         rB = targetTransform.localScale.x / 2.0f;
-        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetTransform.localScale.x, 0, 0)));
+        L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.right));
         if (L > rA + rB) return false;
 
-        rA = LenSegOnSeparateAxis(new Vector3(0, targetLocalScale.normalized.y, 0), this.transform, true);
+        rA = LenSegOnSeparateAxis(targetTransform.up * targetTransform.localScale.y, this.transform, true);
         rB = targetTransform.localScale.y / 2.0f;
-        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, targetTransform.localScale.y, 0)));
+        L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.up));
         if (L > rA + rB) return false;
 
-        rA = LenSegOnSeparateAxis(new Vector3(0, 0, targetLocalScale.normalized.z), this.transform, true);
+        rA = LenSegOnSeparateAxis(targetTransform.forward * targetTransform.localScale.z, this.transform, true);
         rB = targetTransform.localScale.z / 2.0f;
-        L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(0, 0, targetTransform.localScale.z)));
+        L = Mathf.Abs(Vector3.Dot(Interval,targetTransform.forward));
         if (L > rA + rB) return false;
 
         Vector3[] axesA = new Vector3[3]
         {
-            new Vector3(transform.localScale.normalized.x, 0, 0), // X axis
-            new Vector3(0, transform.localScale.normalized.y, 0), // Y axis
-            new Vector3(0, 0, transform.localScale.normalized.z)  // Z axis
+            transform.right * transform.localScale.x, // X axis
+            transform.up * transform.localScale.y, // Y axis
+            transform.forward * transform.localScale.z  // Z axis
         };
 
         Vector3[] axesB = new Vector3[3]
         {
-            new Vector3(targetLocalScale.normalized.x, 0, 0), // X axis
-            new Vector3(0, targetLocalScale.normalized.y, 0), // Y axis
-            new Vector3(0, 0, targetLocalScale.normalized.z)  // Z axis
+            targetTransform.right * targetTransform.localScale.x, // X axis
+            targetTransform.up * targetTransform.localScale.y, // Y axis
+            targetTransform.forward * targetTransform.localScale.z  // Z axis
         };
 
         for (int i = 0; i < axesA.Length; i++)
@@ -224,6 +225,15 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
             sqrDistance = nearToSphere.sqrMagnitude;
         }
 
+        if(sqrDistance - (sphere.GetRadius + radius) * (sphere.GetRadius + radius) <= 0)
+        {
+            sphere.IsColliding = true;
+        }
+        else
+        {
+            sphere.IsColliding = false;
+        }
+
         return sqrDistance - (sphere.GetRadius + radius) * (sphere.GetRadius + radius) <= 0;
     }
 
@@ -254,7 +264,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
-        
+        //Debug.Log("d = " + d);
         float diff = capsuleBottom.y - planeY;
         float speed = 0.5f;
         if (0.0f <= diff && diff < 0.5f)
@@ -265,7 +275,12 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         if (diff <= speed * tanTheta)
         {
             player.setForward(plane.getForward());
+            //if (d < -2.0f)
+            //{
+            //    return false;
+            //}
             player.setPlayerPosition(planeY);
+        
             return true;
         }
         else
@@ -283,15 +298,16 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         if ((this.center.x >= (planeCenter.x + planeXSize)) || (this.center.x <= (planeCenter.x - planeXSize)))
         {
+            Debug.Log("”ÍˆÍŠO‚É‚¢‚Ü‚·");
             return false;
         }
         if ((this.center.z >= (planeCenter.z + planeZSize)) || (this.center.z <= (planeCenter.z - planeZSize)))
         {
+            Debug.Log("”ÍˆÍŠO‚É‚¢‚Ü‚·");
             return false;
         }
         else
         {
-
             return true;
         }
     }
@@ -339,7 +355,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         if(isCapsule)
         {
             targetLocalScale.x -= 0.5f;
-            targetLocalScale.y += 1.0f;
+            //targetLocalScale.y += 1.0f;
             targetLocalScale.z -= 0.5f;
         }
         else
@@ -358,5 +374,4 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         return sum;
     }
-
 }
