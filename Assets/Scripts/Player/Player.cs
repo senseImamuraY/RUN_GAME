@@ -101,23 +101,35 @@ public class Player : MonoBehaviour
             if (target.IsColliding == true) return;
             if (capsuleCollider.CheckCollisionWithSphere(target))
             {
-                // targetをCustomColliderにキャストします
+                // targetをCustomColliderにキャスト
                 CustomSphereCollider customCollider = target as CustomSphereCollider;
                 if (customCollider == null)
                 {
                     Debug.Log("キャストできませんでした");
                     return;
                 }
-                IEnemy ememy = customCollider.Enemy;
-                if (ememy != null)
+
+                // ここでIEnemyをチェックし、それがnullでない場合にはEnterを呼び出す
+                IEnemy enemy = customCollider.Enemy;
+                if (enemy != null)
                 {
-                    ememy.Enter(this);
-                    Debug.Log("Enterが呼ばれました");
+                    enemy.Enter(this);
+                    Debug.Log("EnemyのEnterが呼ばれました");
                 }
-                else
+
+                // IItemをチェック。それがnullでない場合には、何らかのアイテム特有の処理を実行します
+                IItem item = customCollider.Item;
+                if (item != null)
+                {
+                    item.Use(this); 
+                    Debug.Log("ItemのUseが呼ばれました");
+                }
+
+                if (enemy == null && item == null)
                 {
                     Debug.Log("変換失敗");
                 }
+
                 Debug.Log("Sphereと衝突しました。");
             }
         }
@@ -201,6 +213,7 @@ public class Player : MonoBehaviour
 
             // 目的地の方向に移動させる
             Vector3 dir = (dest - transform.position).normalized;
+            float speed = 10f;
             transform.position += dir * speed * Time.deltaTime;
 
             // 目的地に十分近づいたら、最終演出
@@ -276,5 +289,27 @@ public class Player : MonoBehaviour
         //Debug.Log("isColliding + = " + collider.GetIsColliding);
         ClimbOnObject(collider);
     }
+
+    public void SpeedChanger(float num)
+    {
+        speed += num;
+        Debug.Log("speed = " + speed);
+    }
+
+    public void SensitivityChanger(float num)
+    {
+        sensitivity += num;
+    }
+
+    public void GravityChanger(float num)
+    {
+        gravity.gravity += num;
+    }
+
+    public void JumpPower(float num)
+    {
+        jumpPower += num;
+    }
+
 }
 

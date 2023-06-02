@@ -20,6 +20,7 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
     // EnemyƒNƒ‰ƒX‚Ö‚ÌQÆ
     public IEnemy Enemy { get; set; }
 
+    public IItem Item { get; set; }
     public bool IsColliding { get; set; } = false;
 
     public Vector3 Center() { return center; }
