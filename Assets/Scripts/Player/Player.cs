@@ -33,21 +33,23 @@ public class Player : MonoBehaviour
     Vector3 playerPosition;
 
     public bool isRunning;
-    public float sensitivity = 1f;
+    private float sensitivity = 1f;
 
     const float LOAD_WIDTH = 10f;
     const float MOVE_MAX = 4.5f;
     [SerializeField]
-    float speed = 20f;
-    float moveDistance;
+    private float speed = 20f;
+    private float moveDistance;
+
     public bool isJump = false;
-    float jumpDelay = 1f; // 1秒のディレイ
-    float nextJumpTime = 0f;
+
+    private float jumpDelay = 1f; // 1秒のディレイ
+    private float nextJumpTime = 0f;
 
     Vector3 planeForward;
 
     [SerializeField]
-    public float jumpPower = 10f;
+    private float jumpPower = 10f;
     private bool onFloor;
     private Vector3 planeNormal;
 
@@ -121,7 +123,7 @@ public class Player : MonoBehaviour
                 IItem item = customCollider.Item;
                 if (item != null)
                 {
-                    item.Use(this);
+                    item.Enter(this);
                     Debug.Log("ItemのUseが呼ばれました");
                 }
 
@@ -213,7 +215,7 @@ public class Player : MonoBehaviour
 
             // 目的地の方向に移動させる
             Vector3 dir = (dest - transform.position).normalized;
-            float speed = 10f;
+            float speed = 100f;
             transform.position += dir * speed * Time.deltaTime;
 
             // 目的地に十分近づいたら、最終演出
@@ -311,5 +313,24 @@ public class Player : MonoBehaviour
         jumpPower += num;
     }
 
+    public float GetGravityNum()
+    {
+        return gravity.gravity;
+    }
+
+    public float GetSpeedNum()
+    {
+        return speed;
+    }
+
+    public float GetSlideNum()
+    {
+        return sensitivity;
+    }
+
+    public float GetJumpPowerNum()
+    {
+        return jumpPower;
+    }
 }
 

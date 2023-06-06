@@ -28,7 +28,7 @@ public class SlideChanger : MonoBehaviour, IItem
         }
     }
 
-    public void Use(Player player)
+    public void Enter(Player player)
     {
         player.SensitivityChanger(2f);
         Debug.Log("SlideChanger");

@@ -17,4 +17,6 @@ public interface ICube
     Transform GetTransform();
 
     bool IsColliding { get; set; }
+
+    Vector3 GetArrange();
 }

@@ -28,7 +28,7 @@ public class JumpChanger : MonoBehaviour, IItem
         }
     }
 
-    public void Use(Player player)
+    public void Enter(Player player)
     {
         player.JumpPowerChanger(20f);
         Debug.Log("JumpChanger");

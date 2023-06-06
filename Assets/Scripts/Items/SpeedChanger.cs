@@ -27,7 +27,7 @@ public class SpeedChanger : MonoBehaviour, IItem
         }
     }
 
-    public void Use(Player player)
+    public void Enter(Player player)
     {
         //StartCoroutine(EnterCoroutine(player));
         player.SpeedChanger(100f);

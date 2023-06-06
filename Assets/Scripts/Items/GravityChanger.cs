@@ -28,7 +28,7 @@ public class GravityChanger : MonoBehaviour, IItem
         }
     }
 
-    public void Use(Player player)
+    public void Enter(Player player)
     {
         player.GravityChanger(-100f);
         Debug.Log("GravityChanger");

@@ -37,6 +37,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     [SerializeField]
     private Vector3 arrange = new Vector3(0, 0, 0);
 
+    public Vector3 GetArrange() { return arrange; }
     public Transform GetTransform() { return cubeTransform; }
 
     public bool IsColliding { get; set; } = false;
@@ -111,7 +112,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     {
         // ¡‰ñ‚Í“–‚½‚è”»’è‚ðŠÈˆÕ“I‚Éì¬
         // OBB‚ÆOBB‚Ì“–‚½‚è”»’è‚ðŽg—p
-        Vector3 Interval = capsule.GetCenter() - (center + arrange);
+        Vector3 Interval = capsule.GetCenter() - center;
 
         Transform targetTransform = capsule.GetTransform();
         Vector3 targetLocalScale = targetTransform.localScale;
@@ -121,19 +122,19 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         //loat rB = LenSegOnSeparateAxis(new Vector3(targetLocalScale.normalized.x, 0, 0), targetTransform);
         //float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetLocalScale.normalized.x, 0, 0)));
         //if (L > rA + rB) return false;
-        float rA = transform.localScale.x - 0.5f;
+        float rA = transform.localScale.x - 0.5f + arrange.x;
         float rB = LenSegOnSeparateAxis(new Vector3(transform.localScale.normalized.x, 0, 0), targetTransform, true, arrange);
         float L = Mathf.Abs(Vector3.Dot(Interval, transform.right));
         if (L > rA + rB) return false;
 
         // •ª—£Ž²Ae2
-        rA = transform.localScale.y + 1.0f;
+        rA = transform.localScale.y + 1.0f + arrange.y;
         rB = LenSegOnSeparateAxis(new Vector3(0, transform.localScale.normalized.y, 0), targetTransform, true, arrange);
         L = Mathf.Abs(Vector3.Dot(Interval, transform.up));
         if (L > rA + rB) return false;
 
         // •ª—£Ž²Ae3
-        rA = transform.localScale.z - 0.5f;
+        rA = transform.localScale.z - 0.5f + arrange.z;
         rB = LenSegOnSeparateAxis(new Vector3(0, 0, transform.localScale.normalized.z), targetTransform, true, arrange);
         L = Mathf.Abs(Vector3.Dot(Interval, transform.forward));
         if (L > rA + rB) return false;
@@ -145,7 +146,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         if (L > rA + rB) return false;
 
         rA = LenSegOnSeparateAxis(new Vector3(0, targetLocalScale.normalized.y, 0), this.transform, false, arrange);
-        rB = (targetTransform.localScale.y + arrange.y) / 2.0f;
+        rB = targetTransform.localScale.y / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.up));
         if (L > rA + rB) return false;
 
@@ -215,6 +216,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         else
         {
             targetLocalScale = targetLocalScale + arrangeNum / 2.0f;
+            Debug.Log("LocalScale = " + targetLocalScale);
             
         }
         float sum = 0;

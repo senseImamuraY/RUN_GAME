@@ -89,6 +89,8 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         // OBB‚ÆOBB‚Ì“–‚½‚è”»’è‚ğg—p
         Vector3 Interval = box.GetCenter - center;
 
+        Vector3 arrange = box.GetArrange();
+
         Transform targetTransform = box.GetTransform();
         Vector3 targetLocalScale = targetTransform.localScale;
 
@@ -98,36 +100,36 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         //float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetLocalScale.normalized.x, 0, 0)));
         //if (L > rA + rB) return false;
         float rA = transform.localScale.x - 0.5f;
-        float rB = LenSegOnSeparateAxis(transform.right * transform.localScale.x, targetTransform, false);
+        float rB = LenSegOnSeparateAxis(transform.right * transform.localScale.x, targetTransform, false, arrange);
         float L = Mathf.Abs(Vector3.Dot(Interval, transform.right));
         if (L > rA + rB) return false;
 
         // •ª—£²Ae2
         rA = transform.localScale.y;
         //rA = transform.localScale.y + 1.0f;
-        rB = LenSegOnSeparateAxis(transform.up * transform.localScale.y, targetTransform, false);
+        rB = LenSegOnSeparateAxis(transform.up * transform.localScale.y, targetTransform, false, arrange);
         L = Mathf.Abs(Vector3.Dot(Interval, transform.up));
         if (L > rA + rB) return false;
 
         // •ª—£²Ae3
         rA = transform.localScale.z - 0.5f;
-        rB = LenSegOnSeparateAxis(transform.forward * transform.localScale.z, targetTransform, false);
+        rB = LenSegOnSeparateAxis(transform.forward * transform.localScale.z, targetTransform, false, arrange);
         L = Mathf.Abs(Vector3.Dot(Interval, transform.forward));
         if (L > rA + rB) return false;
 
         // 
-        rA = LenSegOnSeparateAxis(targetTransform.right * targetTransform.localScale.x, this.transform, true);
-        rB = targetTransform.localScale.x / 2.0f;
+        rA = LenSegOnSeparateAxis(targetTransform.right * targetTransform.localScale.x, this.transform, true, arrange);
+        rB = (targetTransform.localScale.x + arrange.x) / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.right));
         if (L > rA + rB) return false;
 
-        rA = LenSegOnSeparateAxis(targetTransform.up * targetTransform.localScale.y, this.transform, true);
-        rB = targetTransform.localScale.y / 2.0f;
+        rA = LenSegOnSeparateAxis(targetTransform.up * targetTransform.localScale.y, this.transform, true, arrange);
+        rB = (targetTransform.localScale.y + arrange.y) / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.up));
         if (L > rA + rB) return false;
 
-        rA = LenSegOnSeparateAxis(targetTransform.forward * targetTransform.localScale.z, this.transform, true);
-        rB = targetTransform.localScale.z / 2.0f;
+        rA = LenSegOnSeparateAxis(targetTransform.forward * targetTransform.localScale.z, this.transform, true, arrange);
+        rB = (targetTransform.localScale.z + arrange.z) / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval,targetTransform.forward));
         if (L > rA + rB) return false;
 
@@ -150,8 +152,8 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
             for (int j = 0; j < axesB.Length; j++)
             {
                 Vector3 Cross = Vector3.Cross(axesA[i], axesB[j]);
-                rA = LenSegOnSeparateAxis(Cross, transform, true);
-                rB = LenSegOnSeparateAxis(Cross, targetTransform, false);
+                rA = LenSegOnSeparateAxis(Cross, transform, true, arrange);
+                rB = LenSegOnSeparateAxis(Cross, targetTransform, false, arrange);
                 L = Mathf.Abs(Vector3.Dot(Interval, Cross));
                 if (L > rA + rB)
                 {
@@ -349,7 +351,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     //}
 
     // •ª—£²‚É“Š‰e‚³‚ê‚½²¬•ª‚©‚ç“Š‰eü•ª’·‚ğZo
-    public static float LenSegOnSeparateAxis(Vector3 Sep, Transform target, bool isCapsule)
+    public static float LenSegOnSeparateAxis(Vector3 Sep, Transform target, bool isCapsule, Vector3 arrangeNum)
     {
         Vector3 targetLocalScale = target.localScale;
         if(isCapsule)
@@ -360,7 +362,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         }
         else
         {
-            targetLocalScale = targetLocalScale / 2.0f;
+            targetLocalScale = (targetLocalScale + arrangeNum) / 2.0f;
         }
         float sum = 0;
 

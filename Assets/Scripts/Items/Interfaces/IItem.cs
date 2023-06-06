@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IItem
 {
-    void Use(Player player);
+    void Enter(Player player);
 }
 

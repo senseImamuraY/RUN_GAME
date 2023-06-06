@@ -2,19 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Coin : MonoBehaviour, IItem
 {
     float speed = 100f;
 
     bool isGet;             // 獲得済みフラグ
     float lifeTime = 0.5f;  // 獲得後の生存時間 
 
-    void Start()
-    {
+    CustomSphereCollider sphereCollider;
 
+    void Awake()
+    {
+        // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
+        sphereCollider = GetComponent<CustomSphereCollider>();
+        sphereCollider.Item = this;
+        Debug.Log(sphereCollider.Item);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // 獲得後
         if (isGet)
@@ -39,20 +44,16 @@ public class Coin : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Enter(Player player)
     {
-        // プレイヤーが接触で獲得判定
-        if (!isGet && other.CompareTag("Player"))
-        {
-            isGet = true;
+        isGet = true;
 
-            GetComponent<AudioSource>().Play();
+        //GetComponent<AudioSource>().Play();
 
-            GameManager.tempCoinNum++;
-            Debug.Log("コインの枚数：" + GameManager.tempCoinNum);
+        GameManager.tempCoinNum++;
+        Debug.Log("コインの枚数：" + GameManager.tempCoinNum);
 
-            // コインを上にポップさせる
-            transform.position += Vector3.up * 1.5f;
-        }
+        // コインを上にポップさせる
+        transform.position += Vector3.up * 1.5f;
     }
 }

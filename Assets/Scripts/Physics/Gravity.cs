@@ -74,7 +74,7 @@ public class Gravity : MonoBehaviour
             //if (animator.GetBool("IsGround"))
 
             player.animator.SetTrigger("IsJumping");
-            SetVelocity(player.jumpPower);
+            SetVelocity(player.GetJumpPowerNum());
 
         }
 

@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     TextMeshProUGUI coinNumText, resultCoinText, levelNumText;
 
     [SerializeField]
+    TextMeshProUGUI speedNumText, gravityNumText, jumpNumText, slideNumText;
+
+    [SerializeField]
     GameObject clearUI, gameOverUI;
 
     [SerializeField]
@@ -137,10 +140,34 @@ public class GameManager : MonoBehaviour
 
         // ステータスをPlayに
         status = GAME_STATUS.Play;
+
+
     }
 
     private void FixedUpdate()
     {
+
+        if (status == GAME_STATUS.Clear)
+        {
+            // 現在のステージで獲得したコインの枚数
+            int getCoinNum = tempCoinNum - PlayerPrefs.GetInt("coinNum", 0);
+
+            resultCoinText.text = getCoinNum.ToString().PadLeft(3) + "/" + stageCoinNum;
+            //clearUI.SetActive(true);
+            clearUI.SetActive(true);
+
+            // コインを保存
+            PlayerPrefs.SetInt("coinNum", tempCoinNum);
+
+            enabled = false;
+        }
+        else if (status == GAME_STATUS.GameOver)
+        {
+            Invoke("ShowGameOverUI", 3f);
+            enabled = false;
+            return;
+        }
+
         collisionList = linearTreeController.GetCollisionList();
 
         foreach (GameObject target in collisionList)
@@ -156,40 +183,25 @@ public class GameManager : MonoBehaviour
                 cubeList.Add(target.GetComponent<ICube>());
                 Debug.Log(cubeList);
             }
-            else
-            {
-                Debug.Log("どれにも追加されませんでした");
-            }
+            //else
+            //{
+            //    //Debug.Log("どれにも追加されませんでした");
+            //}
         }
         Debug.Log("collisionList.Count = " +  collisionList.Count);
         goal.GoalEffect(player);
-    }
-    void Update()
-    {
-        
-        if (status == GAME_STATUS.Clear)
-        {
-            // 現在のステージで獲得したコインの枚数
-            int getCoinNum = tempCoinNum - PlayerPrefs.GetInt("coinNum", 0);
-
-            resultCoinText.text = getCoinNum.ToString().PadLeft(3) + "/" + stageCoinNum; clearUI.SetActive(true);
-            clearUI.SetActive(true);
-
-            // コインを保存
-            PlayerPrefs.SetInt("coinNum", tempCoinNum);
-
-            enabled = false;
-        }
-        else if (status == GAME_STATUS.GameOver)
-        {
-            Invoke("ShowGameOverUI", 3f);
-            enabled = false;
-            return;
-        }
 
         coinNumText.text = tempCoinNum.ToString();
 
-        
+        speedNumText.text = player.GetSpeedNum().ToString();
+        gravityNumText.text = player.GetGravityNum().ToString();
+        jumpNumText.text = player.GetJumpPowerNum().ToString();
+        slideNumText.text = player.GetSlideNum().ToString();
+
+    }
+    void Update()
+    {
+
     }
 
     public void LoadCurrentScene()
