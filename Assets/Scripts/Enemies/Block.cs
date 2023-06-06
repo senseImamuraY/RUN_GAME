@@ -9,9 +9,9 @@ public class Block : MonoBehaviour, IEnemy
     void Awake()
     {
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
-        CustomCubeCollider collider = GetComponent<CustomCubeCollider>();
-        collider.Enemy = this;
-        Debug.Log(collider.Enemy);
+         cubeCollider = GetComponent<CustomCubeCollider>();
+        cubeCollider.Enemy = this;
+        Debug.Log(cubeCollider.Enemy);
     }
 
     void Start()

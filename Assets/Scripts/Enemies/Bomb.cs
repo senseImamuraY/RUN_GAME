@@ -21,9 +21,9 @@ public class Bomb : MonoBehaviour, IEnemy
     void Awake()
     {
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
-        CustomSphereCollider collider = GetComponent<CustomSphereCollider>();
-        collider.Enemy = this;
-        Debug.Log(collider.Enemy);
+        sphereCollider = GetComponent<CustomSphereCollider>();
+        sphereCollider.Enemy = this;
+        Debug.Log(sphereCollider.Enemy);
 
     }
 

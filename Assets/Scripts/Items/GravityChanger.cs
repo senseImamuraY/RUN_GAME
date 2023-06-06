@@ -9,10 +9,11 @@ public class GravityChanger : MonoBehaviour, IItem
     void Awake()
     {
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
-        CustomSphereCollider collider = GetComponent<CustomSphereCollider>();
-        collider.Item = this;
-        Debug.Log(collider.Enemy);
+        sphereCollider = GetComponent<CustomSphereCollider>();
+        sphereCollider.Item = this;
+        Debug.Log(sphereCollider.Item);
     }
+
 
     void Start()
     {
@@ -27,26 +28,9 @@ public class GravityChanger : MonoBehaviour, IItem
         }
     }
 
-    IEnumerator EnterCoroutine(Player player)
-    {
-        if (GameManager.status != GameManager.GAME_STATUS.Play)
-        {
-            yield break;  // コルーチンを終了します。
-        }
-
-        Debug.Log("block");
-        if (player.CompareTag("Player"))
-        {
-            GameManager.status = GameManager.GAME_STATUS.Pause;
-            // 数秒待機
-            yield return new WaitForSeconds(0.25f);
-            player.TakeDamage();
-        }
-    }
-
     public void Use(Player player)
     {
-        StartCoroutine(EnterCoroutine(player));
+        player.GravityChanger(-100f);
+        Debug.Log("GravityChanger");
     }
-
 }

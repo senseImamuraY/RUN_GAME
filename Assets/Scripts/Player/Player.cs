@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
 
         foreach (ISphere target in sphereTargetsList)
         {
-            if (target.IsColliding == true) return;
+            if (target.IsColliding == true) continue;
             if (capsuleCollider.CheckCollisionWithSphere(target))
             {
                 // targetをCustomColliderにキャスト
@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
                 if (customCollider == null)
                 {
                     Debug.Log("キャストできませんでした");
-                    return;
+                    continue;
                 }
 
                 // ここでIEnemyをチェックし、それがnullでない場合にはEnterを呼び出す
@@ -121,7 +121,7 @@ public class Player : MonoBehaviour
                 IItem item = customCollider.Item;
                 if (item != null)
                 {
-                    item.Use(this); 
+                    item.Use(this);
                     Debug.Log("ItemのUseが呼ばれました");
                 }
 
@@ -136,7 +136,7 @@ public class Player : MonoBehaviour
 
         foreach(ICube target in cubeTargetsList)
         {
-            if (target.IsColliding == true) return;
+            if (target.IsColliding == true) continue;
             if (capsuleCollider.CheckCollisionWithCube(target))
             {
                 // targetをCustomColliderにキャストします
@@ -306,7 +306,7 @@ public class Player : MonoBehaviour
         gravity.gravity += num;
     }
 
-    public void JumpPower(float num)
+    public void JumpPowerChanger(float num)
     {
         jumpPower += num;
     }
