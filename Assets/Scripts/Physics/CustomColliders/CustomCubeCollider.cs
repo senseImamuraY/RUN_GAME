@@ -51,7 +51,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         SetCenter(this.transform.position);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         center = transform.position;
     }
