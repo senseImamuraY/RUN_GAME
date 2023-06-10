@@ -256,7 +256,6 @@ public class GameManager : MonoBehaviour
             countdownText.text = currentTime.ToString("F0"); // テキストに現在秒数を表示
         }
         isCounting = false; // カウントダウン中フラグをオフにする
-        //countdownText.enableAutoSizing = true;
         countdownText.fontSize = 300f;
         countdownText.text = "Start"; // テキストにスタートと表示
 

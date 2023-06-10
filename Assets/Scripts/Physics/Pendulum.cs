@@ -27,6 +27,6 @@ public class Pendulum : MonoBehaviour
         // オブジェクトの位置を更新
         Vector3 newPosition = pivot.position + new Vector3(length * Mathf.Sin(angle), -length * Mathf.Cos(angle), 0f);
         transform.position = newPosition;
-        Debug.Log("transform pendulum = " + transform.position);
+        //Debug.Log("transform pendulum = " + transform.position);
     }
 }

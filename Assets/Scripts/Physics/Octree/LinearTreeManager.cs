@@ -144,32 +144,32 @@ public class LinearTreeManager<T>
 
         if (left < 0)
         {
-            Debug.LogError("All argumetns must be in initialized range.");
+            //Debug.LogError("All argumetns must be in initialized range.");
             return false;
         }
         if (right > _width)
         {
-            Debug.LogError("All argumetns must be in initialized range.");
+            //Debug.LogError("All argumetns must be in initialized range.");
             return false;
         }
         if (bottom < 0)
         {
-            Debug.LogError("All argumetns must be in initialized range.");
+            //Debug.LogError("All argumetns must be in initialized range.");
             return false;
         }
         if (top > _height)
         {
-            Debug.LogError("All argumetns must be in initialized range.");
+            //Debug.LogError("All argumetns must be in initialized range.");
             return false;
         }
         if (front < 0)
         {
-            Debug.LogError("All argumetns must be in initialized range.");
+            //Debug.LogError("All argumetns must be in initialized range.");
             return false;
         }
         if (back > _depth)
         {
-            Debug.LogError("All argumetns must be in initialized range.");
+            //Debug.LogError("All argumetns must be in initialized range.");
             return false;
         }
 
