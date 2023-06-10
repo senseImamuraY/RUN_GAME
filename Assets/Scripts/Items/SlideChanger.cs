@@ -28,10 +28,35 @@ public class SlideChanger : MonoBehaviour, IItem
         }
     }
 
+    //public void Enter(Player player)
+    //{
+    //    player.SensitivityChanger(2f);
+    //    Debug.Log("SlideChanger");
+    //}
+
     public void Enter(Player player)
     {
-        player.SensitivityChanger(2f);
-        Debug.Log("SlideChanger");
+        // 効果の値
+        float ChangeNum = 2f;
+
+        // 効果を適用
+        player.SensitivityChanger(ChangeNum);
+        Debug.Log("SensitivityChanger");
+
+        // 待機時間（秒）
+        float delay = 3f;
+
+        // 待機時間後に元の値に戻す
+        StartCoroutine(RevertGravity(player, delay, ChangeNum));
+    }
+
+    private IEnumerator RevertGravity(Player player, float delay, float prevNum)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // 効果を元に戻す
+        player.SensitivityChanger(-prevNum);
+        Debug.Log("SensitivityChanger Reverted");
     }
 
 }

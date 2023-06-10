@@ -37,7 +37,7 @@ public class GravityChanger : MonoBehaviour, IItem
     //}
     public void Enter(Player player)
     {
-        //// 効果適用前の値を保存
+        // 効果の値
         float ChangeNum = -100f;
 
         // 効果を適用

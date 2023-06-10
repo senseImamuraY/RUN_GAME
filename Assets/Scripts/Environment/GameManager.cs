@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     public static int tempCoinNum;
 
     [SerializeField]
-    TextMeshProUGUI coinNumText, resultCoinText, levelNumText;
+    TextMeshProUGUI coinNumText, resultCoinText, levelNumText, countdownText;
 
     [SerializeField]
     TextMeshProUGUI speedNumText, gravityNumText, jumpNumText, slideNumText;
@@ -56,6 +57,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     Player player;
+
+    //public Text timerText; // タイマーを表示するテキスト
+    public float startTime = 3f; // カウントダウン開始秒数
+    private float currentTime; // カウントダウン現在秒数
+    public bool isCounting = false; // カウントダウン中かどうか
+
     private void Awake()
     {
         //if (Instance == null)
@@ -141,11 +148,14 @@ public class GameManager : MonoBehaviour
         // ステータスをPlayに
         status = GAME_STATUS.Play;
 
-
+        currentTime = startTime; // 現在秒数に開始秒数を代入
+        countdownText.text = currentTime.ToString("F0"); // テキストに現在秒数を表示
+        StartCoroutine(CountDown()); // コルーチンを開始
     }
 
     private void FixedUpdate()
     {
+        
 
         if (status == GAME_STATUS.Clear)
         {
@@ -233,5 +243,28 @@ public class GameManager : MonoBehaviour
     private void ShowGameOverUI()
     {
         gameOverUI.SetActive(true);
+    }
+
+    IEnumerator CountDown()
+    {
+        isCounting = true; // カウントダウン中フラグをオンにする
+        player.enabled = false;
+        while (currentTime > 0) // 現在秒数が0より大きい間繰り返す
+        {
+            yield return new WaitForSeconds(1f); // 1秒待つ
+            currentTime -= 1f; // 現在秒数を1減らす
+            countdownText.text = currentTime.ToString("F0"); // テキストに現在秒数を表示
+        }
+        isCounting = false; // カウントダウン中フラグをオフにする
+        //countdownText.enableAutoSizing = true;
+        countdownText.fontSize = 300f;
+        countdownText.text = "Start"; // テキストにスタートと表示
+
+        // ここでゲームのスタート処理を呼び出すなどする
+        player.enabled = true;
+
+        yield return new WaitForSeconds(1f);
+        countdownText.gameObject.SetActive(false);
+        
     }
 }
