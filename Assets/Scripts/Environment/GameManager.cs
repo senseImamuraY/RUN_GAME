@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
     public void LoadCurrentScene()
     {
         Debug.Log("LoadNextScene");
-        GameManager.status = GAME_STATUS.Play;
+        //GameManager.status = GAME_STATUS.Play;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     private string GetLoadSceneName()
@@ -243,6 +243,11 @@ public class GameManager : MonoBehaviour
     private void ShowGameOverUI()
     {
         gameOverUI.SetActive(true);
+    }
+
+    public void Title()
+    {
+        SceneManager.LoadScene("Title");
     }
 
     IEnumerator CountDown()

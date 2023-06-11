@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 //using System.Numerics;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
+#endif 
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
