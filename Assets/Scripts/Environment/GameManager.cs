@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public static GAME_STATUS status;
 
     public static int tempCoinNum;
+    private int SceneNum = 1;
 
     [SerializeField]
     TextMeshProUGUI coinNumText, resultCoinText, levelNumText, countdownText;
@@ -26,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> targetList;
 
+    [SerializeField]
+    private List<GameObject> athletics;
 
     private List<ISphere> sphereList = new List<ISphere>();
     private List<ICube> cubeList = new List<ICube>();
@@ -123,15 +126,15 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // ステージ番号ロード
-        stageNum = PlayerPrefs.GetInt("stageNum", 1);
+        //// ステージ番号ロード
+        //stageNum = PlayerPrefs.GetInt("stageNum", 1);
 
-        // 自分のシーンではない場合、ロードし直す
-        if (!GetLoadSceneName().Equals(SceneManager.GetActiveScene().name))
-        {
-            LoadScene();
-            return;
-        }
+        //// 自分のシーンではない場合、ロードし直す
+        //if (!GetLoadSceneName().Equals(SceneManager.GetActiveScene().name))
+        //{
+        //    LoadScene();
+        //    return;
+        //}
 
         // レベル番号をロード
         levelNum = PlayerPrefs.GetInt("levelNum", 1);
@@ -220,25 +223,39 @@ public class GameManager : MonoBehaviour
     }
     private string GetLoadSceneName()
     {
-        return STAGE_NAME_PREFIX + 3;
+        return STAGE_NAME_PREFIX + SceneNum;
         //return STAGE_NAME_PREFIX + 2;
         //return STAGE_NAME_PREFIX + stageNum;
     }
 
+    private string GetLoadNextSceneName()
+    {
+        
+        if (SceneNum < 2)
+        {
+            SceneNum++;
+        }
+        return STAGE_NAME_PREFIX + SceneNum;
+    }
+
+    public void LoadNextScene()
+    {
+        SceneManager.LoadScene(GetLoadNextSceneName());
+    }
     public void LoadScene()
     {
         SceneManager.LoadScene(GetLoadSceneName());
     }
 
-    public void LoadNextScene()
-    {
-        PlayerPrefs.SetInt("levelNum", ++levelNum);
+    //public void LoadNextScene()
+    //{
+    //    PlayerPrefs.SetInt("levelNum", ++levelNum);
 
-        stageNum = levelNum <= MAX_STAGE_NUM ? levelNum : Random.Range(1, MAX_STAGE_NUM + 1);
-        PlayerPrefs.SetInt("stageNum", stageNum);
+    //    stageNum = levelNum <= MAX_STAGE_NUM ? levelNum : Random.Range(1, MAX_STAGE_NUM + 1);
+    //    PlayerPrefs.SetInt("stageNum", stageNum);
 
-        LoadScene();
-    }
+    //    LoadScene();
+    //}
     private void ShowGameOverUI()
     {
         gameOverUI.SetActive(true);
