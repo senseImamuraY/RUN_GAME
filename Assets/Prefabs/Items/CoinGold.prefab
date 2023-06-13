@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 8291878171929064217}
   - component: {fileID: 8241843837695815875}
   - component: {fileID: 8261627732880278871}
+  - component: {fileID: 1072704825}
+  - component: {fileID: 1072704826}
+  - component: {fileID: 1072704827}
   m_Layer: 2
   m_Name: CoinGold
   m_TagString: Coin
@@ -194,3 +197,43 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.45090213
   m_Center: {x: 0, y: 0, z: 0.000000014901161}
+--- !u!114 &1072704825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8305545971190015739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1428d4b9cc31fbe47afefe510173efad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: 0, y: 0, z: 0}
+  radius: 0.5
+  size: {x: 0, y: 0, z: 0}
+  adjustmentCenter: {x: 0, y: 0, z: 0}
+--- !u!114 &1072704826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8305545971190015739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ccc514b75ff974da082f54eca571c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1072704827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8305545971190015739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7697ad835686cca449b0748f682af44c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

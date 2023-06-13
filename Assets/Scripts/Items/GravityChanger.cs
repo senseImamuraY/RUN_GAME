@@ -12,6 +12,7 @@ public class GravityChanger : MonoBehaviour, IItem
         sphereCollider = GetComponent<CustomSphereCollider>();
         sphereCollider.Item = this;
         Debug.Log(sphereCollider.Item);
+
     }
 
 

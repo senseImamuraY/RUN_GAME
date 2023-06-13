@@ -14,8 +14,8 @@ using static UnityEngine.Rendering.DebugUI;
 public class Player : MonoBehaviour
 {
 
-    [SerializeField]
-    GameObject helpUI;
+    //[SerializeField]
+    //GameObject helpUI;
 
     [SerializeField]
     GameManager gameManager;

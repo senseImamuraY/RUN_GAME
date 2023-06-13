@@ -9,8 +9,6 @@ using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
-    //public static GameManager Instance { get; private set; }
-
     public enum GAME_STATUS { Play, Clear, Pause, GameOver };
     public static GAME_STATUS status;
 
@@ -222,7 +220,8 @@ public class GameManager : MonoBehaviour
     }
     private string GetLoadSceneName()
     {
-        return STAGE_NAME_PREFIX + 2;
+        return STAGE_NAME_PREFIX + 3;
+        //return STAGE_NAME_PREFIX + 2;
         //return STAGE_NAME_PREFIX + stageNum;
     }
 

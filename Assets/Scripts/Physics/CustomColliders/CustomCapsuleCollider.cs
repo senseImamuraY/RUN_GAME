@@ -263,26 +263,34 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         // tanƒÆ‚ðŒvŽZ
         float tanTheta = Mathf.Tan(angle);
-
+        Debug.Log("tangent = " + tanTheta);
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
         //Debug.Log("d = " + d);
         float diff = capsuleBottom.y - planeY;
-        float speed = 0.5f;
-        if (0.0f <= diff && diff < 0.5f)
+
+        //float diff2 = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z + d;
+        //Debug.Log("diff2 = " + diff2);
+        // ‰æ–Ê‚ÌU“®‚ð–hŽ~‚·‚é‚½‚ß
+        //float speed = 1f;
+        //float arrangementNum = speed * tanTheta;
+        float min = 0f;
+        float max = 0.5f;
+
+        // ŒvŽZŒë·‚É‚æ‚é—Ž‰º–hŽ~
+
+        Debug.Log("planeY = " + planeY);
+        if (min <= diff && diff < max)
         {
             player.setForward(plane.getForward());
+            //player.setPlayerPosition(planeY);
             return true;
         }
-        if (diff <= speed * tanTheta)
+        // ŒX‚¢‚½â‚ðã‚ª‚Á‚½Žž‚É—Ž‚¿‚È‚¢‚æ‚¤‚É‚·‚é‚½‚ß‚Ìˆ—
+        if (diff < min)
         {
             player.setForward(plane.getForward());
-            //if (d < -2.0f)
-            //{
-            //    return false;
-            //}
             player.setPlayerPosition(planeY);
-        
             return true;
         }
         else

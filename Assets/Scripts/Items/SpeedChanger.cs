@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Timeline.Actions;
 
 public class SpeedChanger : MonoBehaviour, IItem
 {
@@ -42,7 +43,6 @@ public class SpeedChanger : MonoBehaviour, IItem
         // 効果を適用
         player.SpeedChanger(ChangeNum);
         Debug.Log("SpeedChanger");
-
         // 待機時間（秒）
         float delay = 3f;
 
