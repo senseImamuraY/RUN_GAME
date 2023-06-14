@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 5562878778818167408}
   - component: {fileID: 5562878778818167411}
   m_Layer: 0
-  m_Name: Pendulum Object
+  m_Name: PendulumObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,6 +180,7 @@ MonoBehaviour:
   pivot: {fileID: 5562878778741653472}
   length: 7
   gravity: 9.81
+  delay: 0
 --- !u!114 &5562878778818167409
 MonoBehaviour:
   m_ObjectHideFlags: 0

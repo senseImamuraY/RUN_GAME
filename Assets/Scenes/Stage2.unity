@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.21225259, g: 0.6778423, b: 0.7324034, a: 1}
+  m_IndirectSpecularColor: {r: 0.21222082, g: 0.6779229, b: 0.733754, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -384,6 +384,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8574311777467950428, guid: f8f517503fa3cdd459420290c0e39731,
         type: 3}
+      propertyPath: _objects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8574311777467950428, guid: f8f517503fa3cdd459420290c0e39731,
+        type: 3}
       propertyPath: _objects.Array.data[0]
       value: 
       objectReference: {fileID: 455843501}
@@ -453,6 +458,7 @@ GameObject:
   m_Component:
   - component: {fileID: 760859204}
   - component: {fileID: 760859203}
+  - component: {fileID: 760859205}
   m_Layer: 0
   m_Name: AthleticGenerator
   m_TagString: Untagged
@@ -481,6 +487,7 @@ MonoBehaviour:
   - {fileID: 754012162}
   - {fileID: 1984293371}
   - {fileID: 333200926}
+  parent: {fileID: 760859204}
 --- !u!4 &760859204
 Transform:
   m_ObjectHideFlags: 0
@@ -496,6 +503,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &760859205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760859202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5783c0d353f2d44439d9df1fc38b0b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentTransform: {fileID: 760859204}
+  targetName: Athletic
+  searchNames:
+  - BezierCube
+  - Cube
+  - PendulumObject
+  - Wall
+  treeController: {fileID: 370312637}
 --- !u!1001 &806675923
 PrefabInstance:
   m_ObjectHideFlags: 0

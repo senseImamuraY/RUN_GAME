@@ -47,13 +47,17 @@ public class LinearTreeController : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private List<GameObject> _objects;
+    public List<GameObject> _objects;
+
+    public List<GameObject> Objects
+    {
+        get { return _objects; }
+        set { _objects = value; }
+    }
 
     [SerializeField]
     private GameObject _agentPrefab;
     #endregion Variables
-
 
     #region MonoBehaviour
     void OnValidate()
@@ -87,8 +91,10 @@ public class LinearTreeController : MonoBehaviour
     {
         _manager = new LinearTreeManager<GameObject>(_level, _left, _top, _right, _bottom, _front, _back);
 
+        Debug.Log("objects = " + _objects.Count);
         // オブジェクトを仮登録してみる
         RegisterObjects();
+
     }
 
     private List<GameObject> _collisionList = new List<GameObject>();

@@ -11,7 +11,9 @@ public class AthleticGenerator : MonoBehaviour
     [SerializeField]
     private List<Transform> spawnPositionList;
 
-    private void Start()
+    [SerializeField]
+    private Transform parent;
+    private void Awake()
     {
         int i = 0;
         while (i < 3)
@@ -21,7 +23,7 @@ public class AthleticGenerator : MonoBehaviour
                 GameObject randomElement = AthleticList.RandomElement();
                 Debug.Log("Random Element: " + randomElement);
 
-                Instantiate(randomElement, spawnPositionList[i].position, spawnPositionList[i].rotation);
+                Instantiate(randomElement, spawnPositionList[i].position, spawnPositionList[i].rotation, parent);
             }
             else
             {

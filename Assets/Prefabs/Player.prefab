@@ -3110,7 +3110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fd0bcda4506004ab98ab804106c1dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helpUI: {fileID: 0}
   gameManager: {fileID: 0}
   animator: {fileID: 1212452955003377599}
   isRunning: 0

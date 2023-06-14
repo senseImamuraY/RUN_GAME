@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 8270680609786337918}
   - component: {fileID: 8270680609786337919}
   m_Layer: 0
-  m_Name: Bezier
+  m_Name: BezierCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
