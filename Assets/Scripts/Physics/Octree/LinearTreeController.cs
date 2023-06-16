@@ -55,8 +55,8 @@ public class LinearTreeController : MonoBehaviour
         set { _objects = value; }
     }
 
-    [SerializeField]
-    private GameObject _agentPrefab;
+    //[SerializeField]
+    //private GameObject _agentPrefab;
     #endregion Variables
 
     #region MonoBehaviour
@@ -107,14 +107,14 @@ public class LinearTreeController : MonoBehaviour
 
         _manager.GetAllCollisionList(_collisionList);
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GameObject obj = Instantiate(_agentPrefab);
-            float s = Random.Range(0.5f, 2.5f);
-            obj.transform.localScale = Vector3.one * s;
-            MortonAgent agent = obj.GetComponent<MortonAgent>();
-            agent.Manager = _manager;
-        }
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    GameObject obj = Instantiate(_agentPrefab);
+        //    float s = Random.Range(0.5f, 2.5f);
+        //    obj.transform.localScale = Vector3.one * s;
+        //    MortonAgent agent = obj.GetComponent<MortonAgent>();
+        //    agent.Manager = _manager;
+        //}
     }
 
     void OnDrawGizmos()

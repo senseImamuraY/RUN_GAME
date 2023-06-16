@@ -190,16 +190,16 @@ public class GameManager : MonoBehaviour
             }
             else if (target.GetComponent<ICube>() != null)
             {
-                Debug.Log("BoxÇ…í«â¡Ç≥ÇÍÇ‹ÇµÇΩÅB");
+                //Debug.Log("BoxÇ…í«â¡Ç≥ÇÍÇ‹ÇµÇΩÅB");
                 cubeList.Add(target.GetComponent<ICube>());
-                Debug.Log(cubeList);
+                //Debug.Log(cubeList);
             }
             //else
             //{
             //    //Debug.Log("Ç«ÇÍÇ…Ç‡í«â¡Ç≥ÇÍÇ‹ÇπÇÒÇ≈ÇµÇΩ");
             //}
         }
-        Debug.Log("collisionList.Count = " +  collisionList.Count);
+        Debug.Log("collisionList.Count = " + collisionList.Count);
         goal.GoalEffect(player);
 
         coinNumText.text = tempCoinNum.ToString();

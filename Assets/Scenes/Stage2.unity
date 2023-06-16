@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.21222082, g: 0.6779229, b: 0.733754, a: 1}
+  m_IndirectSpecularColor: {r: 0.21225259, g: 0.6778423, b: 0.7324034, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -417,6 +417,57 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1749615143}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &580631224
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 580631225}
+  - component: {fileID: 580631226}
+  m_Layer: 0
+  m_Name: EnemyGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &580631225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580631224}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &580631226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580631224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b243fe28e9e2d044b428e7406e89f8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefabs:
+  - {fileID: 5637271365725100584, guid: 0056c0ab760cb8f4788fea9a9c34dea0, type: 3}
+  - {fileID: 5637271365725100584, guid: 0056c0ab760cb8f4788fea9a9c34dea0, type: 3}
+  - {fileID: 5637271365725100584, guid: 0056c0ab760cb8f4788fea9a9c34dea0, type: 3}
+  xRange: 5
+  zRange: 1000
+  parent: {fileID: 580631225}
 --- !u!1 &754012161
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,7 +509,6 @@ GameObject:
   m_Component:
   - component: {fileID: 760859204}
   - component: {fileID: 760859203}
-  - component: {fileID: 760859205}
   m_Layer: 0
   m_Name: AthleticGenerator
   m_TagString: Untagged
@@ -503,26 +553,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &760859205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760859202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783c0d353f2d44439d9df1fc38b0b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentTransform: {fileID: 760859204}
-  targetName: Athletic
-  searchNames:
-  - BezierCube
-  - Cube
-  - PendulumObject
-  - Wall
-  treeController: {fileID: 370312637}
 --- !u!1001 &806675923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1136,6 +1166,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1735060982
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1735060984}
+  - component: {fileID: 1735060983}
+  m_Layer: 0
+  m_Name: ItemGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1735060983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735060982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cf096ba5336aad48a5958427fec103e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefabs:
+  - {fileID: 8305545971190015739, guid: a1af201335f926d4692bad44b347b743, type: 3}
+  - {fileID: 8305545971190015739, guid: a1af201335f926d4692bad44b347b743, type: 3}
+  - {fileID: 8305545971190015739, guid: a1af201335f926d4692bad44b347b743, type: 3}
+  - {fileID: 1111731526508038939, guid: 38a9f65908d67684791e6cd9ced78690, type: 3}
+  - {fileID: 8027109279107917320, guid: 94293a4611aff404da196e8c9758870f, type: 3}
+  - {fileID: 4396077479332853043, guid: 70beecb492fb5134bb748f428e6459b1, type: 3}
+  - {fileID: 1361418929049614765, guid: d46f77c7a0c7f4340a853ca6330da484, type: 3}
+  parent: {fileID: 1735060984}
+  xRange: 5
+  zRange: 1000
+--- !u!4 &1735060984
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735060982}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 1000}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1749615143
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1299,8 +1384,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2023549148}
+  - component: {fileID: 2023549149}
   m_Layer: 0
-  m_Name: Items
+  m_Name: ObjectSearcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1314,10 +1400,32 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2023549147}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.78, y: 3.5500002, z: 169.04001}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2023549149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023549147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5783c0d353f2d44439d9df1fc38b0b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  athleticParentTransform: {fileID: 760859204}
+  targetName: Athletic
+  searchNames:
+  - BezierCube
+  - Cube
+  - PendulumObject
+  - Wall
+  itemGenerator: {fileID: 1735060983}
+  enemyGenerator: {fileID: 580631226}
+  treeController: {fileID: 370312637}

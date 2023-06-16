@@ -80,7 +80,6 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if (transform.position.y < -10) return;
         onFloor = false;
         SetCapsulePosition();
         // °‚ÆÕ“Ë‚µ‚Ä‚¢‚é‚©Šm”F

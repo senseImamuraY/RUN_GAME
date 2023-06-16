@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class AthleticSearch : MonoBehaviour
+public class ObjectSearcher : MonoBehaviour
 {
     [SerializeField]
-    Transform parentTransform;
+    Transform athleticParentTransform;
     [SerializeField]
     string targetName = "Athletic";
     [SerializeField]
@@ -12,15 +12,18 @@ public class AthleticSearch : MonoBehaviour
 
     private List<GameObject> treeLists = new List<GameObject>();
 
-    //[SerializeField]
-    //GameObject player;
+    [SerializeField]
+    ItemGenerator itemGenerator;
+
+    [SerializeField]
+    EnemyGenerator enemyGenerator;
 
     [SerializeField]
     private LinearTreeController treeController;
 
     private void Awake()
     {
-        if (parentTransform == null)
+        if (athleticParentTransform == null)
         {
             Debug.LogError("Parent transform is not assigned.");
             return;
@@ -29,12 +32,26 @@ public class AthleticSearch : MonoBehaviour
         treeLists = treeController.Objects;
         //treeLists.Add(player);
         // ヒエラルキーから「Athletic」と名の付いたオブジェクトを３つ探す
-        List<GameObject> athleticObjects = SearchObjectsByName(parentTransform, targetName, 3);
+        List<GameObject> athleticObjects = SearchObjectsByName(athleticParentTransform, targetName, 3);
 
         // Athleticオブジェクトの子オブジェクトを再帰的に探索し、特定の名前を持つオブジェクトをリストに格納する
         foreach (GameObject athleticObject in athleticObjects)
         {
             RecursiveSearchChildren(athleticObject.transform);
+        }
+
+        List<GameObject> Items = itemGenerator.GetItemPrefabs();
+
+        foreach (GameObject item in Items)
+        {
+            treeLists.Add(item);
+        }
+
+        List<GameObject> Enemies = enemyGenerator.GetEnemyPrefabs();
+
+        foreach (GameObject enemy in Enemies)
+        {
+            treeLists.Add(enemy);
         }
 
         // リストの中身をログ出力する

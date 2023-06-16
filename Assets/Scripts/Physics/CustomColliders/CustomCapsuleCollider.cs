@@ -279,7 +279,7 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         // ŒvZŒë·‚É‚æ‚é—‰º–h~
 
-        Debug.Log("planeY = " + planeY);
+        //Debug.Log("planeY = " + planeY);
         if (min <= diff && diff < max)
         {
             player.setForward(plane.getForward());
