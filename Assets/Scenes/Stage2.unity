@@ -1230,6 +1230,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fd0bcda4506004ab98ab804106c1dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1749615146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455843501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19856f4f39cc46945ad414f129e6962a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hair: {fileID: 2100000, guid: 5ebb6caef8207d243a588a574971408c, type: 2}
+  normalHair: {fileID: 2800000, guid: cbb65ec17f92eb44fb0dde6381b6a415, type: 3}
+  redHair: {fileID: 2800000, guid: 5788a01c74ad24c4c9c081fc402ac9ba, type: 3}
+  greenHair: {fileID: 2800000, guid: 3037bcb09f5d63b4197733a9ff5d6a21, type: 3}
+  violetHair: {fileID: 2800000, guid: 2f3323164fe20574a9902ecb784a049c, type: 3}
 --- !u!114 &1846176105 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1251087808, guid: a31a1a09c3ce11b4e9c24bcbce3321c3,

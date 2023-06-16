@@ -57,6 +57,9 @@ public class Player : MonoBehaviour
 
     Vector3 dest; // 次の目的地。クリア時に使用
 
+    public enum ColorType { Normal, Red, Green, Violet }
+    public ColorType colorType;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -70,6 +73,7 @@ public class Player : MonoBehaviour
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
         gravity = gameObject.GetComponent<Gravity>();
         Debug.Log("Status = " + GameManager.status);
+        colorType = ColorType.Normal;
     }
 
 
@@ -279,20 +283,20 @@ public class Player : MonoBehaviour
 
     }
 
-    private void ClimbOnCube(ICube cube)
-    {
-        //this.transform.position += new Vector3(0,5f,0);
-        this.transform.position = cube.GetCenter + new Vector3(0, 0.5f, 0);
-    }
+    //private void ClimbOnCube(ICube cube)
+    //{
+    //    //this.transform.position += new Vector3(0,5f,0);
+    //    this.transform.position = cube.GetCenter + new Vector3(0, 0.5f, 0);
+    //}
 
-    public delegate void ClimbOnObjectHandler(ICube collider);
-    public event ClimbOnObjectHandler ClimbOnObject;
+    //public delegate void ClimbOnObjectHandler(ICube collider);
+    //public event ClimbOnObjectHandler ClimbOnObject;
 
-    private void ClimbOnObjectEnter(ICube collider)
-    {
-        //Debug.Log("isColliding + = " + collider.GetIsColliding);
-        ClimbOnObject(collider);
-    }
+    //private void ClimbOnObjectEnter(ICube collider)
+    //{
+    //    //Debug.Log("isColliding + = " + collider.GetIsColliding);
+    //    ClimbOnObject(collider);
+    //}
 
     public void SpeedChanger(float num)
     {

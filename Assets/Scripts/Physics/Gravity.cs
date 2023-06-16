@@ -21,12 +21,12 @@ public class Gravity : MonoBehaviour
     void Start()
     {
         player = GetComponent<Player>();
-        player.ClimbOnObject += OnSubjectCollision;
+        //player.ClimbOnObject += OnSubjectCollision;
     }
 
     private void OnDestroy()
     {
-        player.ClimbOnObject -= OnSubjectCollision;
+        //player.ClimbOnObject -= OnSubjectCollision;
     }
 
     public void SetVelocity(float newVelocity)

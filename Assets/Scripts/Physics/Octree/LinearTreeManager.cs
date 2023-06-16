@@ -505,14 +505,15 @@ public class LinearTreeManager<T>
             TreeData<T> next = data.Next;
             while (next != null)
             {
-                string pairKey = $"{data.Object}-{next.Object}";
+                //string pairKey = $"{data.Object}-{next.Object}";
                 //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
-                if (!collisionPairs.Contains(pairKey) && (data.Object.ToString() == "Player (UnityEngine.GameObject)" || next.Object.ToString() == "Player (UnityEngine.GameObject)"))
+                if ((data.Object.ToString() == "Player (UnityEngine.GameObject)" || next.Object.ToString() == "Player (UnityEngine.GameObject)"))
+                //if (!collisionPairs.Contains(pairKey) && (data.Object.ToString() == "Player (UnityEngine.GameObject)" || next.Object.ToString() == "Player (UnityEngine.GameObject)"))
                 {
                     //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                     collisionList.Add(data.Object);
                     collisionList.Add(next.Object);
-                    collisionPairs.Add(pairKey);
+                    //collisionPairs.Add(pairKey);
                 }
 
 
@@ -525,14 +526,15 @@ public class LinearTreeManager<T>
             // 衝突スタックと衝突リスト作成
             foreach (var obj in colStac)
             {
-                string pairKey = $"{data.Object}-{obj}";
+                //string pairKey = $"{data.Object}-{obj}";
                 //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
-                if (!collisionPairs.Contains(pairKey) && (data.Object.ToString() == "Player (UnityEngine.GameObject)" || obj.ToString() == "Player (UnityEngine.GameObject)"))
+                if ((data.Object.ToString() == "Player (UnityEngine.GameObject)" || obj.ToString() == "Player (UnityEngine.GameObject)"))
+                //if (!collisionPairs.Contains(pairKey) && (data.Object.ToString() == "Player (UnityEngine.GameObject)" || obj.ToString() == "Player (UnityEngine.GameObject)"))
                 {
                     //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                     collisionList.Add(data.Object);
                     collisionList.Add(obj);
-                    collisionPairs.Add(pairKey);
+                    //collisionPairs.Add(pairKey);
                 }
                 //collisionList.Add(data.Object);
                 //collisionList.Add(obj);

@@ -9,6 +9,6 @@ public class TestInitialize
     {
         Debug.Log("After Scene is loaded and game is running");
         // スクリーンサイズの指定
-        Screen.SetResolution(360, 640, false);
+        Screen.SetResolution(960, 540, false);
     }
 }
