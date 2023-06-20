@@ -48,7 +48,7 @@ public class Coin : MonoBehaviour, IItem
     {
         isGet = true;
 
-        //GetComponent<AudioSource>().Play();
+        GetComponent<AudioSource>().Play();
 
         GameManager.tempCoinNum++;
         Debug.Log("ƒRƒCƒ“‚Ì–‡”F" + GameManager.tempCoinNum);
