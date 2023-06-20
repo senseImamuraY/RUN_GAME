@@ -17,8 +17,8 @@ public class GetWeather : MonoBehaviour
     private string lat = "35.71";
     private string lon = "139.81";
 
-    private WeatherManager manager;
-    private GameObject WManager;
+    [SerializeField]
+    private SkyBoxSetter skyBoxSetter;
 
     [Serializable]
     public struct Weatherstruct
@@ -36,10 +36,11 @@ public class GetWeather : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
-        WManager = GameObject.Find("WeatherManager");
-        manager = WManager.GetComponent<WeatherManager>();
+        //WManager = GameObject.Find("WeatherManager");
+        //skyBoxSetter = WManager.GetComponent<SkyBoxSetter>();
+        Getting();
     }
 
     public void Getting()
@@ -66,7 +67,7 @@ public class GetWeather : MonoBehaviour
                 Debug.Log(jsontext);
                 weatherstruct = JsonUtility.FromJson<Weatherstruct>(jsontext);
                 var result = weatherstruct.weather[0].main;
-                manager.ChangeWeather(result);
+                skyBoxSetter.ChangeWeather(result);
                 Debug.Log(weatherstruct.weather[0].main);
                 break;
         }
