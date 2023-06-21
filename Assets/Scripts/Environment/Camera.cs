@@ -30,7 +30,6 @@ public class Camera : MonoBehaviour
         Vector3 newLocalPos = new Vector3(x, y, z);
 
         // –Ú•W’n“_‚Ö‚ä‚Á‚­‚èˆÚ“®‚³‚¹‚é
-        //transform.position = Vector3.Lerp(transform.position, newLocalPos, 0.8f);
         transform.position = Vector3.Lerp(transform.position, newLocalPos, 0.2f);
         if(GameManager.status == GameManager.GAME_STATUS.Clear)
         {

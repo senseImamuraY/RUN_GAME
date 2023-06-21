@@ -5,8 +5,10 @@ public class ObjectSearcher : MonoBehaviour
 {
     [SerializeField]
     Transform athleticParentTransform;
+
     [SerializeField]
     string targetName = "Athletic";
+
     [SerializeField]
     List<string> searchNames;
 
@@ -30,7 +32,7 @@ public class ObjectSearcher : MonoBehaviour
         }
         treeLists.Clear();
         treeLists = treeController.Objects;
-        //treeLists.Add(player);
+
         // ヒエラルキーから「Athletic」と名の付いたオブジェクトを３つ探す
         List<GameObject> athleticObjects = SearchObjectsByName(athleticParentTransform, targetName, 3);
 

@@ -38,8 +38,6 @@ public class GetWeather : MonoBehaviour
 
     private void Awake()
     {
-        //WManager = GameObject.Find("WeatherManager");
-        //skyBoxSetter = WManager.GetComponent<SkyBoxSetter>();
         Getting();
     }
 

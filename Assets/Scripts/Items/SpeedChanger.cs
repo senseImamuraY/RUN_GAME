@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-//using UnityEditor.Timeline.Actions;
 
 public class SpeedChanger : MonoBehaviour, IItem
 {
@@ -17,7 +16,7 @@ public class SpeedChanger : MonoBehaviour, IItem
 
     void Start()
     {
-        //sphereCollider = GetComponent<CustomSphereCollider>();
+        sphereCollider = GetComponent<CustomSphereCollider>();
     }
 
     void Update()
@@ -27,13 +26,6 @@ public class SpeedChanger : MonoBehaviour, IItem
             return;
         }
     }
-
-    //public void Enter(Player player)
-    //{
-    //    //StartCoroutine(EnterCoroutine(player));
-    //    player.SpeedChanger(100f);
-    //    Debug.Log("SpeedChanger ");
-    //}
 
     public void Enter(Player player)
     {

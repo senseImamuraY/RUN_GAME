@@ -12,14 +12,10 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Player : MonoBehaviour
 {
-
-    //[SerializeField]
-    //GameObject helpUI;
-
     [SerializeField]
-    GameManager gameManager;
-
+    private GameManager gameManager;
     public Animator animator;
+
     List<ICube> cubeTargetsList;
     List<ISphere> sphereTargetsList;
     List<IPlane> planeTargetsList;
@@ -28,14 +24,11 @@ public class Player : MonoBehaviour
     public CustomCapsuleCollider GetCustomCapsuleCollider() { return capsuleCollider; } 
     Gravity gravity;
 
-    Vector3 endPos;
     Vector3 previousPos, currentPos;
-
     Vector3 playerPosition;
 
     public bool isRunning;
     private float sensitivity = 1f;
-
     const float LOAD_WIDTH = 10f;
     const float MOVE_MAX = 4.5f;
     [SerializeField]
@@ -43,16 +36,13 @@ public class Player : MonoBehaviour
     private float moveDistance;
 
     public bool isJump = false;
-
     private float jumpDelay = 1f; // 1秒のディレイ
     private float nextJumpTime = 0f;
-
-    Vector3 planeForward;
-
     [SerializeField]
     private float jumpPower = 10f;
     private bool onFloor;
     private Vector3 planeNormal;
+    Vector3 planeForward;
 
     Vector3 dest; // 次の目的地。クリア時に使用
 
@@ -61,17 +51,13 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        animator = GetComponent<Animator>();
-        //cubeTargetsList = GameManager.Instance.GetCubeList;
-        //sphereTargetsList = GameManager.Instance.GetSphereList;
-        //planeTargetsList = GameManager.Instance.GetLaneList;
         cubeTargetsList = gameManager.GetCubeList;
         sphereTargetsList = gameManager.GetSphereList;
         planeTargetsList = gameManager.GetPlaneList;
 
+        animator = GetComponent<Animator>();
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
         gravity = gameObject.GetComponent<Gravity>();
-        Debug.Log("Status = " + GameManager.status);
         colorType = ColorType.Normal;
     }
 
@@ -84,7 +70,6 @@ public class Player : MonoBehaviour
         // 床と衝突しているか確認
         foreach (IPlane target in planeTargetsList)
         {
-            //Debug.Log("PlaneCount = " + planeTargetsList.Count);
             if (capsuleCollider.CheckCollisionWithPlane(target))
             {
                 onFloor = true;
@@ -93,9 +78,7 @@ public class Player : MonoBehaviour
         }
         if (onFloor)
         {
-            Debug.Log("Planeと衝突しました");
             gravity.SetIsGround(true);
-            //isJump = false;
         }
         else
         {
@@ -145,7 +128,7 @@ public class Player : MonoBehaviour
             if (target.IsColliding == true) continue;
             if (capsuleCollider.CheckCollisionWithCube(target))
             {
-                // targetをCustomColliderにキャストします
+                // targetをCustomColliderにキャスト
                 CustomCubeCollider customCollider = target as CustomCubeCollider;
                 if (customCollider == null)
                 {
@@ -180,12 +163,10 @@ public class Player : MonoBehaviour
         }
 
         animator.SetBool("IsRunning", true);
-        //helpUI.SetActive(false);
 
         // スワイプによる移動距離を取得
         currentPos = Input.mousePosition;
         float diffDistance = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
-
         diffDistance *= sensitivity;
 
         // 次のローカルx座標を設定 ※道の外にでないように
@@ -246,19 +227,16 @@ public class Player : MonoBehaviour
     public void setForward(Vector3 forward)
     {
         planeForward = forward;
-        //Debug.Log("planeforward = " + planeForward);
     }
 
     public void setRotation(Quaternion rot)
     {
         this.transform.rotation = rot;
-        //this.transform.localRotation = rot;
     }
 
     public void Clear(Vector3 pos)
     {
         GameManager.status = GameManager.GAME_STATUS.Clear;
-        //dest = this.transform.position;
         dest = pos;
     }
 
@@ -280,21 +258,6 @@ public class Player : MonoBehaviour
         this.transform.position = playerPosition;
 
     }
-
-    //private void ClimbOnCube(ICube cube)
-    //{
-    //    //this.transform.position += new Vector3(0,5f,0);
-    //    this.transform.position = cube.GetCenter + new Vector3(0, 0.5f, 0);
-    //}
-
-    //public delegate void ClimbOnObjectHandler(ICube collider);
-    //public event ClimbOnObjectHandler ClimbOnObject;
-
-    //private void ClimbOnObjectEnter(ICube collider)
-    //{
-    //    //Debug.Log("isColliding + = " + collider.GetIsColliding);
-    //    ClimbOnObject(collider);
-    //}
 
     public void SpeedChanger(float num)
     {

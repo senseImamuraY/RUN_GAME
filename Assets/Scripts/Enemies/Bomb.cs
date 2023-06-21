@@ -20,7 +20,7 @@ public class Bomb : MonoBehaviour, IEnemy
 
     void Awake()
     {
-        // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
+        // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定
         sphereCollider = GetComponent<CustomSphereCollider>();
         sphereCollider.Enemy = this;
         Debug.Log(sphereCollider.Enemy);
@@ -50,8 +50,6 @@ public class Bomb : MonoBehaviour, IEnemy
             return;
         }
 
-        //sphereCollider.SetPosition();
-
         // 端に到達した時の方向転換処理
         if ((destPos - transform.position).magnitude < 0.1f)
         {
@@ -80,34 +78,6 @@ public class Bomb : MonoBehaviour, IEnemy
         transform.LookAt(destPos);
         transform.position += transform.forward * speed * Time.deltaTime;
     }
-
-
-    IEnumerator WaitForSecond(float num)
-    {
-        yield return new WaitForSeconds(num);
-    }
-
-    //public void Enter(Player player)
-    //{
-    //    if (GameManager.status != GameManager.GAME_STATUS.Play)
-    //    {
-    //        return;
-    //    }
-    //    Debug.Log("bomb");
-    //    if (player.CompareTag("Player"))
-    //    {
-    //        transform.LookAt(player.gameObject.transform);
-    //        //player.gameObject.transform.LookAt(transform);
-    //        anim.SetBool("walk", false);
-    //        anim.SetTrigger("attack01");
-    //        GetComponent<AudioSource>().Play();
-    //        // 1秒待機
-    //        StartCoroutine(WaitForSecond(10));
-
-    //        player.TakeDamage();
-    //        GameManager.status = GameManager.GAME_STATUS.Pause;
-    //    }
-    //}
 
     IEnumerator EnterCoroutine(Player player)
     {

@@ -18,8 +18,6 @@ public class SkyBoxSetter : MonoBehaviour
 
     public void ChangeWeather(string Nowweater)
     {
-        //rainobj.SetActive(false);
-        //snowobj.SetActive(false);
         if (Nowweater == "Rain")
         {
             RenderSettings.skybox = rainySkyBox; // Skyboxƒ}ƒeƒŠƒAƒ‹‚ğİ’è

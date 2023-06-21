@@ -29,13 +29,6 @@ public class GravityChanger : MonoBehaviour, IItem
         }
     }
 
-    //public void Enter(Player player)
-    //{
-    //    float prevNum = player.GetGravityNum();
-    //    player.GravityChanger(-100f);
-    //    Debug.Log("GravityChanger");
-
-    //}
     public void Enter(Player player)
     {
         // Œø‰Ê‚Ì’l

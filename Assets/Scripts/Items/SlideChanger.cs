@@ -28,12 +28,6 @@ public class SlideChanger : MonoBehaviour, IItem
         }
     }
 
-    //public void Enter(Player player)
-    //{
-    //    player.SensitivityChanger(2f);
-    //    Debug.Log("SlideChanger");
-    //}
-
     public void Enter(Player player)
     {
         // Œø‰Ê‚Ì’l
