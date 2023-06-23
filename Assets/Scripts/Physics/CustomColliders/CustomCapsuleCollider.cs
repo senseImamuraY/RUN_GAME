@@ -27,8 +27,9 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
     [SerializeField]
     private Vector3 prevCenter,center;
+
     public Vector3 GetCenter() { return center; }
-    public Vector3 Center() { return center; }
+
     public void SetCenter(Vector3 value) { center = value; }
 
     [SerializeField]
@@ -39,14 +40,13 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
     [SerializeField]
     private Vector3 arangementCenter;
+
     public float GetHeight { get { return height; } }
-    public float GetPlaneY () { return planeY; }
     private float planeY;
 
     private Player player;
     private Gravity gravity;
-    private float prevY;
-    //private Vector3 capsulePosition;
+    
     private Vector3 capsuleBottom;
 
     [SerializeField]
@@ -59,7 +59,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
     public Transform GetTransform() {  return capsuleTransform; }
 
-    float X, Y, Z;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,7 +66,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         player = GetComponent<Player>();
         gravity = GetComponent<Gravity>();
         capsuleTransform = transform;
-        //capsulePosition= transform.position;
     }
 
     // Update is called once per frame
@@ -95,10 +93,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         Vector3 targetLocalScale = targetTransform.localScale;
 
         // 分離軸Ae1
-       // float rA = transform.localScale.x;
-        //loat rB = LenSegOnSeparateAxis(new Vector3(targetLocalScale.normalized.x, 0, 0), targetTransform);
-        //float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetLocalScale.normalized.x, 0, 0)));
-        //if (L > rA + rB) return false;
         float rA = transform.localScale.x - 0.5f;
         float rB = LenSegOnSeparateAxis(transform.right * transform.localScale.x, targetTransform, false, arrange);
         float L = Mathf.Abs(Vector3.Dot(Interval, transform.right));
@@ -106,7 +100,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         // 分離軸Ae2
         rA = transform.localScale.y;
-        //rA = transform.localScale.y + 1.0f;
         rB = LenSegOnSeparateAxis(transform.up * transform.localScale.y, targetTransform, false, arrange);
         L = Mathf.Abs(Vector3.Dot(Interval, transform.up));
         if (L > rA + rB) return false;
@@ -117,22 +110,25 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         L = Mathf.Abs(Vector3.Dot(Interval, transform.forward));
         if (L > rA + rB) return false;
 
-        // 
+        // 分離軸Be1
         rA = LenSegOnSeparateAxis(targetTransform.right * targetTransform.localScale.x, this.transform, true, arrange);
         rB = (targetTransform.localScale.x + arrange.x) / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.right));
         if (L > rA + rB) return false;
 
+        // 分離軸Be2
         rA = LenSegOnSeparateAxis(targetTransform.up * targetTransform.localScale.y, this.transform, true, arrange);
         rB = (targetTransform.localScale.y + arrange.y) / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.up));
         if (L > rA + rB) return false;
 
+        // 分離軸Be3
         rA = LenSegOnSeparateAxis(targetTransform.forward * targetTransform.localScale.z, this.transform, true, arrange);
         rB = (targetTransform.localScale.z + arrange.z) / 2.0f;
         L = Mathf.Abs(Vector3.Dot(Interval,targetTransform.forward));
         if (L > rA + rB) return false;
 
+        // 分離軸 C11 ~ C33
         Vector3[] axesA = new Vector3[3]
         {
             transform.right * transform.localScale.x, // X axis
@@ -165,20 +161,9 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         return true;
     }
 
+    // 今後必要になった際に追加
     public bool CheckCollisionWithCapsule(ICapsule capsule)
-    {
-        // それぞれの中心からの距離を足した値と、ベクトルの大きさを比較する
-        //float dist = (capsule.transform.position - this.transform.position).magnitude;
-        //float wR = capsule.Radius + this.Radius;
-        //if (dist < wR)
-        //{
-        //    return true;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
-        
+    {        
         throw new System.NotImplementedException();
     }
 
@@ -189,7 +174,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         var forward = Vector3.zero;
         forward[(int)direction] = 1.0f;
         var casuleToLocal = Matrix4x4.TRS(arangementCenter, Quaternion.LookRotation(forward), Vector3.one);
-        //var worldToCapsule = casuleToLocal * transform.worldToLocalMatrix;
         var worldToCapsule = casuleToLocal.inverse * transform.worldToLocalMatrix;
 
         // カプセルの空間における球の中心
@@ -197,7 +181,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         // カプセルを構成する二つの半球の中心座標
         var end = new Vector3(0.0f, 0.0f, 1.0f) * (height - radius * 2.0f) / 2.0f;
-        //Debug.Log("end = " + end);
         var start = end * -1.0f;
 
         // 二つの球をつなぐ線分との近傍点を求める
@@ -266,24 +249,16 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         Debug.Log("tangent = " + tanTheta);
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
-        //Debug.Log("d = " + d);
         float diff = capsuleBottom.y - planeY;
 
-        //float diff2 = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z + d;
-        //Debug.Log("diff2 = " + diff2);
         // 画面の振動を防止するため
-        //float speed = 1f;
-        //float arrangementNum = speed * tanTheta;
         float min = 0f;
         float max = 0.5f;
 
         // 計算誤差による落下防止
-
-        //Debug.Log("planeY = " + planeY);
         if (min <= diff && diff < max)
         {
             player.setForward(plane.getForward());
-            //player.setPlayerPosition(planeY);
             return true;
         }
         // 傾いた坂を上がった時に落ちないようにするための処理
@@ -324,7 +299,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     
     public void SetCapsuleBottom()
     {
-        //Debug.Log("center = " + center);
         if (Mathf.Abs(prevCenter.y - center.y) <= 0.1)
         {
             center = (prevCenter + center) / 2;
@@ -334,30 +308,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         prevCenter = center;
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.color = new Color(0.2f, 0.5f, 1.0f);
-    //    float halfHeight = height / 2 - radius;
-    //    Vector3 upDirection = Vector3.up * halfHeight;
-    //    Vector3 downDirection = -Vector3.up * halfHeight;
-
-    //    // Draw the top sphere
-    //    Gizmos.DrawWireSphere(center + upDirection, radius);
-
-    //    // Draw the bottom sphere
-    //    Gizmos.DrawWireSphere(center + downDirection, radius);
-
-    //    // Draw the tube with multiple lines
-    //    int numLines = 4; // or increase this for a smoother tube
-    //    float angleStep = 360f / numLines;
-    //    for (int i = 0; i < numLines; i++)
-    //    {
-    //        float angle = i * angleStep * Mathf.Deg2Rad;
-    //        Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
-    //        Gizmos.DrawLine(center + upDirection + offset, center + downDirection + offset);
-    //    }
-    //}
-
     // 分離軸に投影された軸成分から投影線分長を算出
     public static float LenSegOnSeparateAxis(Vector3 Sep, Transform target, bool isCapsule, Vector3 arrangeNum)
     {
@@ -365,7 +315,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         if(isCapsule)
         {
             targetLocalScale.x -= 0.5f;
-            //targetLocalScale.y += 1.0f;
             targetLocalScale.z -= 0.5f;
         }
         else

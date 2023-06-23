@@ -28,10 +28,6 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
     private Vector3 size = Vector3.one;
     public Vector3 GetSize { get { return size; } }
 
-    public Vector3 Size() { return size; }
-
-    public Vector3 Center() { return center; }
-
     private Transform cubeTransform;
 
     [SerializeField]
@@ -118,10 +114,6 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         Vector3 targetLocalScale = targetTransform.localScale;
 
         // •ª—£Ž²Ae1
-        // float rA = transform.localScale.x;
-        //loat rB = LenSegOnSeparateAxis(new Vector3(targetLocalScale.normalized.x, 0, 0), targetTransform);
-        //float L = Mathf.Abs(Vector3.Dot(Interval, new Vector3(targetLocalScale.normalized.x, 0, 0)));
-        //if (L > rA + rB) return false;
         float rA = (transform.localScale.x + arrange.x) / 2.0f;
         float rB = LenSegOnSeparateAxis(transform.right * transform.localScale.x, targetTransform, true, arrange);
         float L = Mathf.Abs(Vector3.Dot(Interval, transform.right));
@@ -139,22 +131,25 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         L = Mathf.Abs(Vector3.Dot(Interval, transform.forward));
         if (L > rA + rB) return false;
 
-        // 
+        // •ª—£Ž²Be1
         rA = LenSegOnSeparateAxis(targetTransform.right * targetTransform.localScale.x, this.transform, false, arrange);
         rB = targetTransform.localScale.x - 0.5f;
         L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.right));
         if (L > rA + rB) return false;
 
+        // •ª—£Ž²Be2
         rA = LenSegOnSeparateAxis(targetTransform.up * targetTransform.localScale.y, this.transform, false, arrange);
         rB = targetTransform.localScale.y;
         L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.up));
         if (L > rA + rB) return false;
 
+        // •ª—£Ž²Be3
         rA = LenSegOnSeparateAxis(targetTransform.forward * targetTransform.localScale.z, this.transform, false, arrange);
         rB = targetTransform.localScale.z - 0.5f;
         L = Mathf.Abs(Vector3.Dot(Interval, targetTransform.forward));
         if (L > rA + rB) return false;
 
+        // •ª—£Ž² C11 ~ C33
         Vector3[] axesA = new Vector3[3]
         {
             transform.right * transform.localScale.x, // X axis

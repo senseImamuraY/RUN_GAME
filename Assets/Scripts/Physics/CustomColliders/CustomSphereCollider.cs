@@ -7,28 +7,25 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
 {
     [SerializeField]
     private Vector3 center = Vector3.zero;
+
     public Vector3 GetCenter { get { return center; } }
+
     [SerializeField]
     private float radius = 0.5f;
+
     public float GetRadius { get { return radius; } }
 
     public Vector3 GetWorldCenter { get { return sphereTransform.position + adjustmentCenter; } }
-    //public Vector3 GetWorldCenter { get { return sphereTransform ; } }
 
     private Transform sphereTransform;
 
     // EnemyÉNÉâÉXÇ÷ÇÃéQè∆
     public IEnemy Enemy { get; set; }
-
     public IItem Item { get; set; }
     public bool IsColliding { get; set; } = false;
 
-    public Vector3 Center() { return center; }
-
     [SerializeField]
     private Vector3 size;
-
-    public Vector3 Size() { return size; }
 
     [SerializeField]
     Vector3 adjustmentCenter = new Vector3(0, 0, 0);
@@ -39,7 +36,6 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
     }
     void Start()
     {
-        //SetPosition();
         center = transform.position;
     }
 
@@ -48,10 +44,6 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
         center = transform.position;
     }
 
-    //public void SetPosition()
-    //{
-    //    sphereTransform = this.transform.position;
-    //}
     public bool CheckCollisionWithSphere(ISphere sphere)
     {
         var collideDistance = GetRadius + sphere.GetRadius;
@@ -72,13 +64,4 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
     {
         throw new System.NotImplementedException();
     }
-
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.color = new Color(0.2f, 0.5f, 1.0f);
-    //    Gizmos.matrix = transform.localToWorldMatrix;
-    //    Gizmos.DrawWireSphere(Vector3.zero, radius);
-    //}
-
-
 }
