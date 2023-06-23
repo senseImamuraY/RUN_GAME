@@ -21,12 +21,6 @@ public class Gravity : MonoBehaviour
     void Start()
     {
         player = GetComponent<Player>();
-        //player.ClimbOnObject += OnSubjectCollision;
-    }
-
-    private void OnDestroy()
-    {
-        //player.ClimbOnObject -= OnSubjectCollision;
     }
 
     public void SetVelocity(float newVelocity)
@@ -34,24 +28,11 @@ public class Gravity : MonoBehaviour
         velocity.y += newVelocity;
     }
 
-    public void ClearVelocity()
-    {
-        velocity.y = 0;
-    }
-
-
     public void SetIsGround(bool value)
     {
         isGrounded = value;
     }
 
-    void Update()
-    {
-        // 接地判定
-        //Debug.Log("isGravity = " + isGrounded);
-    }
-
-    //void FixedUpdate()
     public void VelocityUpdate()
     {
 
@@ -71,8 +52,6 @@ public class Gravity : MonoBehaviour
         {
             player.isJump = false;
 
-            //if (animator.GetBool("IsGround"))
-
             player.animator.SetTrigger("IsJumping");
             SetVelocity(player.GetJumpPowerNum());
 
@@ -85,22 +64,4 @@ public class Gravity : MonoBehaviour
         // 速度を使ってオブジェクトを移動
         
     } 
-
-    private void OnSubjectCollision(ICube collistion)
-    {
-        if(!collistion.IsGround)
-        {
-            OnObject = true;
-            objectHeight = collistion.GetCenter.y;
-            isColliding = collistion.GetIsColliding;
-            
-        }
-        else
-        {
-            OnObject = false;
-            isColliding = collistion.GetIsColliding;
-        }
-        Debug.Log("isColliding = "+isColliding);
-        Debug.Log("onObject = " + OnObject);
-    }
 }

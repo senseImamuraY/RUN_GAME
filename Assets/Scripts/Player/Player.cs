@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
-//using System.Numerics;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
@@ -14,6 +13,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private GameManager gameManager;
+
     public Animator animator;
 
     List<ICube> cubeTargetsList;
@@ -22,8 +22,8 @@ public class Player : MonoBehaviour
 
     CustomCapsuleCollider capsuleCollider;
     public CustomCapsuleCollider GetCustomCapsuleCollider() { return capsuleCollider; } 
-    Gravity gravity;
 
+    Gravity gravity;
     Vector3 previousPos, currentPos;
     Vector3 playerPosition;
 
@@ -41,7 +41,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float jumpPower = 10f;
     private bool onFloor;
-    private Vector3 planeNormal;
     Vector3 planeForward;
 
     Vector3 dest; // 次の目的地。クリア時に使用
@@ -61,8 +60,6 @@ public class Player : MonoBehaviour
         colorType = ColorType.Normal;
     }
 
-
-
     private void FixedUpdate()
     {
         onFloor = false;
@@ -73,7 +70,6 @@ public class Player : MonoBehaviour
             if (capsuleCollider.CheckCollisionWithPlane(target))
             {
                 onFloor = true;
-                planeNormal = target.GetNormal();
             }
         }
         if (onFloor)
@@ -152,7 +148,6 @@ public class Player : MonoBehaviour
         //// プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
-            //helpUI.SetActive(false);
             return;
         }
 
@@ -227,11 +222,6 @@ public class Player : MonoBehaviour
     public void setForward(Vector3 forward)
     {
         planeForward = forward;
-    }
-
-    public void setRotation(Quaternion rot)
-    {
-        this.transform.rotation = rot;
     }
 
     public void Clear(Vector3 pos)

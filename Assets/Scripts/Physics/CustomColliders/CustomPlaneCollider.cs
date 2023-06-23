@@ -15,8 +15,6 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
     [SerializeField]
     private float zSize = 10.0f;
 
-    private Quaternion planeRotation;
-    
     private Vector3 center;
     public Vector3 GetCenter()
     {
@@ -26,10 +24,6 @@ public class CustomPlaneCollider : MonoBehaviour , ICollider, IPlane
     void Awake()
     {
         center = transform.position;
-    }
-    void Start()
-    {
-        planeRotation = this.transform.rotation;
     }
 
     public Quaternion GetRotation()

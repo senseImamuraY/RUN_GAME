@@ -45,18 +45,12 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     private float planeY;
 
     private Player player;
-    private Gravity gravity;
-    
     private Vector3 capsuleBottom;
 
     [SerializeField]
     private Vector3 size;
 
-    public Vector3 Size() {return size;}
-    public Vector3 GetSize() { return size; }
-
     private Transform capsuleTransform;
-
     public Transform GetTransform() {  return capsuleTransform; }
 
     // Start is called before the first frame update
@@ -64,7 +58,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
     {
         radius = 0.5f;
         player = GetComponent<Player>();
-        gravity = GetComponent<Gravity>();
         capsuleTransform = transform;
     }
 
@@ -90,7 +83,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         Vector3 arrange = box.GetArrange();
 
         Transform targetTransform = box.GetTransform();
-        Vector3 targetLocalScale = targetTransform.localScale;
 
         // •ª—£Ž²Ae1
         float rA = transform.localScale.x - 0.5f;

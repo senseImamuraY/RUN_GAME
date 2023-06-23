@@ -1,3 +1,5 @@
+// Build‚µ‚½Û‚ÉDebug.Log‚âAssert‚ğ–³Œø‚É‚·‚é
+
 #if NO_DEBUG
 
 using UnityEngine;

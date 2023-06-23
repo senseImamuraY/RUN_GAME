@@ -84,9 +84,4 @@ public class Cell<T>
         }
         return count;
     }
-    public void Reset()
-    {
-        _latestData = null;
-    }
-
 }

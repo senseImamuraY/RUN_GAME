@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// Build‚·‚éÛ‚Ég—p
 public class TestInitialize
 {
     // ‘®«‚Ìİ’è

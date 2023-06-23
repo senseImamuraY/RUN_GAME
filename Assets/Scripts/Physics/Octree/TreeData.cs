@@ -21,19 +21,6 @@ public class TreeData<T>
         }
         set
         {
-            //if (value == _cell)
-            //{
-            //    return;
-            //}
-
-            //if (value == null)
-            //{
-            //    return;
-            //}
-
-            //// Remove from current cell.
-            //Remove();
-            //_cell = value;
             if (value == _cell)
             {
                 return;
@@ -53,43 +40,6 @@ public class TreeData<T>
     {
         Object = target;
     }
-
-    /// <summary>
-    /// 空間から逸脱する
-    /// </summary>
-    /// <returns>成功: true, 失敗: false</returns>
-    //public bool Remove()
-    //{
-    //    // すでに逸脱している場合は処理しない
-    //    if (Cell == null)
-    //    {
-    //        return false;
-    //    }
-
-    //    // 逸脱を空間に伝える
-    //    if (!Cell.OnRemove(this))
-    //    {
-    //        return false;
-    //    }
-
-    //    // 逸脱処理
-    //    // リンクリストの前後をつなぎ、自身のリンクを外す
-    //    if (Previous != null)
-    //    {
-    //        Previous.Next = Next;
-    //    }
-
-    //    if (Next != null)
-    //    {
-    //        Next.Previous = Previous;
-    //    }
-
-    //    Previous = null;
-    //    Next = null;
-    //    Cell = null;
-
-    //    return true;
-    //}
 
     public void Remove()
     {

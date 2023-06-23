@@ -32,9 +32,6 @@ public class MortonAgent : MonoBehaviour
 
     public TreeData<GameObject> TreeData { get; private set; }
 
-    //private MyBounds MyBounds;
-    //private Bounds Bounds;
-
     #region MonoBehaviour
 
     private Collider _collider;
@@ -53,24 +50,6 @@ public class MortonAgent : MonoBehaviour
     void Awake()
     {
         TreeData = new TreeData<GameObject>(gameObject);
-        //Debug.Log(name);
-        //MyBounds = GetComponent<MyBounds>();
-        //Bound = GetComponent<Bounds>();
-        //Debug.Log(Bounds);
-        //MyBounds.center = m_Bounds.Center();
-        //MyBounds.size = m_Bounds.Size();
-        //MyBounds = new MyBounds(m_Bounds.Center(), m_Bounds.Size());
-        //MyBounds.center = transform.position;
-        //MyBounds.size = transform.localScale;
-    }
-
-    private void FixedUpdate()
-    {
-        //MyBounds.center = transform.position;
-        //MyBounds.size = transform.localScale;
-        //Bounds.center = m_Bounds.Center();
-        //MyBounds.size = m_Bounds.Size();
-        //Debug.Log("name = " + name + "MyBounds = " + MyBounds.name);
     }
 
     void OnDestroy()

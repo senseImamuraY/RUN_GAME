@@ -25,9 +25,6 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
     public bool IsColliding { get; set; } = false;
 
     [SerializeField]
-    private Vector3 size;
-
-    [SerializeField]
     Vector3 adjustmentCenter = new Vector3(0, 0, 0);
 
     void Awake()

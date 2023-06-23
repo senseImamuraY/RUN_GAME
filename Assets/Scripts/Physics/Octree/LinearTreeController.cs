@@ -54,9 +54,6 @@ public class LinearTreeController : MonoBehaviour
         get { return _objects; }
         set { _objects = value; }
     }
-
-    //[SerializeField]
-    //private GameObject _agentPrefab;
     #endregion Variables
 
     #region MonoBehaviour
@@ -92,7 +89,7 @@ public class LinearTreeController : MonoBehaviour
         _manager = new LinearTreeManager<GameObject>(_level, _left, _top, _right, _bottom, _front, _back);
 
         Debug.Log("objects = " + _objects.Count);
-        // オブジェクトを仮登録してみる
+        // オブジェクトを登録
         RegisterObjects();
 
     }
@@ -102,19 +99,7 @@ public class LinearTreeController : MonoBehaviour
 
     void Update()
     {
-        // Check collisions
-        //Debug.Log("tree CollisionList = " + _collisionList.Count);
-
         _manager.GetAllCollisionList(_collisionList);
-
-        //if (Input.GetKeyDown(KeyCode.A))
-        //{
-        //    GameObject obj = Instantiate(_agentPrefab);
-        //    float s = Random.Range(0.5f, 2.5f);
-        //    obj.transform.localScale = Vector3.one * s;
-        //    MortonAgent agent = obj.GetComponent<MortonAgent>();
-        //    agent.Manager = _manager;
-        //}
     }
 
     void OnDrawGizmos()
@@ -147,13 +132,9 @@ public class LinearTreeController : MonoBehaviour
         agent.Manager = _manager;
     }
 
-    void UnregisterObject(GameObject target)
-    {
-
-    }
 
     /// <summary>
-    /// オブジェクトを仮に登録してみる
+    /// オブジェクトを登録
     /// </summary>
     void RegisterObjects()
     {
@@ -161,25 +142,5 @@ public class LinearTreeController : MonoBehaviour
         {
             RegisterObject(_objects[i]);
         }
-
-
-        #region For Mock
-        //TreeData<GameObject> data1 = new TreeData<GameObject>(_object1);
-        //TreeData<GameObject> data2 = new TreeData<GameObject>(_object2);
-        //TreeData<GameObject> data3 = new TreeData<GameObject>(_object3);
-        //TreeData<GameObject> data4 = new TreeData<GameObject>(_object4);
-
-        //// size: 3
-        //_manager.Register(-4f, 4.5f, -1f, 1.5f, -5f, -2f, data1);
-
-        //// size: 1
-        //_manager.Register(-0.5f, 4f, 0.5f, 3f, -5f, -4f, data2);
-
-        //// size: 1
-        //_manager.Register(2.6f, 3.6f, 3.6f, 2.6f, -3.7f, -2.7f, data3);
-
-        //// size: 1.5
-        //_manager.Register(0.5f, 7f, 2f, 5.5f, -5f, -3.5f, data4);
-        #endregion For Mock
     }
 }

@@ -174,7 +174,7 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
                 L = Mathf.Abs(Vector3.Dot(Interval, Cross));
                 if (L > rA + rB)
                 {
-                    return false; // No collision
+                    return false; // 衝突しない
                 }
             }
         }
@@ -204,8 +204,8 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         Vector3 targetLocalScale = target.localScale;
         if (isCapsule)
         {
+            // プレイヤーのサイズに合わせるための調整
             targetLocalScale.x -= 0.5f;
-            //targetLocalScale.y += 1.0f;
             targetLocalScale.z -= 0.5f;
         }
         else
