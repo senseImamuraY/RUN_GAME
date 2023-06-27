@@ -13,6 +13,7 @@ public class Pendulum : MonoBehaviour
 
     [SerializeField]
     private float delay = 0f;       // オブジェクトの開始遅延時間
+
     private float elapsedTime = 0f; // 経過時間
 
     private void Start()
@@ -38,6 +39,5 @@ public class Pendulum : MonoBehaviour
         // オブジェクトの位置を更新
         Vector3 newPosition = pivot.position + new Vector3(length * Mathf.Sin(angle), -length * Mathf.Cos(angle), 0f);
         transform.position = newPosition;
-        //Debug.Log("transform pendulum = " + transform.position);
     }
 }

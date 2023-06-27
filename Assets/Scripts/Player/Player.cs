@@ -31,15 +31,19 @@ public class Player : MonoBehaviour
     private float sensitivity = 1f;
     const float LOAD_WIDTH = 10f;
     const float MOVE_MAX = 4.5f;
+
     [SerializeField]
     private float speed = 20f;
+
     private float moveDistance;
 
     public bool isJump = false;
     private float jumpDelay = 1f; // 1•b‚ÌƒfƒBƒŒƒC
     private float nextJumpTime = 0f;
+
     [SerializeField]
     private float jumpPower = 10f;
+
     private bool onFloor;
     Vector3 planeForward;
 

@@ -10,6 +10,7 @@ public class BezierMove : MonoBehaviour
 
     [SerializeField]
     private bool randomizePositions = false;
+
     [SerializeField]
     private Vector3 randomPositionRange = new Vector3(1f, 1f, 1f);
 
