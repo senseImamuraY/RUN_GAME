@@ -9,7 +9,7 @@ public class GetWeather : MonoBehaviour
     private string url = "https://api.openweathermap.org/data/2.5/weather?lat=";
 
     // APIキーは別ファイルに記述し、gitignoreに書き込む
-    private string APIKEY = APIKeys.Key;
+    private string APIKEY = "APIKey";
     private string callurl;
 
     // 場所はどこでもいいが、今回はスカイツリーがある東京都墨田区押上１丁目１?２付近の緯度と経度を設定
