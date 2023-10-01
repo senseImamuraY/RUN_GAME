@@ -62,6 +62,9 @@ public class Player : MonoBehaviour
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
         gravity = gameObject.GetComponent<Gravity>();
         colorType = ColorType.Normal;
+
+        Vector3 basePoint = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        previousPos = basePoint;
     }
 
     private void FixedUpdate()
@@ -156,10 +159,6 @@ public class Player : MonoBehaviour
         }
 
         // スワイプによる移動処理
-        if (Input.GetMouseButtonDown(0))
-        {
-            previousPos = Input.mousePosition;
-        }
 
         animator.SetBool("IsRunning", true);
 
@@ -199,7 +198,7 @@ public class Player : MonoBehaviour
 
             // 目的地の方向に移動させる
             Vector3 dir = (dest - transform.position).normalized;
-            float speed = 100f;
+            float speed = 3f;
             transform.position += dir * speed * Time.deltaTime;
 
             // 目的地に十分近づいたら、最終演出

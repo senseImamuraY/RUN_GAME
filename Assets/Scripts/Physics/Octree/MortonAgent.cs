@@ -7,16 +7,16 @@ using UnityEngine;
 /// </summary>
 public class MortonAgent : MonoBehaviour
 {
-    private LinearTreeManager<GameObject> _manager;
+    private LinearTreeManager<GameObject> manager;
     public LinearTreeManager<GameObject> Manager
     {
         get
         {
-            return _manager;
+            return manager;
         }
         set
         {
-            if (_manager == value)
+            if (manager == value)
             {
                 return;
             }
@@ -25,7 +25,7 @@ public class MortonAgent : MonoBehaviour
             TreeData.Remove();
 
             // Change to new manager and register myself.
-            _manager = value;
+            manager = value;
             RegisterUpdate();
         }
     }
@@ -34,17 +34,17 @@ public class MortonAgent : MonoBehaviour
 
     #region MonoBehaviour
 
-    private Collider _collider;
+    private Collider collider;
     // Bounds like AABB of this game object.
     public Bounds Bounds
     {
         get
         {
-            if (_collider == null)
+            if (collider == null)
             {
-                _collider = GetComponent<Collider>();
+                collider = GetComponent<Collider>();
             }
-            return _collider.bounds;
+            return collider.bounds;
         }
     }
     void Awake()
@@ -59,7 +59,7 @@ public class MortonAgent : MonoBehaviour
 
     void Update()
     {
-        if (_manager == null)
+        if (manager == null)
         {
             return;
         }
@@ -70,7 +70,7 @@ public class MortonAgent : MonoBehaviour
 
     void RegisterUpdate()
     {
-        _manager.Register(Bounds, TreeData);
+        manager.Register(Bounds, TreeData);
     }
 
 

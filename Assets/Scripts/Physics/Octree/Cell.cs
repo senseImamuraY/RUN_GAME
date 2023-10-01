@@ -8,10 +8,10 @@ using UnityEngine;
 /// <typeparam name="T">管理対象のオブジェクトの型</typeparam>
 public class Cell<T>
 {
-    private TreeData<T> _latestData;
+    private TreeData<T> latestData;
     public TreeData<T> FirstData
     {
-        get { return _latestData; }
+        get { return latestData; }
     }
 
     /// <summary>
@@ -21,12 +21,12 @@ public class Cell<T>
     /// <returns>処理に成功したらtrue</returns>
     public bool OnRemove(TreeData<T> data)
     {
-        if (_latestData != data)
+        if (latestData != data)
         {
             return false;
         }
 
-        _latestData = data.Next;
+        latestData = data.Next;
 
         return true;
     }
@@ -59,16 +59,16 @@ public class Cell<T>
 
         // まだ空間にひとつも登録がない場合は、
         // リンクリストの初めのデータとして登録する
-        if (_latestData == null)
+        if (latestData == null)
         {
-            _latestData = data;
+            latestData = data;
             return true;
         }
 
         // 最新のTreeDataの参照を更新
-        data.Next = _latestData;
-        _latestData.Previous = data;
-        _latestData = data;
+        data.Next = latestData;
+        latestData.Previous = data;
+        latestData = data;
 
         return true;
     }
@@ -76,7 +76,7 @@ public class Cell<T>
     public int GetObjectsCount()
     {
         int count = 0;
-        TreeData<T> current = _latestData;
+        TreeData<T> current = latestData;
         while (current != null)
         {
             count++;

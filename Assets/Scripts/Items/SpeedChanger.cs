@@ -11,7 +11,6 @@ public class SpeedChanger : MonoBehaviour, IItem
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
         sphereCollider = GetComponent<CustomSphereCollider>();
         sphereCollider.Item = this;
-        Debug.Log(sphereCollider.Item);
     }
 
     void Start()
@@ -34,7 +33,7 @@ public class SpeedChanger : MonoBehaviour, IItem
 
         // 効果を適用
         player.SpeedChanger(ChangeNum);
-        Debug.Log("SpeedChanger");
+ 
         // 待機時間（秒）
         float delay = 3f;
 
@@ -48,6 +47,5 @@ public class SpeedChanger : MonoBehaviour, IItem
 
         // 効果を元に戻す
         player.SpeedChanger(-prevNum);
-        Debug.Log("SpeedChanger Reverted");
     }
 }

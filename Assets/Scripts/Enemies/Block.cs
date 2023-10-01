@@ -10,7 +10,6 @@ public class Block : MonoBehaviour, IEnemy
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定
         cubeCollider = GetComponent<CustomCubeCollider>();
         cubeCollider.Enemy = this;
-        Debug.Log(cubeCollider.Enemy);
     }
 
     void Start()
@@ -33,7 +32,6 @@ public class Block : MonoBehaviour, IEnemy
             yield break;  // コルーチンを終了
         }
 
-        Debug.Log("block");
         if (player.CompareTag("Player"))
         {
             GameManager.status = GameManager.GAME_STATUS.Pause;

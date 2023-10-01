@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -44,8 +43,6 @@ public class GetWeather : MonoBehaviour
     public void Getting()
     {
         callurl = url + lat + "&lon=" + lon + "&exclude=hourly,daily&appid=" + APIKEY;
-        Debug.Log("呼び出し中");
-        Debug.Log(callurl);
         StartCoroutine("GetData", callurl);
     }
 
@@ -58,15 +55,12 @@ public class GetWeather : MonoBehaviour
         switch (response.result)
         {
             case UnityWebRequest.Result.InProgress:
-                Debug.Log("リクエスト中");
                 break;
             case UnityWebRequest.Result.Success:
                 var jsontext = response.downloadHandler.text;
-                Debug.Log(jsontext);
                 weatherstruct = JsonUtility.FromJson<Weatherstruct>(jsontext);
                 var result = weatherstruct.weather[0].main;
                 skyBoxSetter.ChangeWeather(result);
-                Debug.Log(weatherstruct.weather[0].main);
                 break;
         }
     }

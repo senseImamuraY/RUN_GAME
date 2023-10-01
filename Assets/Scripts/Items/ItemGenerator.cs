@@ -32,8 +32,8 @@ public class ItemGenerator : MonoBehaviour
             Vector3 position = new Vector3(xPos, yPos, zPos);
 
             // アイテムを生成して配置
-            GameObject tmp = Instantiate(itemPrefabs[i], position, Quaternion.identity, parent);
-            instantiatedItemPrefabs.Add(tmp);
+            GameObject newItem = Instantiate(itemPrefabs[i], position, Quaternion.identity, parent);
+            instantiatedItemPrefabs.Add(newItem);
         }
     }
 

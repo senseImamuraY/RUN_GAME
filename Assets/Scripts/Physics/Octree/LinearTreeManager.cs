@@ -8,6 +8,12 @@ using UnityEngine;
 /// </summary>
 public class LinearTreeManager<T>
 {
+    /// <summary>
+    /// 同名の変数が多くなってしまうため、ここでは
+    /// メンバ変数にアンダースコア 例: _num
+    /// 引数にキャメルケース 例: num
+    /// を採用する
+    /// </summary>
     #region Variables
     // 分割最大数
     private readonly int _MaxLevel = 3;
@@ -141,36 +147,28 @@ public class LinearTreeManager<T>
         front -= _offsetFront;
         back -= _offsetFront;
 
-        // 領域外にオブジェクトが存在する場合はエラーを吐くようにする
-        // Buildをするため、今回はコメントアウト
         if (left < 0)
         {
-            //Debug.LogError("All argumetns must be in initialized range.");
             return false;
         }
         if (right > _width)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
         if (bottom < 0)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
         if (top > _height)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
         if (front < 0)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
         if (back > _depth)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
 
@@ -221,8 +219,6 @@ public class LinearTreeManager<T>
         // 算出されたモートン番号が、生成した空間分割数より大きい場合はエラー
         if (elem >= _cellNum)
         {
-            Debug.LogErrorFormat("Calcurated moton number is over the splited number. [MotonNumber: {0}]", elem);
-
             // 登録失敗
             return false;
         }
@@ -231,7 +227,6 @@ public class LinearTreeManager<T>
         if (_cellList[elem] == null)
         {
             CreateNewCell(elem);
-            //Debug.Log("新しく空間が作成された");
         }
         int totalObjectCount = 0;
         foreach (var cell in _cellList)
@@ -239,7 +234,6 @@ public class LinearTreeManager<T>
             if (cell != null)
                 totalObjectCount += cell.GetObjectsCount();
         }
-        //Debug.Log("Total object count in all cells: " + totalObjectCount);
 
         return _cellList[elem].Push(data);
     }
@@ -355,8 +349,6 @@ public class LinearTreeManager<T>
         LinkedList<T> colStac = new LinkedList<T>();
         HashClear();
         GetCollisionList(0, collisionList, colStac, collisionPairs);
-
-        //GetCollisionList(0, collisionList, colStac);
 
         return collisionList.Count;
     }

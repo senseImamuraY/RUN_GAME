@@ -12,23 +12,23 @@ using UnityEngine;
 /// <typeparam name="T">管理対象のオブジェクトの型</typeparam>
 public class TreeData<T>
 {
-    private Cell<T> _cell;
+    private Cell<T> cell;
     public Cell<T> Cell
     {
         get
         {
-            return _cell;
+            return cell;
         }
         set
         {
-            if (value == _cell)
+            if (value == cell)
             {
                 return;
             }
 
             // Remove from current cell.
             Remove();
-            _cell = value;
+            cell = value;
         }
     }
     public T Object { get; private set; }
@@ -43,10 +43,10 @@ public class TreeData<T>
 
     public void Remove()
     {
-        if (_cell != null)
+        if (cell != null)
         {
             // 逸脱を空間に伝える
-            _cell.OnRemove(this);
+            cell.OnRemove(this);
 
             // 逸脱処理
             // リンクリストの前後をつなぎ、自身のリンクを外す
@@ -63,20 +63,20 @@ public class TreeData<T>
             Previous = null;
             Next = null;
 
-            _cell = null; // 直接_cellの値をnullに設定
+            cell = null; // 直接_cellの値をnullに設定
         }
     }
 
 
     public void SetCellWithoutRemoval(Cell<T> value)
     {
-        if (value == _cell)
+        if (value == cell)
         {
             return;
         }
 
         Remove();
-        _cell = value;
+        cell = value;
     }
 
 }

@@ -13,7 +13,7 @@ public class Bomb : MonoBehaviour, IEnemy
     Vector3 endPos;    // 終端位置
     Vector3 destPos;   // 次の目的地
 
-    float speed = 1f;　　　　　// 移動速度
+    float Movespeed = 1f;　　　　　// 移動速度
     float rotateSpeed = 180f;  // 回転速度
     float rotateNum;           // 方向転換時の回転量
     CustomSphereCollider sphereCollider;
@@ -23,8 +23,6 @@ public class Bomb : MonoBehaviour, IEnemy
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定
         sphereCollider = GetComponent<CustomSphereCollider>();
         sphereCollider.Enemy = this;
-        Debug.Log(sphereCollider.Enemy);
-
     }
 
     void Start()
@@ -36,7 +34,7 @@ public class Bomb : MonoBehaviour, IEnemy
         destPos = endPos;
 
         // 移動速度をランダムに
-        speed = Random.Range(1.0f, 3.0f);
+        Movespeed = Random.Range(1.0f, 3.0f);
 
         // 開始位置をランダムに
         transform.position = Vector3.Lerp(startPos, endPos, Random.Range(0.0f, 1.0f));
@@ -76,21 +74,20 @@ public class Bomb : MonoBehaviour, IEnemy
         // 次の目的地に向けて移動する
         anim.SetBool("walk", true);
         transform.LookAt(destPos);
-        transform.position += transform.forward * speed * Time.deltaTime;
+        transform.position += transform.forward * Movespeed * Time.deltaTime;
     }
 
     IEnumerator EnterCoroutine(Player player)
     {
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
-            yield break;  // コルーチンを終了します。
+            yield break;  // コルーチンを終了
         }
 
         Debug.Log("bomb");
         if (player.CompareTag("Player"))
         {
             transform.LookAt(player.gameObject.transform);
-            //player.gameObject.transform.LookAt(transform);
             anim.SetBool("walk", false);
             anim.SetTrigger("attack01");
             GameManager.status = GameManager.GAME_STATUS.Pause;

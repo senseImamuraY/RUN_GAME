@@ -21,14 +21,9 @@ public class AthleticGenerator : MonoBehaviour
             if (AthleticList != null && AthleticList.Count > 0)
             {
                 GameObject randomElement = AthleticList.RandomElement();
-                Debug.Log("Random Element: " + randomElement);
-
                 Instantiate(randomElement, spawnPositionList[i].position, spawnPositionList[i].rotation, parent);
             }
-            else
-            {
-                Debug.LogError("The item list is null or empty.");
-            }
+
             i++;
         }
 
@@ -43,11 +38,6 @@ public static class RandomListElement
     
     public static T RandomElement<T>(this List<T> list)
     {
-        if (list == null || list.Count == 0)
-        {
-            throw new InvalidOperationException("The list is null or empty.");
-        }
-
         int index = random.Next(0, list.Count);
         return list[index];
     }

@@ -25,11 +25,6 @@ public class ObjectSearcher : MonoBehaviour
 
     private void Awake()
     {
-        if (athleticParentTransform == null)
-        {
-            Debug.LogError("Parent transform is not assigned.");
-            return;
-        }
         treeLists.Clear();
         treeLists = treeController.Objects;
 
@@ -54,12 +49,6 @@ public class ObjectSearcher : MonoBehaviour
         foreach (GameObject enemy in Enemies)
         {
             treeLists.Add(enemy);
-        }
-
-        // リストの中身をログ出力する
-        foreach (GameObject foundObject in treeLists)
-        {
-            Debug.Log("Found Object: " + foundObject.name);
         }
     }
 
@@ -98,7 +87,6 @@ public class ObjectSearcher : MonoBehaviour
             if (currentTransform.name.Contains(searchName))
             {
                 treeLists.Add(currentTransform.gameObject);
-                Debug.Log("added object to treeList");
                 break; // 一致したらループを抜ける
             }
         }

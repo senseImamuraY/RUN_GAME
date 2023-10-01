@@ -42,13 +42,13 @@ public class BezierMove : MonoBehaviour
         float uuu = uu * u;
         float ttt = tt * t;
 
-        Vector3 B = new Vector3();
-        B = uuu * p0; //point 0 influence
-        B += 3 * uu * t * p1; //point 1 influence
-        B += 3 * u * tt * p2; //point 2 influence
-        B += ttt * p3; //point 3 influence
+        Vector3 bezierPosition = new Vector3();
+        bezierPosition = uuu * p0; //point 0 influence
+        bezierPosition += 3 * uu * t * p1; //point 1 influence
+        bezierPosition += 3 * u * tt * p2; //point 2 influence
+        bezierPosition += ttt * p3; //point 3 influence
 
-        return B;
+        return bezierPosition;
     }
 
     private void RandomizePointsPositions()

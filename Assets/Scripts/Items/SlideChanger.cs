@@ -11,7 +11,6 @@ public class SlideChanger : MonoBehaviour, IItem
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
         sphereCollider = GetComponent<CustomSphereCollider>();
         sphereCollider.Item = this;
-        Debug.Log(sphereCollider.Item);
     }
 
 
@@ -35,7 +34,6 @@ public class SlideChanger : MonoBehaviour, IItem
 
         // 効果を適用
         player.SensitivityChanger(ChangeNum);
-        Debug.Log("SensitivityChanger");
 
         // 待機時間（秒）
         float delay = 3f;
@@ -50,7 +48,5 @@ public class SlideChanger : MonoBehaviour, IItem
 
         // 効果を元に戻す
         player.SensitivityChanger(-prevNum);
-        Debug.Log("SensitivityChanger Reverted");
     }
-
 }

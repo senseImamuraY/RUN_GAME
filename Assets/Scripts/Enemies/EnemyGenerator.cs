@@ -32,8 +32,8 @@ public class EnemyGenerator : MonoBehaviour
             Vector3 position = new Vector3(xPos, yPos, zPos);
 
             // アイテムを生成して配置
-            GameObject tmp = Instantiate(enemyPrefabs[i], position, Quaternion.identity, parent);
-            instantiatedEnemyPrefabs.Add(tmp);
+            GameObject newEnemy = Instantiate(enemyPrefabs[i], position, Quaternion.identity, parent);
+            instantiatedEnemyPrefabs.Add(newEnemy);
         }
     }
 

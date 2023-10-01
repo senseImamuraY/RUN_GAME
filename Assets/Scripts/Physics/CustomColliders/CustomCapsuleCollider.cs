@@ -155,8 +155,9 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
     // 今後必要になった際に追加
     public bool CheckCollisionWithCapsule(ICapsule capsule)
-    {        
-        throw new System.NotImplementedException();
+    {
+        // TODO: Implement this method properly.
+        return false;
     }
 
     public bool CheckCollisionWithSphere(ISphere sphere)
@@ -238,7 +239,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         // tanθを計算
         float tanTheta = Mathf.Tan(angle);
-        Debug.Log("tangent = " + tanTheta);
         float d = normal.x * capsuleBottom.x + normal.y * capsuleBottom.y + normal.z * capsuleBottom.z;
         planeY = -(normal.x * capsuleBottom.x + normal.z * capsuleBottom.z + d) / normal.y;
         float diff = capsuleBottom.y - planeY;
@@ -262,7 +262,6 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
         }
         else
         {
-            Debug.Log("空中かオブジェクト上にいます");
             return false;
         }
     }
@@ -275,12 +274,10 @@ public class CustomCapsuleCollider : MonoBehaviour, ICollider, ICapsule
 
         if ((this.center.x >= (planeCenter.x + planeXSize)) || (this.center.x <= (planeCenter.x - planeXSize)))
         {
-            Debug.Log("範囲外にいます");
             return false;
         }
         if ((this.center.z >= (planeCenter.z + planeZSize)) || (this.center.z <= (planeCenter.z - planeZSize)))
         {
-            Debug.Log("範囲外にいます");
             return false;
         }
         else

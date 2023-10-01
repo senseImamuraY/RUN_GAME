@@ -49,16 +49,19 @@ public class CustomSphereCollider : MonoBehaviour, ICollider, ISphere
 
     public bool CheckCollisionWithCapsule(ICapsule capsule)
     {
-        throw new System.NotImplementedException();
+        // TODO: Implement this method properly.
+        return false;
     }
 
     public bool CheckCollisionWithCube(ICube box)
     {
-        throw new System.NotImplementedException();
+        // TODO: Implement this method properly.
+        return false;
     }
 
     public bool CheckCollisionWithPlane(IPlane plane)
     {
-        throw new System.NotImplementedException();
+        // TODO: Implement this method properly.
+        return false;
     }
 }

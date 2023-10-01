@@ -156,13 +156,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("LoadNextScene");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    private string GetLoadSceneName()
-    {
-        return STAGE_NAME_PREFIX + SceneNum;
-    }
 
     private string GetLoadNextSceneName()
-    {       
+    {   
+        // ステージを2つしか作っていないのでSceneNumは2以下になる
         if (SceneNum < 2)
         {
             SceneNum++;
@@ -174,17 +171,13 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(GetLoadNextSceneName());
     }
-    public void LoadScene()
-    {
-        SceneManager.LoadScene(GetLoadSceneName());
-    }
 
     private void ShowGameOverUI()
     {
         gameOverUI.SetActive(true);
     }
 
-    public void Title()
+    public void LoadTitleScene()
     {
         SceneManager.LoadScene("Title");
     }
@@ -208,6 +201,5 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         countdownText.gameObject.SetActive(false);
-        
     }
 }

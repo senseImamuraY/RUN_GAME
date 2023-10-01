@@ -34,7 +34,6 @@ public class Gravity : MonoBehaviour
         if (isGrounded)
         {
             // 接地している場合、y方向の速度をリセット
-            //Debug.Log("重力が掛かっていません");
             velocity.y = 0f;
         }
 

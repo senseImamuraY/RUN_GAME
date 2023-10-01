@@ -33,7 +33,6 @@ public class Goal : MonoBehaviour
                 confetti.SetActive(true);
             }
             player.Clear(centerPos + new Vector3(0, transform.localScale.y /2, 0));
-            Debug.Log("clear!");
 
             Invoke("PlayCracker", 0.2f);
             Invoke("PlayPrise", 1f);

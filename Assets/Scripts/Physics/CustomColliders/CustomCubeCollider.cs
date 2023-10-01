@@ -184,7 +184,8 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
 
     public bool CheckCollisionWithPlane(IPlane plane)
     {
-        throw new System.NotImplementedException();
+        // TODO: Implement this method properly.
+        return false;
     }
 
     void OnDrawGizmos()
@@ -211,8 +212,6 @@ public class CustomCubeCollider : MonoBehaviour, ICollider, ICube
         else
         {
             targetLocalScale = (targetLocalScale + arrangeNum) / 2.0f;
-            Debug.Log("LocalScale = " + targetLocalScale);
-            
         }
         float sum = 0;
 
