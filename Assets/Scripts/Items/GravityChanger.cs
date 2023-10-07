@@ -11,7 +11,6 @@ public class GravityChanger : MonoBehaviour, IItem
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
         sphereCollider = GetComponent<CustomSphereCollider>();
         sphereCollider.Item = this;
-        Debug.Log(sphereCollider.Item);
     }
 
 
@@ -28,13 +27,6 @@ public class GravityChanger : MonoBehaviour, IItem
         }
     }
 
-    //public void Enter(Player player)
-    //{
-    //    float prevNum = player.GetGravityNum();
-    //    player.GravityChanger(-100f);
-    //    Debug.Log("GravityChanger");
-
-    //}
     public void Enter(Player player)
     {
         // 効果の値
@@ -42,7 +34,6 @@ public class GravityChanger : MonoBehaviour, IItem
 
         // 効果を適用
         player.GravityChanger(ChangeNum);
-        Debug.Log("GravityChanger");
 
         // 待機時間（秒）
         float delay = 3f;
@@ -57,7 +48,5 @@ public class GravityChanger : MonoBehaviour, IItem
 
         // 効果を元に戻す
         player.GravityChanger(-prevNum);
-        Debug.Log("GravityChanger Reverted");
     }
-
 }

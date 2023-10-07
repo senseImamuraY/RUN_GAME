@@ -11,9 +11,7 @@ public class JumpChanger : MonoBehaviour, IItem
         // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
         sphereCollider = GetComponent<CustomSphereCollider>();
         sphereCollider.Item = this;
-        Debug.Log(sphereCollider.Item);
     }
-
 
     void Start()
     {
@@ -28,11 +26,6 @@ public class JumpChanger : MonoBehaviour, IItem
         }
     }
 
-    //public void Enter(Player player)
-    //{
-    //    player.JumpPowerChanger(20f);
-    //    Debug.Log("JumpChanger");
-    //}
     public void Enter(Player player)
     {
         //効果の値
@@ -40,7 +33,6 @@ public class JumpChanger : MonoBehaviour, IItem
 
         // 効果を適用
         player.JumpPowerChanger(ChangeNum);
-        Debug.Log("JumpPowerChanger");
 
         // 待機時間（秒）
         float delay = 3f;
@@ -55,6 +47,5 @@ public class JumpChanger : MonoBehaviour, IItem
 
         // 効果を元に戻す
         player.JumpPowerChanger(-prevNum);
-        Debug.Log("JumpPowerChanger Reverted");
     }
 }

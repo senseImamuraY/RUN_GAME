@@ -14,9 +14,8 @@ public class Camera : MonoBehaviour
 
     private void Start()
     {
-        yOffset = transform.position.y;
-        zOffset = transform.position.z;
-        isGoal = false;
+        yOffset = 2.0f;
+        zOffset = -5.0f;
     }
 
     void Update()
@@ -30,14 +29,12 @@ public class Camera : MonoBehaviour
         Vector3 newLocalPos = new Vector3(x, y, z);
 
         // –Ú•W’n“_‚Ö‚ä‚Á‚­‚èˆÚ“®‚³‚¹‚é
-        //transform.position = Vector3.Lerp(transform.position, newLocalPos, 0.8f);
-        transform.position = Vector3.Lerp(transform.position, newLocalPos, 0.2f);
+        transform.position = Vector3.Lerp(transform.position, newLocalPos, 1.0f);
         if(GameManager.status == GameManager.GAME_STATUS.Clear)
         {
             transform.LookAt(new Vector3(player.transform.position.x,player.transform.position.y + yOffset, player.transform.position.z));
             if(!isGoal)
             {
-                transform.Rotate(0, 180, 0);
                 isGoal = true;
             }
 

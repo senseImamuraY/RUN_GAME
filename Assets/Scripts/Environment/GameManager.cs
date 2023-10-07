@@ -9,12 +9,11 @@ using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
-    //public static GameManager Instance { get; private set; }
-
     public enum GAME_STATUS { Play, Clear, Pause, GameOver };
     public static GAME_STATUS status;
 
     public static int tempCoinNum;
+    private int SceneNum = 1;
 
     [SerializeField]
     TextMeshProUGUI coinNumText, resultCoinText, levelNumText, countdownText;
@@ -28,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> targetList;
 
+    [SerializeField]
+    private List<GameObject> athletics;
 
     private List<ISphere> sphereList = new List<ISphere>();
     private List<ICube> cubeList = new List<ICube>();
@@ -58,25 +59,13 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Player player;
 
-    //public Text timerText; // タイマーを表示するテキスト
     public float startTime = 3f; // カウントダウン開始秒数
     private float currentTime; // カウントダウン現在秒数
     public bool isCounting = false; // カウントダウン中かどうか
 
     private void Awake()
     {
-        //if (Instance == null)
-        //{
-        //    Instance = this;
-        //    DontDestroyOnLoad(gameObject);
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-
         collisionList = linearTreeController.GetCollisionList();
-
 
         foreach (GameObject target in targetList)
         {
@@ -90,51 +79,12 @@ public class GameManager : MonoBehaviour
                 Debug.Log("どれにも追加されませんでした");
             }
         }
-
-        //foreach (GameObject target in targetList)
-        //    //{
-        //if (target.GetComponent<IPlane>() != null)
-        //{
-        //    Debug.Log("Planeに追加されました。");
-        //    planeList.Add(target.GetComponent<IPlane>());
-        //}
-        //else if (target.GetComponent<ISphere>() != null)
-        //{
-        //    Debug.Log("Sphereに追加されました。");
-        //    sphereList.Add(target.GetComponent<ISphere>());
-        //}
-        //else if (target.GetComponent<ICube>() != null)
-        //{
-        //    Debug.Log("Boxに追加されました。");
-        //    cubeList.Add(target.GetComponent<ICube>());
-        //    Debug.Log(cubeList);
-        //}
-        //else if (target.GetComponent<ICapsule>() != null)
-        //{
-        //    Debug.Log("Capsuleに追加されました。");
-        //    capsuleList.Add(target.GetComponent<ICapsule>());
-        //}
-        //else
-        //{
-        //    Debug.Log("どれにも追加されませんでした");
-        //}
-
     }
 
 
 
     void Start()
     {
-        // ステージ番号ロード
-        stageNum = PlayerPrefs.GetInt("stageNum", 1);
-
-        // 自分のシーンではない場合、ロードし直す
-        if (!GetLoadSceneName().Equals(SceneManager.GetActiveScene().name))
-        {
-            LoadScene();
-            return;
-        }
-
         // レベル番号をロード
         levelNum = PlayerPrefs.GetInt("levelNum", 1);
         levelNumText.text = "Level " + levelNum;
@@ -154,16 +104,13 @@ public class GameManager : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
-        
-
+    {       
         if (status == GAME_STATUS.Clear)
         {
             // 現在のステージで獲得したコインの枚数
             int getCoinNum = tempCoinNum - PlayerPrefs.GetInt("coinNum", 0);
 
             resultCoinText.text = getCoinNum.ToString().PadLeft(3) + "/" + stageCoinNum;
-            //clearUI.SetActive(true);
             clearUI.SetActive(true);
 
             // コインを保存
@@ -184,21 +131,15 @@ public class GameManager : MonoBehaviour
         {
             if (target.GetComponent<ISphere>() != null)
             {
-                Debug.Log("Sphereに追加されました。");
                 sphereList.Add(target.GetComponent<ISphere>());
             }
             else if (target.GetComponent<ICube>() != null)
             {
-                Debug.Log("Boxに追加されました。");
                 cubeList.Add(target.GetComponent<ICube>());
-                Debug.Log(cubeList);
             }
-            //else
-            //{
-            //    //Debug.Log("どれにも追加されませんでした");
-            //}
         }
-        Debug.Log("collisionList.Count = " +  collisionList.Count);
+
+        Debug.Log("collisionList.Count = " + collisionList.Count);
         goal.GoalEffect(player);
 
         coinNumText.text = tempCoinNum.ToString();
@@ -209,43 +150,34 @@ public class GameManager : MonoBehaviour
         slideNumText.text = player.GetSlideNum().ToString();
 
     }
-    void Update()
-    {
-
-    }
-
+    // 現在のシーンをロード
     public void LoadCurrentScene()
     {
         Debug.Log("LoadNextScene");
-        //GameManager.status = GAME_STATUS.Play;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    private string GetLoadSceneName()
-    {
-        return STAGE_NAME_PREFIX + 2;
-        //return STAGE_NAME_PREFIX + stageNum;
-    }
 
-    public void LoadScene()
-    {
-        SceneManager.LoadScene(GetLoadSceneName());
+    private string GetLoadNextSceneName()
+    {   
+        // ステージを2つしか作っていないのでSceneNumは2以下になる
+        if (SceneNum < 2)
+        {
+            SceneNum++;
+        }
+        return STAGE_NAME_PREFIX + SceneNum;
     }
 
     public void LoadNextScene()
     {
-        PlayerPrefs.SetInt("levelNum", ++levelNum);
-
-        stageNum = levelNum <= MAX_STAGE_NUM ? levelNum : Random.Range(1, MAX_STAGE_NUM + 1);
-        PlayerPrefs.SetInt("stageNum", stageNum);
-
-        LoadScene();
+        SceneManager.LoadScene(GetLoadNextSceneName());
     }
+
     private void ShowGameOverUI()
     {
         gameOverUI.SetActive(true);
     }
 
-    public void Title()
+    public void LoadTitleScene()
     {
         SceneManager.LoadScene("Title");
     }
@@ -269,6 +201,5 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         countdownText.gameObject.SetActive(false);
-        
     }
 }

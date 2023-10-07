@@ -8,10 +8,15 @@ using UnityEngine;
 /// </summary>
 public class LinearTreeManager<T>
 {
+    /// <summary>
+    /// 同名の変数が多くなってしまうため、ここでは
+    /// メンバ変数にアンダースコア 例: _num
+    /// 引数にキャメルケース 例: num
+    /// を採用する
+    /// </summary>
     #region Variables
     // 分割最大数
     private readonly int _MaxLevel = 3;
-    //private readonly int _MaxLevel = 4;
 
     private int[] _pow;
 
@@ -144,32 +149,26 @@ public class LinearTreeManager<T>
 
         if (left < 0)
         {
-            //Debug.LogError("All argumetns must be in initialized range.");
             return false;
         }
         if (right > _width)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
         if (bottom < 0)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
         if (top > _height)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
         if (front < 0)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
         if (back > _depth)
-        {
-            //Debug.LogError("All argumetns must be in initialized range.");
+        { 
             return false;
         }
 
@@ -189,11 +188,6 @@ public class LinearTreeManager<T>
         float bottom = bounds.min.y;
         float front = bounds.min.z;
         float back = bounds.max.z;
-
-
-        //Debug.Log("laft = " + left + "right = " + right);
-        //Debug.Log("top = " + top + "bottom = " + bottom);
-        //Debug.Log("front = " + front + " back = " + back);
 
         return Register(left, top, right, bottom, front, back, data);
     }
@@ -222,13 +216,9 @@ public class LinearTreeManager<T>
         int elem = GetMortonNumber(left, top, right, bottom, front, back, out belongLevel);
         elem = ToLinearSpace(elem, belongLevel);
 
-        //Debug.Log("name = " + data + "elem = " + elem);
-
         // 算出されたモートン番号が、生成した空間分割数より大きい場合はエラー
         if (elem >= _cellNum)
         {
-            Debug.LogErrorFormat("Calcurated moton number is over the splited number. [MotonNumber: {0}]", elem);
-
             // 登録失敗
             return false;
         }
@@ -237,7 +227,6 @@ public class LinearTreeManager<T>
         if (_cellList[elem] == null)
         {
             CreateNewCell(elem);
-            //Debug.Log("新しく空間が作成された");
         }
         int totalObjectCount = 0;
         foreach (var cell in _cellList)
@@ -245,7 +234,6 @@ public class LinearTreeManager<T>
             if (cell != null)
                 totalObjectCount += cell.GetObjectsCount();
         }
-        //Debug.Log("Total object count in all cells: " + totalObjectCount);
 
         return _cellList[elem].Push(data);
     }
@@ -362,121 +350,9 @@ public class LinearTreeManager<T>
         HashClear();
         GetCollisionList(0, collisionList, colStac, collisionPairs);
 
-        //GetCollisionList(0, collisionList, colStac);
-
         return collisionList.Count;
     }
 
-    /// <summary>
-    /// 各セルから全衝突可能リストを作成する
-    /// </summary>
-    /// <param name="elem">検索を開始する要素のindex</param>
-    /// <param name="collisionList">衝突可能性のあるリストを格納する</param>
-    /// <param name="colStac">衝突検知用のスタック</param>
-    /// <returns><c>true</c>, if collision list was gotten, <c>false</c> otherwise.</returns>
-    //    bool GetCollisionList(int elem, List<T> collisionList, LinkedList<T> colStac)
-    //    {
-    //        // 空間内のオブジェクト同士の衝突リスト作成
-    //        // ルート空間からはじめ、その子空間へと移動しながら、「衝突可能性のある」オブジェクト同士の
-    //        // ペアとなるリストを作成する
-    //        // 結果は「collisionList」に格納される。
-    //        // なお、リストは「ペア」構造となっていて、
-    //        // 完成したリストからはふたつずつ取り出して衝突の詳細判定を行う想定。
-
-    //        // ルート空間に登録されているリンクリストの最初の要素を取り出す
-    //        TreeData<T> data = _cellList[elem].FirstData;
-
-
-    //        collisionPairs = new HashSet<string>();
-
-    //        Debug.Log("Start  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-    //    + " calStac = " + colStac.Count);
-    //        // データがなくなるまで繰り返す
-    //        while (data != null)
-    //        {
-    //            // まず、リンクリストの次を取り出す
-    //            TreeData<T> next = data.Next;
-    //            while (next != null)
-    //            {
-    //                string pairKey = $"{data.Object}-{next.Object}";
-    //                if (!collisionPairs.Contains(pairKey))
-    //                {
-    //                    collisionList.Add(data.Object);
-    //                    collisionList.Add(next.Object);
-    //                    collisionPairs.Add(pairKey);
-    //                }
-    //                //// 衝突リスト作成
-    //                //collisionList.Add(data.Object);
-    //                //collisionList.Add(next.Object);
-    //                next = next.Next;
-    //            }
-
-    //            // 衝突スタックと衝突リスト作成
-    //            foreach (var obj in colStac)
-    //            {
-    //                collisionList.Add(data.Object);
-    //                collisionList.Add(obj);
-    //            }
-
-    //            data = data.Next;
-    //        }
-
-    //        bool child = false;
-
-    //        // 子空間に移動
-    //        int objNum = 0;
-    //        int nextElem;
-
-    //        // 小空間を巡る
-    //        // 例えば、8分木の場合は子空間は8分割される
-    //        // つまり、8回ループすることで小空間を網羅する
-    //        for (int i = 0; i < _divisionNumber; i++)
-    //        {
-    //            nextElem = elem * _divisionNumber + 1 + i;
-
-    //            // 空間分割数以上 or 対象空間がない場合はスキップ
-    //            bool needsSkip = (nextElem >= _cellNum ||
-    //                             _cellList[nextElem] == null);
-    //            if (needsSkip)
-    //            {
-    //                continue;
-    //            }
-
-    //            // 子空間への処理がまだ済んでいない場合は処理を行う
-    //            // 同空間内のオブジェクトをスタックに追加した上で小空間の衝突リストを作成する
-    //            // ただし、一度セットアップが済んでいる場合は本処理をスキップし、小空間の検索のみを実行する
-    //            // （同空間のオブジェクト追加は一度のみ行う必要があるため）
-    //            if (!child)
-    //            {
-    //                // 同空間のオブジェクトをスタックに積む
-    //                data = _cellList[elem].FirstData;
-    //                while (data != null)
-    //                {
-    //                    colStac.AddLast(data.Object);
-    //                    objNum++;
-    //                    data = data.Next;
-    //                }
-    //            }
-
-    //            child = true;
-
-    //            // 子空間を検索
-    //            GetCollisionList(nextElem, collisionList, colStac);
-    //        }
-
-    //        // スタックからオブジェクトを外す
-    //        // 計測したobjNum個数分、スタックから取り除く（＝子空間検索用に追加した分）
-    //        if (child)
-    //        {
-    //            for (int i = 0; i < objNum; i++)
-    //            {
-    //                colStac.RemoveLast();
-    //            }
-    //        }
-    //        Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-    //+ " calStac = " + colStac.Count);
-    //        return true;
-    //    }
     bool GetCollisionList(int elem, List<T> collisionList, LinkedList<T> colStac, HashSet<string> collisionPairs, int numRecursive = 0)
     {
         // 空間内のオブジェクト同士の衝突リスト作成
@@ -492,12 +368,7 @@ public class LinearTreeManager<T>
         {
             return true;
         }
-        //collisionPairs = new HashSet<string>();
-
-
-        //Debug.Log("Start  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-        //    + " calStac = " + colStac.Count + " pair = " + collisionPairs.Count);
-
+ 
         // データがなくなるまで繰り返す
         while (data != null)
         {
@@ -505,37 +376,22 @@ public class LinearTreeManager<T>
             TreeData<T> next = data.Next;
             while (next != null)
             {
-                string pairKey = $"{data.Object}-{next.Object}";
-                //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
-                if (!collisionPairs.Contains(pairKey) && (data.Object.ToString() == "Player (UnityEngine.GameObject)" || next.Object.ToString() == "Player (UnityEngine.GameObject)"))
+               if ((data.Object.ToString() == "Player (UnityEngine.GameObject)" || next.Object.ToString() == "Player (UnityEngine.GameObject)"))
                 {
-                    //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                     collisionList.Add(data.Object);
                     collisionList.Add(next.Object);
-                    collisionPairs.Add(pairKey);
                 }
-
-
-                //// 衝突リスト作成
-                //collisionList.Add(data.Object);
-                //collisionList.Add(next.Object);
                 next = next.Next;
             }
 
             // 衝突スタックと衝突リスト作成
             foreach (var obj in colStac)
             {
-                string pairKey = $"{data.Object}-{obj}";
-                //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
-                if (!collisionPairs.Contains(pairKey) && (data.Object.ToString() == "Player (UnityEngine.GameObject)" || obj.ToString() == "Player (UnityEngine.GameObject)"))
+                if ((data.Object.ToString() == "Player (UnityEngine.GameObject)" || obj.ToString() == "Player (UnityEngine.GameObject)"))
                 {
-                    //Debug.Log("isKeytrue? = " + collisionPairs.Contains(pairKey));
                     collisionList.Add(data.Object);
                     collisionList.Add(obj);
-                    collisionPairs.Add(pairKey);
                 }
-                //collisionList.Add(data.Object);
-                //collisionList.Add(obj);
             }
 
             data = data.Next;
@@ -579,7 +435,6 @@ public class LinearTreeManager<T>
             }
 
             child = true;
-            //Debug.Log("NumRecursive = " + numRecursive);
             // 子空間を検索
             GetCollisionList(nextElem, collisionList, colStac, collisionPairs, numRecursive + 1);
         }
@@ -594,11 +449,6 @@ public class LinearTreeManager<T>
             }
         }
 
-
-        //Debug.Log("End  " + "data = " + data + " elem = " + elem + " collisionListCount = " + collisionList.Count
-        //+ " calStac = " + colStac.Count + " pair = " + collisionPairs.Count);
-
-        //Debug.Log("CollisionKey = " + collisionPairs.Count);
         return true;
     }
 

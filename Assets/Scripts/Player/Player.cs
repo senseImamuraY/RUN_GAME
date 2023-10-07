@@ -1,8 +1,6 @@
-using PathCreation;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
-//using System.Numerics;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
@@ -13,87 +11,77 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Player : MonoBehaviour
 {
-
     [SerializeField]
-    GameObject helpUI;
-
-    [SerializeField]
-    GameManager gameManager;
+    private GameManager gameManager;
 
     public Animator animator;
+
     List<ICube> cubeTargetsList;
     List<ISphere> sphereTargetsList;
     List<IPlane> planeTargetsList;
 
     CustomCapsuleCollider capsuleCollider;
     public CustomCapsuleCollider GetCustomCapsuleCollider() { return capsuleCollider; } 
+
     Gravity gravity;
-
-    Vector3 endPos;
     Vector3 previousPos, currentPos;
-
     Vector3 playerPosition;
 
     public bool isRunning;
     private float sensitivity = 1f;
-
     const float LOAD_WIDTH = 10f;
     const float MOVE_MAX = 4.5f;
+
     [SerializeField]
     private float speed = 20f;
+
     private float moveDistance;
 
     public bool isJump = false;
-
     private float jumpDelay = 1f; // 1秒のディレイ
     private float nextJumpTime = 0f;
 
-    Vector3 planeForward;
-
     [SerializeField]
     private float jumpPower = 10f;
+
     private bool onFloor;
-    private Vector3 planeNormal;
+    Vector3 planeForward;
 
     Vector3 dest; // 次の目的地。クリア時に使用
 
+    public enum ColorType { Normal, Red, Green, Violet }
+    public ColorType colorType;
+
     void Start()
     {
-        animator = GetComponent<Animator>();
-        //cubeTargetsList = GameManager.Instance.GetCubeList;
-        //sphereTargetsList = GameManager.Instance.GetSphereList;
-        //planeTargetsList = GameManager.Instance.GetLaneList;
         cubeTargetsList = gameManager.GetCubeList;
         sphereTargetsList = gameManager.GetSphereList;
         planeTargetsList = gameManager.GetPlaneList;
 
+        animator = GetComponent<Animator>();
         capsuleCollider = gameObject.GetComponent<CustomCapsuleCollider>();
         gravity = gameObject.GetComponent<Gravity>();
-        Debug.Log("Status = " + GameManager.status);
+        colorType = ColorType.Normal;
+
+        Vector3 basePoint = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        previousPos = basePoint;
     }
-
-
 
     private void FixedUpdate()
     {
-        //if (transform.position.y < -10) return;
         onFloor = false;
         SetCapsulePosition();
         // 床と衝突しているか確認
         foreach (IPlane target in planeTargetsList)
         {
-            //Debug.Log("PlaneCount = " + planeTargetsList.Count);
             if (capsuleCollider.CheckCollisionWithPlane(target))
             {
                 onFloor = true;
-                planeNormal = target.GetNormal();
             }
         }
         if (onFloor)
         {
-            Debug.Log("Planeと衝突しました");
             gravity.SetIsGround(true);
-            //isJump = false;
         }
         else
         {
@@ -143,7 +131,7 @@ public class Player : MonoBehaviour
             if (target.IsColliding == true) continue;
             if (capsuleCollider.CheckCollisionWithCube(target))
             {
-                // targetをCustomColliderにキャストします
+                // targetをCustomColliderにキャスト
                 CustomCubeCollider customCollider = target as CustomCubeCollider;
                 if (customCollider == null)
                 {
@@ -167,23 +155,16 @@ public class Player : MonoBehaviour
         //// プレイ中以外は無効にする
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
-            //helpUI.SetActive(false);
             return;
         }
 
         // スワイプによる移動処理
-        if (Input.GetMouseButtonDown(0))
-        {
-            previousPos = Input.mousePosition;
-        }
 
         animator.SetBool("IsRunning", true);
-        //helpUI.SetActive(false);
 
         // スワイプによる移動距離を取得
         currentPos = Input.mousePosition;
         float diffDistance = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
-
         diffDistance *= sensitivity;
 
         // 次のローカルx座標を設定 ※道の外にでないように
@@ -217,7 +198,7 @@ public class Player : MonoBehaviour
 
             // 目的地の方向に移動させる
             Vector3 dir = (dest - transform.position).normalized;
-            float speed = 100f;
+            float speed = 3f;
             transform.position += dir * speed * Time.deltaTime;
 
             // 目的地に十分近づいたら、最終演出
@@ -244,19 +225,11 @@ public class Player : MonoBehaviour
     public void setForward(Vector3 forward)
     {
         planeForward = forward;
-        //Debug.Log("planeforward = " + planeForward);
-    }
-
-    public void setRotation(Quaternion rot)
-    {
-        this.transform.rotation = rot;
-        //this.transform.localRotation = rot;
     }
 
     public void Clear(Vector3 pos)
     {
         GameManager.status = GameManager.GAME_STATUS.Clear;
-        //dest = this.transform.position;
         dest = pos;
     }
 
@@ -277,21 +250,6 @@ public class Player : MonoBehaviour
         playerPosition = new Vector3(transform.position.x, position, transform.position.z);
         this.transform.position = playerPosition;
 
-    }
-
-    private void ClimbOnCube(ICube cube)
-    {
-        //this.transform.position += new Vector3(0,5f,0);
-        this.transform.position = cube.GetCenter + new Vector3(0, 0.5f, 0);
-    }
-
-    public delegate void ClimbOnObjectHandler(ICube collider);
-    public event ClimbOnObjectHandler ClimbOnObject;
-
-    private void ClimbOnObjectEnter(ICube collider)
-    {
-        //Debug.Log("isColliding + = " + collider.GetIsColliding);
-        ClimbOnObject(collider);
     }
 
     public void SpeedChanger(float num)

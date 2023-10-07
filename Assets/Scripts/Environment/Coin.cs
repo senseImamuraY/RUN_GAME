@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour, IItem
 {
-    float speed = 100f;
-
+    float rotationSpeed = 100f;
+    const float speedBooster = 10f;
     bool isGet;             // Šl“¾Ï‚İƒtƒ‰ƒO
     float lifeTime = 0.5f;  // Šl“¾Œã‚Ì¶‘¶ŠÔ 
 
@@ -25,7 +25,7 @@ public class Coin : MonoBehaviour, IItem
         if (isGet)
         {
             // ‘f‘‚­‰ñ“]
-            transform.Rotate(Vector3.up * speed * 10f * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.up * rotationSpeed * speedBooster * Time.deltaTime, Space.World);
 
             // ¶‘¶ŠÔ‚ğŒ¸‚ç‚·
             lifeTime -= Time.deltaTime;
@@ -40,7 +40,7 @@ public class Coin : MonoBehaviour, IItem
         else
         {
             // ‚ä‚Á‚­‚è‰ñ“]
-            transform.Rotate(Vector3.up * speed * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.World);
         }
     }
 
@@ -48,7 +48,7 @@ public class Coin : MonoBehaviour, IItem
     {
         isGet = true;
 
-        //GetComponent<AudioSource>().Play();
+        GetComponent<AudioSource>().Play();
 
         GameManager.tempCoinNum++;
         Debug.Log("ƒRƒCƒ“‚Ì–‡”F" + GameManager.tempCoinNum);

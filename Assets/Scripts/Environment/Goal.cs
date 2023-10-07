@@ -19,20 +19,10 @@ public class Goal : MonoBehaviour
     void Start()
     {
         centerPos = transform.position;
-        //centerPos = new Vector3(transform.position.x, 0, transform.position.z);
         goal = GetComponent<CustomCubeCollider>();
         goal.SetCenter(centerPos);
-        //Debug.Log(centerPos);
         audioSource = GetComponent<AudioSource>();
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        other.GetComponent<BonusPlayer>().Clear(centerPos);
-    //    }
-    //}
 
     public void GoalEffect(Player player)
     {
@@ -43,7 +33,6 @@ public class Goal : MonoBehaviour
                 confetti.SetActive(true);
             }
             player.Clear(centerPos + new Vector3(0, transform.localScale.y /2, 0));
-            Debug.Log("clear!");
 
             Invoke("PlayCracker", 0.2f);
             Invoke("PlayPrise", 1f);

@@ -7,16 +7,16 @@ using UnityEngine;
 /// </summary>
 public class MortonAgent : MonoBehaviour
 {
-    private LinearTreeManager<GameObject> _manager;
+    private LinearTreeManager<GameObject> manager;
     public LinearTreeManager<GameObject> Manager
     {
         get
         {
-            return _manager;
+            return manager;
         }
         set
         {
-            if (_manager == value)
+            if (manager == value)
             {
                 return;
             }
@@ -25,52 +25,31 @@ public class MortonAgent : MonoBehaviour
             TreeData.Remove();
 
             // Change to new manager and register myself.
-            _manager = value;
+            manager = value;
             RegisterUpdate();
         }
     }
 
     public TreeData<GameObject> TreeData { get; private set; }
 
-    //private MyBounds MyBounds;
-    //private Bounds Bounds;
-
     #region MonoBehaviour
 
-    private Collider _collider;
+    private Collider collider;
     // Bounds like AABB of this game object.
     public Bounds Bounds
     {
         get
         {
-            if (_collider == null)
+            if (collider == null)
             {
-                _collider = GetComponent<Collider>();
+                collider = GetComponent<Collider>();
             }
-            return _collider.bounds;
+            return collider.bounds;
         }
     }
     void Awake()
     {
         TreeData = new TreeData<GameObject>(gameObject);
-        //Debug.Log(name);
-        //MyBounds = GetComponent<MyBounds>();
-        //Bound = GetComponent<Bounds>();
-        //Debug.Log(Bounds);
-        //MyBounds.center = m_Bounds.Center();
-        //MyBounds.size = m_Bounds.Size();
-        //MyBounds = new MyBounds(m_Bounds.Center(), m_Bounds.Size());
-        //MyBounds.center = transform.position;
-        //MyBounds.size = transform.localScale;
-    }
-
-    private void FixedUpdate()
-    {
-        //MyBounds.center = transform.position;
-        //MyBounds.size = transform.localScale;
-        //Bounds.center = m_Bounds.Center();
-        //MyBounds.size = m_Bounds.Size();
-        //Debug.Log("name = " + name + "MyBounds = " + MyBounds.name);
     }
 
     void OnDestroy()
@@ -80,7 +59,7 @@ public class MortonAgent : MonoBehaviour
 
     void Update()
     {
-        if (_manager == null)
+        if (manager == null)
         {
             return;
         }
@@ -91,7 +70,7 @@ public class MortonAgent : MonoBehaviour
 
     void RegisterUpdate()
     {
-        _manager.Register(Bounds, TreeData);
+        manager.Register(Bounds, TreeData);
     }
 
 

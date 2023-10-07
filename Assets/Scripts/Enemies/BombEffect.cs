@@ -8,7 +8,7 @@ public class BombEffect : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<BonusPlayer>().TakeDamage();
+            other.GetComponent<Player>().TakeDamage();
         }
     }
 }

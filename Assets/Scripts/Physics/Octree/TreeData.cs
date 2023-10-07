@@ -12,36 +12,23 @@ using UnityEngine;
 /// <typeparam name="T">管理対象のオブジェクトの型</typeparam>
 public class TreeData<T>
 {
-    private Cell<T> _cell;
+    private Cell<T> cell;
     public Cell<T> Cell
     {
         get
         {
-            return _cell;
+            return cell;
         }
         set
         {
-            //if (value == _cell)
-            //{
-            //    return;
-            //}
-
-            //if (value == null)
-            //{
-            //    return;
-            //}
-
-            //// Remove from current cell.
-            //Remove();
-            //_cell = value;
-            if (value == _cell)
+            if (value == cell)
             {
                 return;
             }
 
             // Remove from current cell.
             Remove();
-            _cell = value;
+            cell = value;
         }
     }
     public T Object { get; private set; }
@@ -54,49 +41,12 @@ public class TreeData<T>
         Object = target;
     }
 
-    /// <summary>
-    /// 空間から逸脱する
-    /// </summary>
-    /// <returns>成功: true, 失敗: false</returns>
-    //public bool Remove()
-    //{
-    //    // すでに逸脱している場合は処理しない
-    //    if (Cell == null)
-    //    {
-    //        return false;
-    //    }
-
-    //    // 逸脱を空間に伝える
-    //    if (!Cell.OnRemove(this))
-    //    {
-    //        return false;
-    //    }
-
-    //    // 逸脱処理
-    //    // リンクリストの前後をつなぎ、自身のリンクを外す
-    //    if (Previous != null)
-    //    {
-    //        Previous.Next = Next;
-    //    }
-
-    //    if (Next != null)
-    //    {
-    //        Next.Previous = Previous;
-    //    }
-
-    //    Previous = null;
-    //    Next = null;
-    //    Cell = null;
-
-    //    return true;
-    //}
-
     public void Remove()
     {
-        if (_cell != null)
+        if (cell != null)
         {
             // 逸脱を空間に伝える
-            _cell.OnRemove(this);
+            cell.OnRemove(this);
 
             // 逸脱処理
             // リンクリストの前後をつなぎ、自身のリンクを外す
@@ -113,20 +63,20 @@ public class TreeData<T>
             Previous = null;
             Next = null;
 
-            _cell = null; // 直接_cellの値をnullに設定
+            cell = null; // 直接_cellの値をnullに設定
         }
     }
 
 
     public void SetCellWithoutRemoval(Cell<T> value)
     {
-        if (value == _cell)
+        if (value == cell)
         {
             return;
         }
 
         Remove();
-        _cell = value;
+        cell = value;
     }
 
 }

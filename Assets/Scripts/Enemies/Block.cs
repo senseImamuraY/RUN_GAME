@@ -5,13 +5,11 @@ using System.Collections.Generic;
 public class Block : MonoBehaviour, IEnemy
 {
     CustomCubeCollider cubeCollider;
-
     void Awake()
     {
-        // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定します
-         cubeCollider = GetComponent<CustomCubeCollider>();
+        // GetComponentメソッドを使ってCustomColliderを取得し、Enemyプロパティを設定
+        cubeCollider = GetComponent<CustomCubeCollider>();
         cubeCollider.Enemy = this;
-        Debug.Log(cubeCollider.Enemy);
     }
 
     void Start()
@@ -31,10 +29,9 @@ public class Block : MonoBehaviour, IEnemy
     {
         if (GameManager.status != GameManager.GAME_STATUS.Play)
         {
-            yield break;  // コルーチンを終了します。
+            yield break;  // コルーチンを終了
         }
 
-        Debug.Log("block");
         if (player.CompareTag("Player"))
         {
             GameManager.status = GameManager.GAME_STATUS.Pause;
@@ -48,5 +45,4 @@ public class Block : MonoBehaviour, IEnemy
     {
         StartCoroutine(EnterCoroutine(player));
     }
-
 }

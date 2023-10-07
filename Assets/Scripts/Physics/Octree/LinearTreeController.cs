@@ -6,54 +6,55 @@ public class LinearTreeController : MonoBehaviour
 {
     #region SerializeField
     [SerializeField]
-    private int _level = 3;
+    private int level = 3;
 
     [SerializeField]
-    private float _left = 0f;
+    private float left = 0f;
 
     [SerializeField]
-    private float _top = 0f;
+    private float top = 0f;
 
     [SerializeField]
-    private float _right = 10f;
+    private float right = 10f;
 
     [SerializeField]
-    private float _bottom = 10f;
+    private float bottom = 10f;
 
     [SerializeField]
-    private float _front = 0f;
+    private float front = 0f;
 
     [SerializeField]
-    private float _back = 10f;
+    private float back = 10f;
     #endregion SerializeField
 
     #region Variables
-    private LinearTreeManager<GameObject> _manager;
-    private MortonCellViewer _cellViewer;
+    private LinearTreeManager<GameObject> manager;
+    private MortonCellViewer cellViewer;
     private MortonCellViewer CellViewer
     {
         get
         {
-            if (_cellViewer == null)
+            if (cellViewer == null)
             {
                 MortonCellViewer viewer = GetComponent<MortonCellViewer>();
                 if (viewer == null)
                 {
                     viewer = gameObject.AddComponent<MortonCellViewer>();
                 }
-                _cellViewer = viewer;
+                cellViewer = viewer;
             }
-            return _cellViewer;
+            return cellViewer;
         }
     }
 
-    [SerializeField]
-    private List<GameObject> _objects;
+    public List<GameObject> objects;
 
-    [SerializeField]
-    private GameObject _agentPrefab;
+    public List<GameObject> Objects
+    {
+        get { return objects; }
+        set { objects = value; }
+    }
     #endregion Variables
-
 
     #region MonoBehaviour
     void OnValidate()
@@ -63,62 +64,51 @@ public class LinearTreeController : MonoBehaviour
             return;
         }
 
-        CellViewer.Left = _left;
-        CellViewer.Right = _right;
-        CellViewer.Top = _top;
-        CellViewer.Bottom = _bottom;
-        CellViewer.Front = _front;
-        CellViewer.Back = _back;
-        CellViewer.Division = 1 << _level;
+        CellViewer.Left = left;
+        CellViewer.Right = right;
+        CellViewer.Top = top;
+        CellViewer.Bottom = bottom;
+        CellViewer.Front = front;
+        CellViewer.Back = back;
+        CellViewer.Division = 1 << level;
     }
 
     void Awake()
     {
-        CellViewer.Left = _left;
-        CellViewer.Right = _right;
-        CellViewer.Top = _top;
-        CellViewer.Bottom = _bottom;
-        CellViewer.Front = _front;
-        CellViewer.Back = _back;
-        CellViewer.Division = 1 << _level;
+        CellViewer.Left = left;
+        CellViewer.Right = right;
+        CellViewer.Top = top;
+        CellViewer.Bottom = bottom;
+        CellViewer.Front = front;
+        CellViewer.Back = back;
+        CellViewer.Division = 1 << level;
     }
 
     void Start()
     {
-        _manager = new LinearTreeManager<GameObject>(_level, _left, _top, _right, _bottom, _front, _back);
+        manager = new LinearTreeManager<GameObject>(level, left, top, right, bottom, front, back);
 
-        // オブジェクトを仮登録してみる
+        // オブジェクトを登録
         RegisterObjects();
+
     }
 
-    private List<GameObject> _collisionList = new List<GameObject>();
-    public List<GameObject> GetCollisionList() { return _collisionList; }
+    private List<GameObject> collisionList = new List<GameObject>();
+    public List<GameObject> GetCollisionList() { return collisionList; }
 
     void Update()
     {
-        // Check collisions
-        //Debug.Log("tree CollisionList = " + _collisionList.Count);
-
-        _manager.GetAllCollisionList(_collisionList);
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GameObject obj = Instantiate(_agentPrefab);
-            float s = Random.Range(0.5f, 2.5f);
-            obj.transform.localScale = Vector3.one * s;
-            MortonAgent agent = obj.GetComponent<MortonAgent>();
-            agent.Manager = _manager;
-        }
+        manager.GetAllCollisionList(collisionList);
     }
 
     void OnDrawGizmos()
     {
         // Connect collision pairs with line.
         Gizmos.color = Color.cyan;
-        for (int i = 0; i < _collisionList.Count; i += 2)
+        for (int i = 0; i < collisionList.Count; i += 2)
         {
-            GameObject g0 = _collisionList[i + 0];
-            GameObject g1 = _collisionList[i + 1];
+            GameObject g0 = collisionList[i + 0];
+            GameObject g1 = collisionList[i + 1];
 
             Gizmos.DrawLine(g0.transform.position, g1.transform.position);
         }
@@ -134,46 +124,21 @@ public class LinearTreeController : MonoBehaviour
         MortonAgent agent = target.GetComponent<MortonAgent>();
         if (agent == null)
         {
-            Debug.LogWarningFormat("Augument must have a `MortonAgent` component. {0}", target);
             return;
         }
 
-        agent.Manager = _manager;
+        agent.Manager = manager;
     }
 
-    void UnregisterObject(GameObject target)
-    {
-
-    }
 
     /// <summary>
-    /// オブジェクトを仮に登録してみる
+    /// オブジェクトを登録
     /// </summary>
     void RegisterObjects()
     {
-        for (int i = 0; i < _objects.Count; i++)
+        for (int i = 0; i < objects.Count; i++)
         {
-            RegisterObject(_objects[i]);
+            RegisterObject(objects[i]);
         }
-
-
-        #region For Mock
-        //TreeData<GameObject> data1 = new TreeData<GameObject>(_object1);
-        //TreeData<GameObject> data2 = new TreeData<GameObject>(_object2);
-        //TreeData<GameObject> data3 = new TreeData<GameObject>(_object3);
-        //TreeData<GameObject> data4 = new TreeData<GameObject>(_object4);
-
-        //// size: 3
-        //_manager.Register(-4f, 4.5f, -1f, 1.5f, -5f, -2f, data1);
-
-        //// size: 1
-        //_manager.Register(-0.5f, 4f, 0.5f, 3f, -5f, -4f, data2);
-
-        //// size: 1
-        //_manager.Register(2.6f, 3.6f, 3.6f, 2.6f, -3.7f, -2.7f, data3);
-
-        //// size: 1.5
-        //_manager.Register(0.5f, 7f, 2f, 5.5f, -5f, -3.5f, data4);
-        #endregion For Mock
     }
 }

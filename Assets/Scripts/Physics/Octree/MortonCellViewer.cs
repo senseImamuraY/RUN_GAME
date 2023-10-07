@@ -5,121 +5,121 @@ using UnityEngine;
 public class MortonCellViewer : MonoBehaviour
 {
     #region Variables
-    private float _left;
+    private float left;
     public float Left
     {
         get
         {
-            return _left;
+            return left;
         }
         set
         {
-            _left = value;
-            _width = _right - _left;
+            left = value;
+            width = right - left;
             UpdateCells();
         }
     }
 
-    private float _right;
+    private float right;
     public float Right
     {
         get
         {
-            return _right;
+            return right;
         }
         set
         {
-            _right = value;
-            _width = _right - _left;
+            right = value;
+            width = right - left;
             UpdateCells();
         }
     }
 
-    private float _top;
+    private float top;
     public float Top
     {
         get
         {
-            return _top;
+            return top;
         }
         set
         {
-            _top = value;
-            _height = _top - _bottom;
+            top = value;
+            height = top - bottom;
             UpdateCells();
         }
     }
 
-    private float _bottom;
+    private float bottom;
     public float Bottom
     {
         get
         {
-            return _bottom;
+            return bottom;
         }
         set
         {
-            _bottom = value;
-            _height = _top - _bottom;
+            bottom = value;
+            height = top - bottom;
             UpdateCells();
         }
     }
 
-    private float _front;
+    private float front;
     public float Front
     {
         get
         {
-            return _front;
+            return front;
         }
         set
         {
-            _front = value;
-            _depth = _back - _front;
+            front = value;
+            depth = back - front;
             UpdateCells();
         }
     }
 
-    private float _back;
+    private float back;
     public float Back
     {
         get
         {
-            return _back;
+            return back;
         }
         set
         {
-            _back = value;
-            _depth = _back - _front;
+            back = value;
+            depth = back - front;
             UpdateCells();
         }
     }
 
-    private float _width;
-    private float _height;
-    private float _depth;
+    private float width;
+    private float height;
+    private float depth;
 
-    private int _division;
+    private int division;
     public int Division
     {
         get
         {
-            return _division;
+            return division;
         }
         set
         {
-            _division = value;
+            division = value;
             UpdateCells();
         }
     }
 
-    private float _unitWidth;
-    private float _unitHeight;
-    private float _unitDepth;
-    private int _halfDivision;
+    private float unitWidth;
+    private float unitHeight;
+    private float unitDepth;
+    private int halfDivision;
 
-    private Color _normalColor = new Color(1f, 0, 0, 0.5f);
-    private Color _centerColor = new Color(0, 0, 1f, 1f);
+    private Color normalColor = new Color(1f, 0, 0, 0.5f);
+    private Color centerColor = new Color(0, 0, 1f, 1f);
     #endregion Variables
 
     void Start()
@@ -130,11 +130,11 @@ public class MortonCellViewer : MonoBehaviour
     void UpdateCells()
     {
         // ひとつの区間の単位
-        _unitWidth = _width / Division;
-        _unitHeight = _height / Division;
-        _unitDepth = _depth / Division;
+        unitWidth = width / Division;
+        unitHeight = height / Division;
+        unitDepth = depth / Division;
 
-        _halfDivision = Division / 2;
+        halfDivision = Division / 2;
     }
 
     /// <summary>
@@ -147,19 +147,19 @@ public class MortonCellViewer : MonoBehaviour
             return;
         }
 
-        Vector3 tow = transform.right * _width;
-        Vector3 toh = transform.up * _height;
-        Vector3 tod = transform.forward * _depth;
+        Vector3 tow = transform.right * width;
+        Vector3 toh = transform.up * height;
+        Vector3 tod = transform.forward * depth;
 
         // XY平面
         for (int i = 0; i <= Division; i++)
         {
             for (int j = 0; j <= Division; j++)
             {
-                bool isCenter = (i == _halfDivision || j == _halfDivision);
-                Gizmos.color = isCenter ? _centerColor : _normalColor;
+                bool isCenter = (i == halfDivision || j == halfDivision);
+                Gizmos.color = isCenter ? centerColor : normalColor;
 
-                Vector3 offset = (transform.right * (_unitWidth * i + _left)) + (transform.up * (_unitHeight * j + _bottom)) + (transform.forward * _front);
+                Vector3 offset = (transform.right * (unitWidth * i + left)) + (transform.up * (unitHeight * j + bottom)) + (transform.forward * front);
                 Vector3 from = transform.position + offset;
                 Vector3 to = from + tod;
                 Gizmos.DrawLine(from, to);
@@ -171,10 +171,10 @@ public class MortonCellViewer : MonoBehaviour
         {
             for (int j = 0; j <= Division; j++)
             {
-                bool isCenter = (i == _halfDivision || j == _halfDivision);
-                Gizmos.color = isCenter ? _centerColor : _normalColor;
+                bool isCenter = (i == halfDivision || j == halfDivision);
+                Gizmos.color = isCenter ? centerColor : normalColor;
 
-                Vector3 offset = (transform.forward * (_unitDepth * i + _front)) + (transform.up * (_unitHeight * j + _bottom)) + (transform.right * _left);
+                Vector3 offset = (transform.forward * (unitDepth * i + front)) + (transform.up * (unitHeight * j + bottom)) + (transform.right * left);
                 Vector3 from = transform.position + offset;
                 Vector3 to = from + tow;
                 Gizmos.DrawLine(from, to);
@@ -186,10 +186,10 @@ public class MortonCellViewer : MonoBehaviour
         {
             for (int j = 0; j <= Division; j++)
             {
-                bool isCenter = (i == _halfDivision || j == _halfDivision);
-                Gizmos.color = isCenter ? _centerColor : _normalColor;
+                bool isCenter = (i == halfDivision || j == halfDivision);
+                Gizmos.color = isCenter ? centerColor : normalColor;
 
-                Vector3 offset = (transform.forward * (_unitDepth * i + _front)) + (transform.right * (_unitWidth * j + _left)) + (transform.up * _bottom);
+                Vector3 offset = (transform.forward * (unitDepth * i + front)) + (transform.right * (unitWidth * j + left)) + (transform.up * bottom);
                 Vector3 from = transform.position + offset;
                 Vector3 to = from + toh;
                 Gizmos.DrawLine(from, to);
